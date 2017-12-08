@@ -9,34 +9,34 @@
  * @return {number} the direction number
  */
 export function getDirectionFromDelta(y, dx, dy) {
-	// Due to target size, this could be off; limit dx
-	if (dx > 1) dx = 1;
-	if (dx < -1) dx = -1;
-	var dir;
-	if (dy === 0) {
-		if (dx === 1) {
-			dir = 1; // forward
-		} else { // dx === -1
-			dir = 4; // backward
-		}
-	} else {
-		// Hex grid corrections
-		if (y % 2 === 0 && dx < 1) {
-			dx++;
-		}
-		if (dx === 1) {
-			if (dy === -1) {
-				dir = 0; // upright
-			} else { // dy === 1
-				dir = 2; // downright
-			}
-		} else { // dx === 0
-			if (dy === 1) {
-				dir = 3; // downleft
-			} else { // dy === -1
-				dir = 5; // upleft
-			}
-		}
-	}
-	return dir;
+  // Due to target size, this could be off; limit dx
+  if (dx > 1) dx = 1;
+  if (dx < -1) dx = -1;
+  let dir;
+  if (dy === 0) {
+    if (dx === 1) {
+      dir = 1; // forward
+    } else { // dx === -1
+      dir = 4; // backward
+    }
+  } else {
+    // Hex grid corrections
+    if (y % 2 === 0 && dx < 1) {
+      dx++;
+    }
+    if (dx === 1) {
+      if (dy === -1) {
+        dir = 0; // upright
+      } else { // dy === 1
+        dir = 2; // downright
+      }
+    } else { // dx === 0
+      if (dy === 1) {
+        dir = 3; // downleft
+      } else { // dy === -1
+        dir = 5; // upleft
+      }
+    }
+  }
+  return dir;
 }

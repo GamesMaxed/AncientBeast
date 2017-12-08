@@ -1,100 +1,100 @@
-import * as $j from "jquery";
+import * as $j from 'jquery';
 
 export class Button {
-	/**	
+  /**
 	 * Constructor
 	 *
 	 *	Create attributes and default buttons
 	 *
 	 */
-	constructor(opts, game) {
-		this.game = game;
+  constructor(opts, game) {
+    this.game = game;
 
-		let defaultOpts = {
-			click: function () { },
-			mouseover: function () { },
-			mouseleave: function () { },
-			clickable: true,
-			state: "normal", // disabled, normal, glowing, selected, active
-			$button: undefined,
-			attributes: {},
-			css: {
-				disabled: {},
-				glowing: {},
-				selected: {},
-				active: {},
-				normal: {},
-			}
-		};
+    const defaultOpts = {
+      click() { },
+      mouseover() { },
+      mouseleave() { },
+      clickable: true,
+      state: 'normal', // disabled, normal, glowing, selected, active
+      $button: undefined,
+      attributes: {},
+      css: {
+        disabled: {},
+        glowing: {},
+        selected: {},
+        active: {},
+        normal: {},
+      },
+    };
 
-		opts = $j.extend(defaultOpts, opts);
-		$j.extend(this, opts);
-		this.changeState(this.state);
-	}
+    opts = $j.extend(defaultOpts, opts);
+    $j.extend(this, opts);
+    this.changeState(this.state);
+  }
 
-	changeState(state) {
-		let game = this.game;
+  changeState(state) {
+    const game = this.game;
 
-		state = state || this.state;
-		this.state = state;
-		this.$button.unbind("click").unbind("mouseover").unbind("mouseleave");
+    state = state || this.state;
+    this.state = state;
+    this.$button.unbind('click').unbind('mouseover').unbind('mouseleave');
 
-		if (state != "disabled") {
-			this.$button.bind("click", () => {
-				if (game.freezedInput || !this.clickable) {
-					return;
-				}
+    if (state != 'disabled') {
+      this.$button.bind('click', () => {
+        if (game.freezedInput || !this.clickable) {
+          return;
+        }
 
-				this.click();
-			});
-		}
+        this.click();
+      });
+    }
 
-		this.$button.bind("mouseover", () => {
-			if (game.freezedInput || !this.clickable) {
-				return;
-			}
+    this.$button.bind('mouseover', () => {
+      if (game.freezedInput || !this.clickable) {
+        return;
+      }
 
-			this.mouseover();
-		});
+      this.mouseover();
+    });
 
-		this.$button.bind("mouseleave", () => {
-			if (game.freezedInput || !this.clickable) {
-				return;
-			}
+    this.$button.bind('mouseleave', () => {
+      if (game.freezedInput || !this.clickable) {
+        return;
+      }
 
-			this.mouseleave();
-		});
+      this.mouseleave();
+    });
 
-		this.$button.removeClass("disabled glowing selected active noclick");
-		this.$button.css(this.css["normal"]);
+    this.$button.removeClass('disabled glowing selected active noclick');
+    this.$button.css(this.css.normal);
 
-		if (state != "normal") {
-			this.$button.addClass(state);
-			this.$button.css(this.css[state]);
-		}
-	}
+    if (state != 'normal') {
+      this.$button.addClass(state);
+      this.$button.css(this.css[state]);
+    }
+  }
 
-	triggerClick() {
-		if (this.game.freezedInput || !this.clickable) {
-			return;
-		}
+  triggerClick() {
+    if (this.game.freezedInput || !this.clickable) {
+      return;
+    }
 
-		this.click();
-	}
+    this.click();
+  }
 
-	triggerMouseover() {
-		if (this.game.freezedInput || !this.clickable) {
-			return;
-		}
+  triggerMouseover() {
+    if (this.game.freezedInput || !this.clickable) {
+      return;
+    }
 
-		this.mouseover();
-	}
+    this.mouseover();
+  }
 
-	triggerMouseleave() {
-		if (this.game.freezedInput || !this.clickable) {
-			return;
-		}
+  triggerMouseleave() {
+    if (this.game.freezedInput || !this.clickable) {
+      return;
+    }
 
-		this.mouseleave();
-	}
+    this.mouseleave();
+  }
 }
