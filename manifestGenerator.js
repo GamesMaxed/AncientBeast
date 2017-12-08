@@ -1,3 +1,4 @@
+/*eslint-env node*/
 // automaticly generate manifest
 // Don't use this in the game. All this does is generate the
 const { promisify } = require("util");
@@ -69,7 +70,7 @@ const entityToString = (entity) => {
 }
 
 /**
- * Convert a dir entity to a string
+ * Convert a dir entity to a stringPath
  * @param {Object} dirEntity Entity to write to string
  */
 const dirToString = (dirEntity) => `{id: "${dirEntity.name}", children:[${dirEntity.children.map(child => writeToString(child)).reduce((prev, curr) => prev + curr)}] }`;
