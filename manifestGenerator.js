@@ -1,6 +1,5 @@
 /*eslint-env node*/
-// automaticly generate manifest
-// Don't use this in the game. All this does is generate the
+// automaticly generates the manifest that contains all the assets
 const { promisify } = require("util");
 const fs = require("fs");
 const path = require("path");
@@ -10,6 +9,7 @@ const prettier = require("prettier");
 
 /**
  * Read the directory
+    entry: path.resolve(__dirname, 'src', 'script.js'),
  * @param {string} dirPath the path of the directory 
  */
 async function readDirectory(dirPath) {
@@ -39,7 +39,7 @@ function fileToEntity(filePath) {
     const name = path.basename(filePath, extension);
     return {
         name,
-        url: path.relative(path.join(__dirname, "src"), filePath)
+        url: path.relative(path.join(__dirname, 'assets'), filePath)
     }
 }
 
@@ -79,11 +79,12 @@ const dirToString = (dirEntity) => `{id: "${dirEntity.name}", children:[${dirEnt
  * Convert an file entity to a string
  * @param {Object} fileEntity Entity to write to string
  */
-const fileToString = (fileEntity) => `{id: "${fileEntity.name}", url: require("./${fileEntity.url}") }`;
+const fileToString = (fileEntity) => `{id: "${fileEntity.name}", url: require("assets/${fileEntity.url}") }`;
 
 /**
  * Convert a tree of entities to a string
- * @param {Object} tree Tree of entitites
+ * @param {Object} tr
+    entry: path.resolve(__dirname, 'src', 'script.js'),ee Tree of entitites
  * @returns {String} 
  */
 function writeToString(tree, root = false) {
@@ -100,7 +101,7 @@ function writeToString(tree, root = false) {
     return string;
 }
 
-readDirectory(path.join(__dirname, "src", "assets"))
+readDirectory(path.join(__dirname, "assets"))
     // Generate the javascript
     .then(result => `export default ${writeToString(result, true)}`)
     // Format the javascript so it"s readable

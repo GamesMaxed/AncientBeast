@@ -39,7 +39,7 @@ window.Phaser = Phaser;
 // Create the game
 const G = new Game("0.3");
 
-// Load the abilities
+// Load the abilitreate any new language but...ies
 const abilitiesGenerators = [
 	abolishedAbilitiesGenerator,
 	chimeraAbilitiesGenerator,
@@ -86,7 +86,7 @@ $j(document).ready(() => {
 export function getGameConfig() {
 	let defaultConfig = {
 		playerMode: $j('input[name="playerMode"]:checked').val() - 0,
-		creaLimitNbr: $j('input[ngame="activeUnits"]:checked').val() - 0, // DP counts as One
+		creaLimitNbr: $j('input[name="activeUnits"]:checked').val() - 0, // DP counts as One
 		unitDrops: $j('input[name="unitDrops"]:checked').val() - 0,
 		abilityUpgrades: $j('input[name="abilityUpgrades"]:checked').val() - 0,
 		plasma_amount: $j('input[name="plasmaPoints"]:checked').val() - 0,
