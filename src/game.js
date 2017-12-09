@@ -1,3 +1,5 @@
+import * as $j from 'jquery';
+import dataJson from 'assets/units/data.json';
 import { Animations } from './animations';
 import { CreatureQueue } from './creature_queue';
 import { GameLog } from './utility/gamelog';
@@ -9,7 +11,6 @@ import { getUrl } from './assetLoader';
 import { Player } from './player';
 import { UI } from './ui/interface';
 import { Creature } from './creature';
-import dataJson from 'assets/units/data.json';
 
 /* Game Class
  *
@@ -21,33 +22,33 @@ import dataJson from 'assets/units/data.json';
  * to really start the game.
  */
 
-export class Game {
-  /* Attributes
-	 *
-	 * NOTE : attributes and variables starting with $ are jQuery elements
-	 * and jQuery functions can be called directly from them.
-	 *
-	 * // jQuery attributes
-	 * $combatFrame :	Combat element containing all graphics except the UI
-	 *
-	 * // Game elements
-	 * players :			Array :	Contains Player objects ordered by player ID (0 to 3)
-	 * creatures :			Array :	Contains Creature objects (creatures[creature.id]) start at index 1
-	 *
-	 * grid :				Grid :	Grid object
-	 * UI :				UI :	UI object
-	 *
-	 * queue :				CreatureQueue :	queue of creatures to manage phase order
-	 *
-	 * turn :				Integer :	Current's turn number
-	 *
-	 * // Normal attributes
-	 * playerMode :		Integer :	Number of players in the game
-	 * activeCreature :	Creature :	Current active creature object reference
-	 * creatureIdCounter :		Integer :	Creature ID counter used for creature creation
-	 * creatureData :		Array :		Array containing all data for the creatures
-	 *
-	 */
+export default class {
+  /**
+   * Attributes
+   *
+   * NOTE : attributes and variables starting with $ are jQuery elements
+   * and jQuery functions can be called directly from them.
+   *
+   * // jQuery attributes
+   * $combatFrame : Combat element containing all graphics except the UI
+   *
+   * // Game elements
+   * players: Array : Contains Player objects ordered by player ID (0 to 3)
+   * creatures: Array : Contains Creature objects (creatures[creature.id]) start at index 1
+   *
+   * grid: Grid : Grid object
+   * UI: UI : UI object
+   *
+   * queue :    CreatureQueue : queue of creatures to manage phase order
+   *
+   * turn :    Integer : Current's turn number
+   *
+   * // Normal attributes
+   * playerMode :  Integer : Number of players in the game
+   * activeCreature : Creature : Current active creature object reference
+   * creatureIdCounter :  Integer : Creature ID counter used for creature creation
+   * creatureData :  Array :  Array containing all data for the creatures
+   */
   constructor(version) {
     this.version = version || 'dev';
     this.abilities = [];
@@ -109,10 +110,7 @@ export class Game {
     this.turnThrottle = false;
 
     // Phaser
-    this.Phaser = new Phaser.Game(1920, 1080, Phaser.AUTO, 'combatwrapper', {
-      update: this.phaserUpdate.bind(this),
-      render: this.phaserRender.bind(this),
-    });
+    this.Phaser = new Phaser.Game(1920, 1080, Phaser.AUTO, 'combatwrapper');
 
     // Messages
     // TODO: Move strings to external file in order to be able to support translations
@@ -180,32 +178,33 @@ export class Game {
 
     this.creatureData = data;
 
-    data.forEach((creature, idx, arr) => {
-      let creatureId = creature.id,
-        realm = creature.realm,
-        level = creature.level,
-        type = realm.toUpperCase() + level,
-        name = creature.name,
-        count,
-        i;
+    data.forEach((creature) => {
+      const {
+        realm,
+        level,
+        name,
+        id,
+      } = creature;
+      const type = realm.toUpperCase() + level;
 
       creature.type = type;
 
-      if (this.loadedCreatures.indexOf(creatureId) === -1) {
+      if (this.loadedCreatures.indexOf(id) === -1) {
         // No need to load sounds and artwork
         return;
       }
+
       // Load unit shouts
-      this.soundsys.getSound(getUrl(`units/shouts/${name}`), 1000 + creatureId);
+      this.soundsys.getSound(getUrl(`units/shouts/${name}`), 1000 + id);
 
       // Load artwork
       this.getImage(getUrl(`units/artwork/${name}`));
 
-      if (name == 'Dark Priest') {
-        for (i = 0, count = dpcolor.length; i < count; i++) {
-          this.Phaser.load.image(`${name + dpcolor[i]}_cardboard`, getUrl(`units/cardboards/${name} ${dpcolor[i]}`));
-          this.getImage(getUrl(`units/avatars/${name} ${dpcolor[i]}`));
-        }
+      if (name === 'Dark Priest') {
+        dpcolor.forEach((color) => {
+          this.Phaser.load.image(`${name + color}_cardboard`, getUrl(`units/cardboards/${name} ${color}`));
+          this.getImage(getUrl(`units/avatars/${name} ${color}`));
+        });
       } else {
         if (creature.drop) {
           this.Phaser.load.image(`drop_${creature.drop.name}`, getUrl(`drops/${creature.drop.name}`));
@@ -216,36 +215,33 @@ export class Game {
       }
 
       // For code compatibility
-      this.availableCreatures[creatureId] = type;
+      this.availableCreatures[id] = type;
     });
 
     this.Phaser.load.start();
   }
 
   /* loadGame(setupOpt) preload
-	 *
-	 * setupOpt :	Object :	Setup options from matchmaking menu
-	 *
-	 * Load all required game files
-	 */
+   *
+   * setupOpt : Object : Setup options from matchmaking menu
+   *
+   * Load all required game files
+   */
   loadGame(setupOpt) {
-    let totalSoundEffects = this.soundEffects.length,
-      defaultOpt = {
-        playerMode: 2,
-        creaLimitNbr: 7,
-        unitDrops: 1,
-        abilityUpgrades: 4,
-        plasma_amount: 50,
-        turnTimePool: 60,
-        timePool: 5 * 60,
-        background_image: 'Frozen Skull',
-      },
-      i;
+    const defaultOpt = {
+      playerMode: 2,
+      creaLimitNbr: 7,
+      unitDrops: 1,
+      abilityUpgrades: 4,
+      plasma_amount: 50,
+      turnTimePool: 60,
+      timePool: 5 * 60,
+      background_image: 'Frozen Skull',
+    };
 
     this.gamelog.gameConfig = setupOpt;
     this.gameState = 'loading';
-    // setupOpt = $j.extend(defaultOpt, setupOpt);
-    $j.extend(this, setupOpt);
+    Object.assign(this, defaultOpt, setupOpt);
 
     this.startLoading();
 
@@ -254,28 +250,28 @@ export class Game {
     this.soundLoaded = {};
     this.soundsys = new SoundSys({}, this);
 
-    for (i = 0; i < totalSoundEffects; i++) {
-      this.soundsys.getSound(getUrl(this.soundEffects[i]), this.availableMusic.length + i);
-    }
+    this.soundEffects.forEach((soundEffect, index) => {
+      this.soundsys.getSound(getUrl(soundEffect, this.availableMusic.length + index));
+    });
 
     this.Phaser.load.onFileComplete.add(this.loadFinish, this);
 
     // Health
     const playerColors = ['red', 'blue', 'orange', 'green'];
-    for (i = 0; i < 4; i++) {
+    playerColors.forEach((color, index) => {
       this.Phaser.load.image(
-        `p${i}_health`,
-        getUrl(`interface/rectangle_${playerColors[i]}`),
+        `p${index}_health`,
+        getUrl(`interface/rectangle_${color}`),
       );
       this.Phaser.load.image(
-        `p${i}_plasma`,
-        getUrl(`interface/capsule_${playerColors[i]}`),
+        `p${index}_plasma`,
+        getUrl(`interface/capsule_${color}`),
       );
       this.Phaser.load.image(
-        `p${i}_frozen`,
-        getUrl(`interface/rectangle_frozen_${playerColors[i]}`),
+        `p${index}_frozen`,
+        getUrl(`interface/rectangle_frozen_${color}`),
       );
-    }
+    });
 
     // Ability SFX
     this.Phaser.load.audio('MagmaSpawn0', getUrl('units/sfx/Magma Spawn 0'));
@@ -286,16 +282,16 @@ export class Game {
     this.Phaser.load.image('hex_path', getUrl('interface/hex_path'));
     this.Phaser.load.image('cancel', getUrl('interface/cancel'));
     this.Phaser.load.image('input', getUrl('interface/hex_input'));
-    for (i = 0; i < 4; i++) {
+    playerColors.forEach((color, index) => {
       this.Phaser.load.image(
-        `hex_p${i}`,
-        getUrl(`interface/hex_glowing_${playerColors[i]}`),
+        `hex_p${index}`,
+        getUrl(`interface/hex_glowing_${color}`),
       );
       this.Phaser.load.image(
-        `hex_hover_p${i}`,
-        getUrl(`interface/hex_outline_${playerColors[i]}`),
+        `hex_hover_p${index}`,
+        getUrl(`interface/hex_outline_${color}`),
       );
-    }
+    });
 
     // Traps
     // TODO: Load these sprites only after the specific unit has been materialized
@@ -317,20 +313,19 @@ export class Game {
     this.dataLoaded(dataJson);
   }
 
-  startLoading() {
+  static startLoading() {
     $j('#gameSetupContainer').hide();
     $j('#loader').show();
     $j('body').css('cursor', 'wait');
   }
 
   loadFinish() {
-    let progress = this.Phaser.load.progress,
-      loadingBarWidth = 355,
-      progressWidth = `${progress}%`;
+    const { progress } = this.Phaser.load;
+    const progressWidth = `${progress}%`;
 
     $j('#barLoader .progress').css('width', progressWidth);
 
-    if (progress == 100) {
+    if (progress === 100) {
       setTimeout(() => {
         this.gameState = 'loaded';
 
@@ -339,21 +334,6 @@ export class Game {
           this.setup(this.playerMode);
         }
       }, 100);
-    }
-  }
-
-  phaserUpdate() {
-    if (this.gameState != 'playing') {
-
-    }
-  }
-
-  phaserRender() {
-    let count = this.creatures.length,
-      i;
-
-    for (i = 1; i < count; i++) {
-      // G.Phaser.debug.renderSpriteBounds(G.creatures[i].sprite);
     }
   }
 
@@ -366,7 +346,7 @@ export class Game {
   onFocus() {
     this.preventSetup = false;
     // If loaded, call maybeSetup with a tiny delay to prevent rendering issues.
-    if (this.gameState == 'loaded') {
+    if (this.gameState === 'loaded') {
       setTimeout(() => {
         this.maybeSetup();
       }, 100);
@@ -385,16 +365,13 @@ export class Game {
   }
 
   /* Setup(playerMode)
-	 *
-	 * playerMode :		Integer :	Ideally 2 or 4, number of players to configure
-	 *
-	 * Launch the game with the given number of player.
-	 *
-	 */
+   *
+   * playerMode :  Integer : Ideally 2 or 4, number of players to configure
+   *
+   * Launch the game with the given number of player.
+   *
+   */
   setup(playerMode) {
-    let bg,
-      i;
-
     // Phaser
     this.Phaser.scale.pageAlignHorizontally = true;
     this.Phaser.scale.pageAlignVertically = true;
@@ -406,7 +383,7 @@ export class Game {
       this.Phaser.stage.forcePortrait = true;
     }
 
-    bg = this.Phaser.add.sprite(0, 0, 'background');
+    const bg = this.Phaser.add.sprite(0, 0, 'background');
     bg.inputEnabled = true;
     bg.events.onInputUp.add((Sprite, Pointer) => {
       if (this.freezedInput || this.UI.dashopen) {
@@ -424,6 +401,7 @@ export class Game {
           // Right mouse button pressed
           this.UI.showCreature(this.activeCreature.type, this.activeCreature.player.id);
           break;
+        default:
       }
     }, this);
 
@@ -443,7 +421,7 @@ export class Game {
     // Remove loading screen
     $j('#matchMaking').hide();
 
-    for (i = 0; i < playerMode; i++) {
+    for (let i = 0; i < playerMode; i += 1) {
       const player = new Player(i, this);
       this.players.push(player);
 
@@ -476,6 +454,8 @@ export class Game {
               y: 7,
             };
             break;
+          default:
+            throw Error(`Unknown user ${i}`);
         }
       } else { // If 2 players
         switch (player.id) {
@@ -491,19 +471,22 @@ export class Game {
               y: 4,
             };
             break;
+          default:
+            throw Error(`Unknown user ${i}`);
         }
       }
 
       player.summon('--', pos); // Summon Dark Priest
     }
 
-    this.activeCreature = this.players[0].creatures[0]; // Prevent errors
+    const [activeCreature] = this.players[0].creatures;
+    this.activeCreature = activeCreature;
 
-    this.UI = new UI(this); // Create UI (not before because some functions require creatures to already exist)
-
+    // Create UI (not before because some functions require creatures to already exist)
     // DO NOT CALL LOG BEFORE UI CREATION
-    this.gameState = 'playing';
+    this.UI = new UI(this);
 
+    this.gameState = 'playing';
     this.log('Welcome to Ancient Beast pre-Alpha');
     this.log(`Setting up a ${playerMode} player match`);
 
@@ -537,52 +520,46 @@ export class Game {
     }
   }
 
-  /* resizeCombatFrame()
-	 *
-	 * Resize the combat frame
-	 */
-  resizeCombatFrame() {
+  /**
+   * Resize the combat frame
+   */
+  static resizeCombatFrame() {
     if ($j('#cardwrapper').width() < $j('#card').width()) {
       $j('#cardwrapper_inner').width();
     }
   }
 
   /* nextRound()
-	 *
-	 * Replace the current queue with the next queue
-	 */
+   *
+   * Replace the current queue with the next queue
+   */
   nextRound() {
-    let totalCreatures = this.creatures.length,
-      i;
-
     this.grid.clearHexViewAlterations();
-    this.turn++;
+    this.turn += 1;
     this.log(`Round ${this.turn}`, 'roundmarker');
     this.queue.nextRound();
 
     // Resets values
-    for (i = 0; i < totalCreatures; i++) {
-      if (this.creatures[i] instanceof Creature) {
-        this.creatures[i].delayable = true;
-        this.creatures[i].delayed = false;
-      }
-    }
+    this.creatures = this.creatures.map(creature => ({
+      delayable: true,
+      delayed: false,
+      ...creature,
+    }));
 
     this.onStartOfRound();
 
     this.nextCreature();
   }
 
-  /* nextCreature()
-	 *
-	 * Activate the next creature in queue
-	 */
+  /**
+   * Activate the next creature in queue
+   */
   nextCreature() {
     this.UI.closeDash();
     this.UI.btnToggleDash.changeState('normal');
     this.grid.xray(new Hex(-1, -1, null, this)); // Clear Xray
 
-    if (this.gameState == 'ended') {
+    if (this.gameState === 'ended') {
       return;
     }
 
@@ -601,7 +578,7 @@ export class Game {
           }
           const next = this.queue.dequeue();
           if (this.activeCreature) {
-            differentPlayer = this.activeCreature.player != next.player;
+            differentPlayer = this.activeCreature.player !== next.player;
           } else {
             differentPlayer = true;
           }
@@ -626,7 +603,7 @@ export class Game {
           this.activeCreature.activate();
 
           // Show mini tutorial in the first round for each player
-          if (this.turn == 1) {
+          if (this.turn === 1) {
             this.log('The active unit has a flashing hexagon');
             this.log('It uses a plasma field to protect itself');
             this.log('Its portrait is displayed in the upper left');
@@ -653,29 +630,24 @@ export class Game {
   }
 
   /* log(obj)
-	 *
-	 * obj :	Any :	Any variable to display in console and game log
-	 *
-	 * Display obj in the console log and in the game log
-	 */
+   *
+   * obj : Any : Any variable to display in console and game log
+   *
+   * Display obj in the console log and in the game log
+   */
   log(obj, htmlclass) {
     // Formating
-    let stringConsole = obj,
-      stringLog = obj,
-      totalCreatures = this.creatures.length,
-      creature,
-      i;
+    let { stringConsole, stringLog } = obj;
 
-    for (i = 0; i < totalCreatures; i++) {
-      creature = this.creatures[i];
+    this.creatures.forEach((creature, i) => {
+      stringConsole = stringConsole.replace(`%CreatureName${i}%`, `${creature.player.name}'s ${creature.name}`);
+      stringLog = stringLog.replace(`%CreatureName${i}%`, `<span class='${creature.player.color}'>${creature.name}</span>`);
+    });
 
-      if (creature instanceof Creature) {
-        stringConsole = stringConsole.replace(`%CreatureName${i}%`, `${creature.player.name}'s ${creature.name}`);
-        stringLog = stringLog.replace(`%CreatureName${i}%`, `<span class='${creature.player.color}'>${creature.name}</span>`);
-      }
-    }
-
+    // Disable the console.log error warning from eslint here since we actually want to do it
+    // eslint-disable-next-line
     console.log(stringConsole);
+
     this.UI.chat.addMsg(stringLog, htmlclass);
   }
 
@@ -695,16 +667,16 @@ export class Game {
     }
   }
 
-  /* skipTurn()
-	 *
-	 * End turn for the current unit
-	 */
+  /**
+   * End turn for the current unit
+   */
   skipTurn(o) {
     if (this.turnThrottle) {
       return;
     }
 
-    o = $j.extend({
+    // todo: rename variable
+    const o2 = $j.extend({
       callback() { },
       noTooltip: false,
       tooltip: 'Skipped',
@@ -714,15 +686,18 @@ export class Game {
     this.UI.btnSkipTurn.changeState('disabled');
     this.UI.btnDelay.changeState('disabled');
 
-    if (!o.noTooltip) {
-      this.activeCreature.hint(o.tooltip, 'msg_effects');
+    if (!o2.noTooltip) {
+      this.activeCreature.hint(o2.tooltip, 'msg_effects');
     }
 
     setTimeout(() => {
       this.turnThrottle = false;
       this.UI.btnSkipTurn.changeState('normal');
 
-      if (!this.activeCreature.hasWait && this.activeCreature.delayable && !this.queue.isCurrentEmpty()) {
+      if (!this.activeCreature.hasWait
+        && this.activeCreature.delayable
+        && !this.queue.isCurrentEmpty()
+      ) {
         this.UI.btnDelay.changeState('normal');
       }
 
@@ -740,20 +715,19 @@ export class Game {
     this.nextCreature();
   }
 
-  /* delayCreature()
-	 *
-	 * Delay the action turn of the current creature
-	 */
+  /**
+   * Delay the action turn of the current creature
+   */
   delayCreature(o) {
-    if (this.turnThrottle) {
+    if (this.turnThrottle
+      || this.activeCreature.hasWait
+      || !this.activeCreature.delayable
+      || this.queue.isCurrentEmpty()) {
       return;
     }
 
-    if (this.activeCreature.hasWait || !this.activeCreature.delayable || this.queue.isCurrentEmpty()) {
-      return;
-    }
-
-    o = $j.extend({
+    // todo: rename variable
+    const o2 = $j.extends({
       callback() { },
     }, o);
 
@@ -764,17 +738,20 @@ export class Game {
     setTimeout(() => {
       this.turnThrottle = false;
       this.UI.btnSkipTurn.changeState('normal');
-      if (!this.activeCreature.hasWait && this.activeCreature.delayable && !this.queue.isCurrentEmpty()) {
+      if (!this.activeCreature.hasWait
+        && this.activeCreature.delayable
+        && !this.queue.isCurrentEmpty()
+      ) {
         this.UI.btnDelay.changeState('normal');
       }
 
-      o.callback.apply();
+      o2.callback.apply();
     }, 1000);
 
-    let skipTurn = new Date(),
-      p = this.activeCreature.player;
+    const skipTurn = new Date();
+    const { player } = this.activeCreature;
 
-    p.totalTimePool -= (skipTurn - p.startTime);
+    player.totalTimePool -= (skipTurn - player.startTime);
     this.activeCreature.wait();
     this.nextCreature();
   }
@@ -793,22 +770,19 @@ export class Game {
     clearInterval(this.timeInterval);
   }
 
-  /* checkTime()
-	 */
   checkTime() {
-    let date = new Date() - this.pauseTime,
-      p = this.activeCreature.player,
-      alertTime = 5, // In seconds
-      msgStyle = 'msg_effects',
-      totalPlayers = this.playerMode,
-      i;
+    const date = new Date() - this.pauseTime;
+    const p = this.activeCreature.player;
+    const alertTime = 5; // In seconds
+    let msgStyle = 'msg_effects';
+    const totalPlayers = this.playerMode;
 
     p.totalTimePool = Math.max(p.totalTimePool, 0); // Clamp
 
     // Check all timepools
     // Check is always true for infinite time
     let playerStillHaveTime = !((this.timePool > 0));
-    for (i = 0; i < totalPlayers; i++) { // Each player
+    for (let i = 0; i < totalPlayers; i += 1) { // Each player
       playerStillHaveTime = (this.players[i].totalTimePool > 0) || playerStillHaveTime;
     }
 
@@ -822,7 +796,8 @@ export class Game {
 
     // Turn time and timepool not infinite
     if (this.timePool > 0 && this.turnTimePool > 0) {
-      if ((date - p.startTime) / 1000 > this.turnTimePool || p.totalTimePool - (date - p.startTime) < 0) {
+      const timeSince = (date - p.startTime) / 1000;
+      if (timeSince > this.turnTimePool || p.totalTimePool - (date - p.startTime) < 0) {
         if (p.totalTimePool - (date - p.startTime) < 0) {
           p.deactivate(); // Only if timepool is empty
         }
@@ -836,7 +811,10 @@ export class Game {
         if (this.turnTimePool - ((date - p.startTime) / 1000) < alertTime && this.UI.dashopen) {
           // Alert
           this.UI.btnToggleDash.changeState('glowing');
-          this.activeCreature.hint(Math.ceil(this.turnTimePool - ((date - p.startTime) / 1000)), msgStyle);
+          this.activeCreature.hint(
+            Math.ceil(this.turnTimePool - ((date - p.startTime) / 1000)),
+            msgStyle,
+          );
         }
       }
     } else if (this.turnTimePool > 0) { // Turn time is not infinite
@@ -847,7 +825,10 @@ export class Game {
       if (this.turnTimePool - ((date - p.startTime) / 1000) < alertTime && this.UI.dashopen) {
         // Alert
         this.UI.btnToggleDash.changeState('glowing');
-        this.activeCreature.hint(Math.ceil(this.turnTimePool - ((date - p.startTime) / 1000)), msgStyle);
+        this.activeCreature.hint(
+          Math.ceil(this.turnTimePool - ((date - p.startTime) / 1000)),
+          msgStyle,
+        );
       }
     } else if (this.timePool > 0) { // Timepool is not infinite
       if (p.totalTimePool - (date - p.startTime) < 0) {
@@ -861,27 +842,22 @@ export class Game {
         if (this.turnTimePool - ((date - p.startTime) / 1000) < alertTime && this.UI.dashopen) {
           // Alert
           this.UI.btnToggleDash.changeState('glowing');
-          this.activeCreature.hint(Math.ceil(this.turnTimePool - ((date - p.startTime) / 1000)), msgStyle);
+          this.activeCreature.hint(
+            Math.ceil(this.turnTimePool - ((date - p.startTime) / 1000)),
+            msgStyle,
+          );
         }
       }
     }
   }
 
-  /* retreiveCreatureStats(type)
-	 *
-	 * type :	String :	Creature's type (ex: "0" for Dark Priest and "L2" for Magma Spawn)
-	 *
-	 * Query the database for creature stats
-	 */
+  /**
+   * Query the database for creature stats
+   *
+   * @param type {String} Creature's type (ex: "0" for Dark Priest and "L2" for Magma Spawn)
+   */
   retreiveCreatureStats(type) {
-    let totalCreatures = this.creatureData.length,
-      i;
-
-    for (i = totalCreatures - 1; i >= 0; i--) {
-      if (this.creatureData[i].type == type) {
-        return this.creatureData[i];
-      }
-    }
+    return this.creatureData.filter(creature => creature.type === type);
   }
 
   triggerAbility(trigger, arg, retValue) {
@@ -963,7 +939,7 @@ export class Game {
       const effect = effects[i];
 
       if (effect.turnLifetime > 0 && trigger === effect.deleteTrigger &&
-				this.turn - effect.creationTurn >= effect.turnLifetime) {
+        this.turn - effect.creationTurn >= effect.turnLifetime) {
         effect.deleteEffect();
         // Updates UI in case effect changes it
         if (effect.target) {
@@ -1066,7 +1042,7 @@ export class Game {
       }
 
       if (trap.turnLifetime > 0 && trap.fullTurnLifetime &&
-				trap.ownerCreature == creature) {
+        trap.ownerCreature == creature) {
         trap.destroy();
         i--;
       }
@@ -1197,9 +1173,9 @@ export class Game {
   }
 
   /* endGame()
-	 *
-	 * End the game and print stats
-	 */
+   *
+   * End the game and print stats
+   */
   endGame() {
     this.stopTimer();
     this.gameState = 'ended';
