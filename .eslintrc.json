@@ -9,10 +9,13 @@
         "browser": true
     },
     "globals": {
-        "Phaser": true,
-        "$j": true
+        "Phaser": true
     },
-    "rules": {
-        "no-undef": "error"
+    "settings": {
+        "import/resolver": {
+            "webpack": {
+                "config": "webpack.config.js"
+            }
+        }
     }
 }
