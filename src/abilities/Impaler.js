@@ -1,10 +1,9 @@
 import { Damage } from '../damage';
-import { Team } from '../utility/team';
+import { Team, isTeam } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
 import { Creature } from '../creature';
-import { Effect } from '../effect';
-import { isTeam } from '../utility/team';
+import Effect from '../effect';
 
 /**
  * Creates the abilities
@@ -259,7 +258,7 @@ export default (G) => {
                     // If we can't reduce any further, give up and have the damage
                     // be zero
                     if (dmg.total <= 0 || damage.damages.shock <= 0 ||
-											trg.health <= 1) {
+                      trg.health <= 1) {
                       damage.damages = {
                         shock: 0,
                       };
@@ -324,7 +323,7 @@ export default (G) => {
             // Compare to best target
             if (t.stats.shock > bestTarget.stats.shock) {
               if ((t == ability.creature && nextTargets.length == 1) || // If target is chimera and the only target
-								t != ability.creature) { // Or this is not chimera
+                t != ability.creature) { // Or this is not chimera
                 bestTarget = t;
               }
             } else {

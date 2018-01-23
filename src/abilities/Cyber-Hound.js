@@ -1,9 +1,8 @@
 import { Damage } from '../damage';
-import { Team } from '../utility/team';
+import { Team, isTeam } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
 import { Creature } from '../creature';
-import { isTeam } from '../utility/team';
 
 /**
  * Creates the abilities
@@ -111,7 +110,7 @@ export default (G) => {
           target.energy -= energySteal;
           this.creature.recharge(energySteal);
           G.log(`%CreatureName${this.creature.id}% steals ${energySteal
-          } energy from %CreatureName${target.id}%`);
+            } energy from %CreatureName${target.id}%`);
         }
       },
     },
@@ -212,7 +211,7 @@ export default (G) => {
 
         for (let i = 0; i < rows.length; i++) {
           if (rows[i].length === 0 ||
-						!(rows[i][rows[i].length - 1].creature instanceof Creature)) {
+            !(rows[i][rows[i].length - 1].creature instanceof Creature)) {
             // Miss
             this.token += 1;
             continue;

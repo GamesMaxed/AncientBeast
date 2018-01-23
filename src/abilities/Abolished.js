@@ -1,7 +1,7 @@
 import { Damage } from '../damage';
 import { Team } from '../utility/team';
 import { Creature } from '../creature';
-import { Effect } from '../effect';
+import Effect from '../effect';
 import * as arrayUtils from '../utility/arrayUtils';
 
 /**
@@ -16,10 +16,9 @@ export default (G) => {
       require(damage) {
         if (!this.testRequirements()) return false;
         if (damage === undefined) {
-          damage			// NOTE : This code produce array with doubles.
-						= {
-              type: 'target',
-            }; // For the test function to work
+          damage = { // NOTE : This code produce array with doubles.
+            type: 'target',
+          }; // For the test function to work
         }
         return true;
       },
@@ -196,10 +195,10 @@ export default (G) => {
               G,
             ),
           ], crea.player, {
-            turnLifetime: 1,
-            ownerCreature: crea,
-            fullTurnLifetime: true,
-          });
+              turnLifetime: 1,
+              ownerCreature: crea,
+              fullTurnLifetime: true,
+            });
         });
 
         ability.creature.moveTo(hex, {

@@ -1,9 +1,8 @@
 import { Damage } from '../damage';
-import { Team } from '../utility/team';
+import { Team, isTeam } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
-import { Effect } from '../effect';
-import { isTeam } from '../utility/team';
+import Effect from '../effect';
 
 /**
  * Creates the abilities
@@ -119,7 +118,7 @@ export default (G) => {
         let stacksExisting = 0;
         for (i = 0; i < target.effects.length; i++) {
           if (target.effects[i].name === this.title &&
-						target.effects[i].owner === this.creature) {
+            target.effects[i].owner === this.creature) {
             stacksExisting++;
           }
         }
@@ -345,7 +344,7 @@ export default (G) => {
                 const nextTarget = arrayUtils.last(nextPath).creature;
                 // Continue only if there's a next enemy creature
                 if (nextTarget &&
-									isTeam(magmaSpawn, nextTarget, ability._targetTeam)) {
+                  isTeam(magmaSpawn, nextTarget, ability._targetTeam)) {
                   continueHurl = true;
                   hurl(nextPath);
                 }

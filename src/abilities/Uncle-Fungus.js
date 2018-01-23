@@ -2,8 +2,9 @@ import { Damage } from '../damage';
 import { Team } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
-import { Effect } from '../effect';
+import Effect from '../effect';
 import { getDirectionFromDelta } from '../utility/position';
+
 /**
  * Creates the abilities
  * @param {Object} G the game object
@@ -376,7 +377,7 @@ export default (G) => {
           // The hex to knock back into is the second hex since the first is where
           // they are currently
           if (hexes.length >= 2 &&
-						hexes[1].isWalkable(target.size, target.id, true)) {
+            hexes[1].isWalkable(target.size, target.id, true)) {
             target.moveTo(hexes[1], {
               callback() {
                 G.activeCreature.queryMove();

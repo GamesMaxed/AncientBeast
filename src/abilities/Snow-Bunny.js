@@ -1,9 +1,7 @@
 import { Damage } from '../damage';
-import { Team } from '../utility/team';
+import { Team, isTeam } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
-import { Effect } from '../effect';
-import { isTeam } from '../utility/team';
 
 /**
  * Creates the abilities
@@ -26,10 +24,10 @@ export default (G) => {
         // we have a space to jump back to
         return (
           this.timesUsedThisTurn < this._getUsesPerTurn() &&
-				fromHex && fromHex.creature &&
-				isTeam(fromHex.creature, this.creature, Team.enemy) &&
-				this._getTriggerHexId(fromHex) >= 0 &&
-				this._getHopHex(fromHex) !== undefined);
+          fromHex && fromHex.creature &&
+          isTeam(fromHex.creature, this.creature, Team.enemy) &&
+          this._getTriggerHexId(fromHex) >= 0 &&
+          this._getHopHex(fromHex) !== undefined);
       },
 
       //	activate() :
@@ -82,13 +80,13 @@ export default (G) => {
 
         // If we can't hop away, try hopping backwards
         if (id !== 1 &&
-				(hex === undefined ||
-					!hex.isWalkable(this.creature.size, this.creature.id, true))) {
+          (hex === undefined ||
+            !hex.isWalkable(this.creature.size, this.creature.id, true))) {
           hex = this.creature.getHexMap(matrices.inlineback1hex)[0];
         }
 
         if (hex !== undefined &&
-				!hex.isWalkable(this.creature.size, this.creature.id, true)) {
+          !hex.isWalkable(this.creature.size, this.creature.id, true)) {
           return undefined;
         }
         return hex;

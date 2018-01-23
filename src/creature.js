@@ -3,7 +3,7 @@ import { search } from './utility/pathfinding';
 import { Hex } from './utility/hex';
 import * as arrayUtils from './utility/arrayUtils';
 import { Drop } from './drops';
-import { Effect } from './effect';
+import Effect from './effect';
 
 /**
  * Creature Class
@@ -732,7 +732,7 @@ export class Creature {
     args = $j.extend(defaultArgs, args);
 
     for (let i = 0; i < this.size; i++) {
-		    let canDraw = true;
+      let canDraw = true;
 
       if (!args.drawOverCreatureTiles) { // then check to ensure this is not a creature tile
         for (let j = 0; j < this.hexagons.length; j++) {

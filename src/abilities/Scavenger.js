@@ -2,7 +2,7 @@ import { Damage } from '../damage';
 import { Team } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
-import { Effect } from '../effect';
+import Effect from '../effect';
 
 /**
  * Creates the abilities
@@ -209,10 +209,10 @@ export default (G) => {
           size,
           flipped: crea.player.flipped,
           hexes: G.grid.getFlyingRange(x, crea.y, distance, size, [crea.id, trg.id]).filter(item => crea.y == item.y &&
-							(trgIsInfront ?
-							  item.x < x :
-							  item.x > x - crea.size - trg.size + 1
-							)),
+            (trgIsInfront ?
+              item.x < x :
+              item.x > x - crea.size - trg.size + 1
+            )),
           args: {
             trg: trg.id,
             trgIsInfront,

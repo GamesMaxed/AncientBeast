@@ -1,10 +1,9 @@
 import { Damage } from '../damage';
-import { Team } from '../utility/team';
+import { Team, isTeam } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
 import { Creature } from '../creature';
-import { Effect } from '../effect';
-import { isTeam } from '../utility/team';
+import Effect from '../effect';
 
 /**
  * Creates the abilities
@@ -257,7 +256,7 @@ export default (G) => {
             let fx = 0;
             if (o.sourceCreature instanceof Creature) {
               if ((!o.sourceCreature.player.flipped && direction > 2) ||
-								(o.sourceCreature.player.flipped && direction < 3)) {
+                (o.sourceCreature.player.flipped && direction < 3)) {
                 fx = -(o.sourceCreature.size - 1);
               }
             }
@@ -332,7 +331,7 @@ export default (G) => {
           let destination = arrayUtils.last(runPath);
           if (args.direction === 4) {
             destination =
-							G.grid.hexes[destination.y][destination.x + this.creature.size - 1];
+              G.grid.hexes[destination.y][destination.x + this.creature.size - 1];
           }
 
           G.grid.cleanReachable();
@@ -383,8 +382,8 @@ export default (G) => {
         var interval = setInterval(() => {
           if (!G.freezedInput) {
             if (i === targetPushPath.length ||
-							creature.dead || target.dead ||
-							!creature.stats.moveable || !target.stats.moveable) {
+              creature.dead || target.dead ||
+              !creature.stats.moveable || !target.stats.moveable) {
               clearInterval(interval);
               creature.facePlayerDefault();
               G.activeCreature.queryMove();

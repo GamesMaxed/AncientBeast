@@ -1,10 +1,9 @@
 import { Damage } from '../damage';
-import { Team } from '../utility/team';
+import { Team, isTeam } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
 import { Creature } from '../creature';
-import { Effect } from '../effect';
-import { isTeam } from '../utility/team';
+import Effect from '../effect';
 
 /**
  * Creates the abilities
@@ -35,7 +34,7 @@ export default (G) => {
             const crea = G.creatures[i];
 
             if (isTeam(crea, ability.creature, Team.enemy) && !crea.dead &&
-							crea.findEffect('Snow Storm').length === 0) {
+              crea.findEffect('Snow Storm').length === 0) {
               const effect = new Effect(
                 'Snow Storm', // Name
                 ability.creature, // Caster
@@ -257,7 +256,7 @@ export default (G) => {
 
         for (let i = 0; i < choice.length; i++) {
           if (choice[i].creature instanceof Creature &&
-						creaturesHit.indexOf(choice[i].creature) == -1) { // Prevent Multiple Hit
+            creaturesHit.indexOf(choice[i].creature) == -1) { // Prevent Multiple Hit
             choice[i].creature.takeDamage(new Damage(
               ability.creature, // Attacker
               ability.damages1, // Damage Type

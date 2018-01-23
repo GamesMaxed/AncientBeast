@@ -1,10 +1,8 @@
 import { Damage } from '../damage';
-import { Team } from '../utility/team';
+import { Team, isTeam } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
-import { Creature } from '../creature';
-import { Effect } from '../effect';
-import { isTeam } from '../utility/team';
+import Effect from '../effect';
 
 /**
  * Creates the abilities
@@ -289,8 +287,8 @@ export default (G) => {
           sonic: 20,
           crush: 10,
         } : {
-          sonic: 20,
-        };
+            sonic: 20,
+          };
 
         let dir = [];
         switch (args.direction) {
@@ -317,8 +315,8 @@ export default (G) => {
         }
 
         const canKnockBack = dir.length > 1 &&
-					dir[1].isWalkable(target.size, target.id, true) &&
-					target.stats.moveable;
+          dir[1].isWalkable(target.size, target.id, true) &&
+          target.stats.moveable;
 
         // Perform extra damage if upgraded and cannot push back
         if (this.isUpgraded() && !canKnockBack) {

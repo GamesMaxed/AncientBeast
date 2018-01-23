@@ -2,7 +2,7 @@ import { Damage } from '../damage';
 import { Team } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import { Creature } from '../creature';
-import { Effect } from '../effect';
+import Effect from '../effect';
 
 /**
  * Creates the abilities
@@ -103,7 +103,7 @@ export default (G) => {
         // Upgraded ability does pierce damage to smaller size or level targets
         const damages = ability.damages;
         if (!this.isUpgraded() ||
-					!(target.size < this.creature.size || target.level < this.creature.level)) {
+          !(target.size < this.creature.size || target.level < this.creature.level)) {
           damages.pierce = 0;
         }
 
@@ -293,7 +293,7 @@ export default (G) => {
 
             // Stop propagating if no damage dealt
             if (result.damageObj.status === 'Shielded' ||
-							(result.damages && result.damages.total <= 0)) {
+              (result.damages && result.damages.total <= 0)) {
               break;
             }
           }

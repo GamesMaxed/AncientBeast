@@ -1,19 +1,20 @@
 import { Creature } from './creature';
 
+
 /*
  * Effect Class
  */
-export class Effect {
-  /* Constructor(name, owner, target, trigger, optArgs)
-	 *
-	 * name: name of the effect
-	 * owner :	Creature : Creature that casted the effect
-	 * target :	Object : Creature or Hex : the object that possess the effect
-	 * trigger :	String : Event that trigger the effect
-	 * optArgs: dictionary of optional arguments
-	 */
+export default class Effect {
+  /**
+   * @param {string} name name of the effect
+   * @param {Creature} owner Creature that casted the effect
+   * @param {Creature|Hex} target the object that possess the effect
+   * @param {string} trigger Event that trigger the effect
+   * @param {*} optArgs dictionary of optional arguments
+   * @param {Game} game Game object
+   */
   constructor(name, owner, target, trigger, optArgs, game) {
-    this.id = game.effectId++;
+    this.id = game.effectId + 1;
     this.game = game;
 
     this.name = name;
@@ -22,12 +23,12 @@ export class Effect {
     this.trigger = trigger;
     this.creationTurn = game.turn;
 
-    const args = $j.extend({
+    const args = Object.assign({}, {
       // Default Arguments
       requireFn() {
         return true;
       },
-      effectFn() {},
+      effectFn() { },
       alterations: {},
       turnLifetime: 0,
       deleteTrigger: 'onStartOfRound',
@@ -37,13 +38,13 @@ export class Effect {
       deleteOnOwnerDeath: false,
     }, optArgs);
 
-    $j.extend(this, args);
+    Object.assign(this, args);
 
     game.effects.push(this);
   }
 
   animation() {
-    this.activate.apply(this, arguments);
+    this.activate.apply(this, ...arguments);
   }
 
   activate(arg) {
@@ -60,15 +61,16 @@ export class Effect {
     }
 
     this.effectFn(this, arg);
+
+    return true;
   }
 
   deleteEffect() {
-    let i = this.target.effects.indexOf(this),
-      game = this.game;
+    let i = this.target.effects.indexOf(this);
 
     this.target.effects.splice(i, 1);
-    i = game.effects.indexOf(this);
-    game.effects.splice(i, 1);
+    i = this.game.effects.indexOf(this);
+    this.game.effects.splice(i, 1);
     this.target.updateAlteration();
     console.log(`Effect ${this.name} deleted`);
   }
