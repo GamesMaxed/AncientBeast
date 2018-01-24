@@ -287,8 +287,8 @@ export default (G) => {
           sonic: 20,
           crush: 10,
         } : {
-            sonic: 20,
-          };
+          sonic: 20,
+        };
 
         let dir = [];
         switch (args.direction) {

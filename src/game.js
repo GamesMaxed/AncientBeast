@@ -540,11 +540,10 @@ export default class {
     this.queue.nextRound();
 
     // Resets values
-    this.creatures = this.creatures.map(creature => ({
+    this.creatures = this.creatures.map(creature => Object.assign({}, {
       delayable: true,
       delayed: false,
-      ...creature,
-    }));
+    }, creature));
 
     this.onStartOfRound();
 

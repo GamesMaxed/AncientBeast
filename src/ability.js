@@ -1,3 +1,4 @@
+import { extend } from 'jquery';
 import { Damage } from './damage';
 import { Hex } from './utility/hex';
 import { Creature } from './creature';
@@ -9,7 +10,12 @@ import * as arrayUtils from './utility/arrayUtils';
  *
  * Class parsing function from creature abilities
  */
-export class Ability {
+export default class Ability {
+  /**
+   * @param {Creature} creature
+   * @param {number} abilityID
+   * @param {Game} game
+   */
   constructor(creature, abilityID, game) {
     this.creature = creature;
     this.game = game;
@@ -21,7 +27,9 @@ export class Ability {
     this.token = 0;
 
     const data = game.retreiveCreatureStats(creature.type);
-    $j.extend(true, this, game.abilities[data.id][abilityID], data.ability_info[abilityID]);
+    // Deepclone
+    extend(true, this, game.abilities[data.id][abilityID], data.ability_info[abilityID]);
+
     if (this.requirements === undefined && this.costs !== undefined) {
       this.requirements = this.costs;
     }
@@ -32,16 +40,16 @@ export class Ability {
   }
 
   /**
-	 * Whether this ability upgrades after a certain number of uses. Otherwise it
-	 * upgrades after a certain number of rounds.
-	 * By default, this applies to active (onQuery) abilities.
-	 */
+   * Whether this ability upgrades after a certain number of uses. Otherwise it
+   * upgrades after a certain number of rounds.
+   * By default, this applies to active (onQuery) abilities.
+   */
   isUpgradedPerUse() {
     return this.trigger === 'onQuery';
   }
 
   usesLeftBeforeUpgrade() {
-    const game = this.game;
+    const { game } = this;
 
     if (this.isUpgradedPerUse()) {
       return game.abilityUpgrades - this.timesUsed;
@@ -65,47 +73,44 @@ export class Ability {
   }
 
   /**
-	 * Reset ability at start of turn.
-	 */
+   * Reset ability at start of turn.
+   */
   reset() {
     this.setUsed(false);
     this.token = 0;
     this.timesUsedThisTurn = 0;
   }
 
-  /* use()
-	 *
-	 * Test and use the ability
-	 *
-	 */
+  /**
+   * Test and use the ability
+   */
   use() {
-    const game = this.game;
-
     if (this.getTrigger() !== 'onQuery' || !this.require()) {
-      return;
+      return false;
     }
 
     if (this.used === true) {
-      game.log('Ability already used!');
-      return;
+      this.game.log('Ability already used!');
+      return false;
     }
 
-    game.grid.clearHexViewAlterations();
-    game.clearOncePerDamageChain();
-    game.activeCreature.hint(this.title, 'msg_effects');
+    this.game.grid.clearHexViewAlterations();
+    this.game.clearOncePerDamageChain();
+    this.game.activeCreature.hint(this.title, 'msg_effects');
 
     return this.query();
   }
 
-  /* end()
-	 *
-	 * End the ability. Must be called at the end of each ability function;
-	 *
-	 */
-  end(desableLogMsg, deferedEnding) {
-    const game = this.game;
+  /**
+   * End the ability. Must be called at the end of each ability function;
+   *
+   * @param {boolean} disableLogMsg Disable loggin
+   * @param {boolean} deferedEnding
+   */
+  end(disableLogMsg, deferedEnding) {
+    const { game } = this.game;
 
-    if (!desableLogMsg) {
+    if (!disableLogMsg) {
       game.log(`%CreatureName${this.creature.id}% uses ${this.title}`);
     }
 
@@ -121,48 +126,46 @@ export class Ability {
     }
   }
 
-  /* setUsed(val)
-	 *
-	 * val : Boolean : set the used attriute to the desired value
-	 *
-	 */
+  /**
+   * @param {boolean} val set the used attriute to the desired value
+   */
   setUsed(val) {
-    const game = this.game;
+    const { UI, activeCreature } = this.game;
 
     if (val) {
       this.used = true;
       // Avoid dimmed passive for current creature
-      if (this.creature.id == game.activeCreature.id) {
-        game.UI.abilitiesButtons[this.id].changeState('disabled');
+      if (this.creature.id === activeCreature.id) {
+        UI.abilitiesButtons[this.id].changeState('disabled');
       }
     } else {
       this.used = false;
-      if (this.creature.id == game.activeCreature.id) {
+      if (this.creature.id === activeCreature.id) {
         if (this.id !== 0) { // Passive
-          game.UI.abilitiesButtons[this.id].changeState('normal');
+          UI.abilitiesButtons[this.id].changeState('normal');
         }
       }
     }
   }
 
   /**
-	 * Called after activate(); primarily to set times used so that isUpgraded is
-	 * correct within activate().
-	 */
+   * Called after activate(); primarily to set times used so that isUpgraded is
+   * correct within activate().
+   */
   postActivate() {
-    this.timesUsed++;
-    this.timesUsedThisTurn++;
+    this.timesUsed += 1;
+    this.timesUsedThisTurn += 1;
     // Update upgrade information
     this.game.UI.updateAbilityButtonsContent();
   }
 
-  /* animation()
-	 *
-	 * Animate the creature
-	 *
-	 */
-  animation() {
-    const game = this.game;
+  /**
+   * Animate the creature
+   *
+   * TODO: refactor this mess.
+   */
+  animation(target) {
+    const { game } = this;
 
     // Gamelog Event Registration
     if (game.triggers.onQuery.test(this.getTrigger())) {
@@ -173,11 +176,11 @@ export class Ability {
           action: 'ability',
           target: {
             type: 'hex',
-            x: arguments[0].x,
-            y: arguments[0].y,
+            x: target.x,
+            y: target.y,
           },
           id: this.id,
-          args,
+          args: arguments,
         });
       }
 
@@ -214,11 +217,8 @@ export class Ability {
           args,
         });
       }
-    } else {
-      // Test for materialization sickness
-      if (this.creature.materializationSickness && this.affectedByMatSickness) {
-        return false;
-      }
+    } else if (this.creature.materializationSickness && this.affectedByMatSickness) {
+      return false;
     }
 
     return this.animation2({
@@ -227,16 +227,16 @@ export class Ability {
   }
 
   animation2(o) {
-    let game = this.game,
-      opt = $j.extend({
-        callback() { },
-        arg: {},
-      }, o),
-      args = opt.arg,
-      activateAbility = () => {
-        this.activate(args[0], args[1]);
-        this.postActivate();
-      };
+    const { game } = this;
+    const opt = Object.assign({
+      callback() { },
+      arg: {},
+    }, o);
+    const args = opt.arg;
+    const activateAbility = () => {
+      this.activate(args[0], args[1]);
+      this.postActivate();
+    };
 
     game.freezedInput = true;
 
@@ -254,9 +254,9 @@ export class Ability {
     }
     // Play animations and sounds only for active abilities
     if (this.getTrigger() === 'onQuery') {
-      const anim_id = Math.random();
+      const animID = Math.random();
 
-      game.animationQueue.push(anim_id);
+      game.animationQueue.push(animID);
 
       let animationData = {
         duration: 500,
@@ -265,11 +265,11 @@ export class Ability {
       };
 
       if (this.getAnimationData) {
-        animationData = $j.extend(animationData, this.getAnimationData.apply(this, args));
+        animationData = Object.assign({}, animationData, this.getAnimationData(...args));
       }
 
       if (animationData.activateAnimation) {
-        const tween = game.Phaser.add.tween(this.creature.sprite)
+        game.Phaser.add.tween(this.creature.sprite)
           .to({
             x: p1,
           }, 250, Phaser.Easing.Linear.None)
@@ -290,7 +290,7 @@ export class Ability {
       }, animationData.delay);
 
       setTimeout(() => {
-        const queue = game.animationQueue.filter(item => item != anim_id);
+        const queue = game.animationQueue.filter(item => item != animID);
 
         if (queue.length === 0) {
           game.freezedInput = false;
@@ -311,14 +311,13 @@ export class Ability {
     }, 100);
   }
 
-  /* getTargets(hexes)
-	 *
-	 * hexes : Array : Contains the targeted hexagons
-	 * return : Array : Contains the target units
-	 */
+  /**
+   * @param {Hex[]} hexes Contains the targeted hexagons
+   * @return {Array}  Contains the target units
+   */
   getTargets(hexes) {
-    let targets = {},
-      targetsList = [];
+    const targets = {};
+    const targetsList = [];
 
     hexes.forEach((item) => {
       if (item.creature instanceof Creature) {
@@ -342,18 +341,12 @@ export class Ability {
     return !this.costs ? false : this.getFormattedDamages(this.costs);
   }
 
-  getFormattedDamages(obj) {
-    if (!this.damages && !obj) {
-      return false;
-    }
+  getFormattedDamages(obj = this.damages) {
+    let string = '';
+    const { creature } = this;
 
-    obj = obj || this.damages;
-
-    let string = '',
-      creature = this.creature;
-
-    $j.each(obj, (key, value) => {
-      if (key == 'special') {
+    Object.entries(obj).forEach((key, value) => {
+      if (key === 'special') {
         // TODO: don't manually list all the stats and masteries when needed
         string += value.replace(/%(health|regrowth|endurance|energy|meditation|initiative|offense|defense|movement|pierce|slash|crush|shock|burn|frost|poison|sonic|mental)%/g, '<span class="$1"></span>');
         return;
@@ -380,42 +373,37 @@ export class Ability {
       return false;
     }
 
-    for (let i = this.effects.length - 1; i >= 0; i--) {
-      if (this.effects[i].special) {
+    this.effects.forEach((effect) => {
+      if (effect.special) {
         // TODO: don't manually list all the stats and masteries when needed
-        string += this.effects[i].special.replace(/%(health|regrowth|endurance|energy|meditation|initiative|offense|defense|movement|pierce|slash|crush|shock|burn|frost|poison|sonic|mental)%/g, '<span class="$1"></span>');
-        continue;
+        string += effect.special.replace(/%(health|regrowth|endurance|energy|meditation|initiative|offense|defense|movement|pierce|slash|crush|shock|burn|frost|poison|sonic|mental)%/g, '<span class="$1"></span>');
+        return;
       }
-
-      $j.each(this.effects[i], (key, value) => {
+      Object.entires(effect).forEach((key, value) => {
         if (string !== '') {
           string += ', ';
         }
-
         string += (`${value}<span class="${key}"></span>`);
       });
-    }
-
+    });
     return string;
   }
 
-  /* areaDamage(targets)
-	 *
-	 * targets : Array : Example : target = [ { target: crea1, hexesHit: 2 }, { target: crea2, hexesHit: 1 } ]
-	 */
+  /**
+   * @param {{target: Creature, hexesHit: number}[]}  targets
+   */
   areaDamage(attacker, damages, effects, targets, ignoreRetaliation) {
     let multiKill = 0;
-    for (let i = 0, len = targets.length; i < len; i++) {
-      if (targets[i] === undefined) {
-        continue;
+    targets.forEach((target) => {
+      if (target === undefined) {
+        return;
       }
-
       const dmg = new Damage(attacker, damages, targets[i].hexesHit, effects, this.game);
-      const damageResult = targets[i].target.takeDamage(dmg, {
+      const damageResult = target.target.takeDamage(dmg, {
         ignoreRetaliation,
       });
       multiKill += damageResult.kill + 0;
-    }
+    });
 
     if (multiKill > 1) {
       attacker.player.score.push({
@@ -426,71 +414,68 @@ export class Ability {
   }
 
   /**
-	 * Return whether there is at least one creature in the hexes that satisfies
-	 * various conditions, e.g. team.
-	 * hexes - Hex grid
-	 * o - tests
-	 */
+   * @param {Hex[]} hexes The hexgrid
+   * @param {Object} o tests
+   * @return Whether there is at least one creature in the hexes that satisfies various conditions,
+   *  e.g. team.
+   */
   atLeastOneTarget(hexes, o) {
     const defaultOpt = {
       team: Team.both,
-      optTest(creature) {
+      optTest() {
         return true;
       },
     };
 
-    o = $j.extend(defaultOpt, o);
-    for (let i = 0, len = hexes.length; i < len; i++) {
-      const creature = hexes[i].creature;
+    o = Object.assign({}, defaultOpt, o);
 
-      if (!creature || !isTeam(this.creature, creature, o.team) || !o.optTest(creature)) {
-        continue;
-      }
-
-      return true;
-    }
+    const hex = hexes.filter((current) => {
+      const { creature } = current;
+      return !creature || !isTeam(this.creature, creature, o.team) || !o.optTest(creature);
+    });
+    if (hex.length >= 1) return true;
 
     this.message = this.game.msg.abilities.notarget;
     return false;
   }
 
-  /* testRequirements()
-	 *
-	 * Test the requirement for this ability. Negative values mean maximum value of the stat.
-	 * For instance : energy = -5 means energy must be lower than 5.
-	 * If one requirement fails it returns false.
-	 */
+  /**
+   * testRequirements()
+   *
+   * Test the requirement for this ability. Negative values mean maximum value of the stat.
+   * For instance : energy = -5 means energy must be lower than 5.
+   * If one requirement fails it returns false.
+   */
   testRequirements() {
-    let game = this.game,
-      def = {
-        plasma: 0,
-        energy: 0,
+    const { game } = this;
+    const def = {
+      plasma: 0,
+      energy: 0,
+      endurance: 0,
+      remainingMovement: 0,
+      stats: {
+        health: 0,
+        regrowth: 0,
         endurance: 0,
-        remainingMovement: 0,
-        stats: {
-          health: 0,
-          regrowth: 0,
-          endurance: 0,
-          energy: 0,
-          meditation: 0,
-          initiative: 0,
-          offense: 0,
-          defense: 0,
-          movement: 0,
-          pierce: 0,
-          slash: 0,
-          crush: 0,
-          shock: 0,
-          burn: 0,
-          frost: 0,
-          poison: 0,
-          sonic: 0,
-          mental: 0,
-        },
+        energy: 0,
+        meditation: 0,
+        initiative: 0,
+        offense: 0,
+        defense: 0,
+        movement: 0,
+        pierce: 0,
+        slash: 0,
+        crush: 0,
+        shock: 0,
+        burn: 0,
+        frost: 0,
+        poison: 0,
+        sonic: 0,
+        mental: 0,
       },
-      r = this.requirements || this.costs,
-      req = $j.extend(def, this.requirements),
-      abilityMsgs = game.msg.abilities;
+    };
+    const req = Object.assign({}, def, this.requirements);
+    const abilityMsgs = game.msg.abilities;
 
     // Plasma
     if (req.plasma > 0) {
@@ -545,32 +530,22 @@ export class Ability {
       }
     }
 
-    $j.each(req.stats, (key, value) => {
-      if (value > 0) {
-        if (this.creature.stats[key] < value) {
-          return false;
-        }
-      } else if (value < 0) {
-        if (this.creature.stats[key] > value) {
-          return false;
-        }
-      }
-    });
-
-    return true;
+    // Return wether all stats are valid
+    return Object.entries(req.stats).every((key, value) =>
+      (value > 0 && this.creature.stats[key] > value)
+      || (value < 0 && this.creature.stats[key] < value));
   }
 
   applyCost() {
-    let game = this.game,
-      creature = this.creature;
+    const { game, creature, costs } = this;
 
-    if (this.costs === undefined) {
+    if (costs === undefined) {
       return;
     }
 
-    $j.each(this.costs, (key, value) => {
+    Object.entries(costs).forEach((key, value) => {
       if (typeof (value) === 'number') {
-        if (key == 'health') {
+        if (key === 'health') {
           creature.hint(value, `damage d${value}`);
           game.log(`%CreatureName${creature.id}% loses ${value} health`);
         } else if (key === 'energy') {
@@ -582,17 +557,17 @@ export class Ability {
     });
 
     creature.updateHealth();
-    if (creature.id == game.activeCreature.id) {
+    if (creature.id === game.activeCreature.id) {
       game.UI.energyBar.animSize(creature.energy / creature.stats.energy);
     }
   }
 
   /**
-	 * Test and get directions where there are valid targets in directions, using
-	 * direction queries
-	 * o - dict of arguments for direction query
-	 * returns array of ints, length of total directions, 1 if direction valid else 0
-	 */
+   * Test and get directions where there are valid targets in directions, using
+   * direction queries
+   * o - dict of arguments for direction query
+   * returns array of ints, length of total directions, 1 if direction valid else 0
+   */
   testDirections(o) {
     const defaultOpt = {
       team: Team.enemy,
@@ -607,27 +582,27 @@ export class Ability {
       sourceCreature: undefined,
     };
 
-    o = $j.extend(defaultOpt, o);
+    o = Object.merge({}, defaultOpt, o);
 
     const outDirections = [];
 
-    for (let i = 0, len = o.directions.length; i < len; i++) {
-      if (!o.directions[i]) {
+    o.directions.forEach((direction, index) => {
+      if (!direction) {
         outDirections.push(0);
-        continue;
+        return;
       }
 
       let fx = 0;
 
       if (o.sourceCreature instanceof Creature) {
-        const flipped = o.sourceCreature.player.flipped;
+        const { flipped } = o.sourceCreature.player;
 
-        if ((!flipped && i > 2) || (flipped && i < 3)) {
+        if ((!flipped && index > 2) || (flipped && index < 3)) {
           fx = -1 * (o.sourceCreature.size - 1);
         }
       }
 
-      let dir = this.game.grid.getHexLine(o.x + fx, o.y, i, o.flipped);
+      let dir = this.game.grid.getHexLine(o.x + fx, o.y, index, o.flipped);
 
       if (o.distance > 0) {
         dir = dir.slice(0, o.distance + 1);
@@ -636,28 +611,9 @@ export class Ability {
       dir = arrayUtils.filterCreature(dir, o.includeCreature, o.stopOnCreature, o.id);
       const isValid = this.atLeastOneTarget(dir, o);
       outDirections.push(isValid ? 1 : 0);
-    }
+    });
 
     return outDirections;
-  }
-
-  /**
-	 * Test whether there are valid targets in directions, using direction queries
-	 * o - dict of arguments for direction query
-	 * rreturns true if valid targets in at least one direction, else false
-	 */
-  testDirection(o) {
-    const directions = this.testDirections(o);
-
-    for (let i = 0, len = directions.length; i < len; i++) {
-      if (directions[i] === 1) {
-        this.message = '';
-        return true;
-      }
-    }
-
-    this.message = this.game.msg.abilities.notarget;
-    return false;
   }
 }
 

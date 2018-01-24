@@ -110,7 +110,7 @@ export default (G) => {
           target.energy -= energySteal;
           this.creature.recharge(energySteal);
           G.log(`%CreatureName${this.creature.id}% steals ${energySteal
-            } energy from %CreatureName${target.id}%`);
+          } energy from %CreatureName${target.id}%`);
         }
       },
     },
