@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Setup basic express server
 const compression = require('compression');
 const express = require('express');

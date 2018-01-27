@@ -195,10 +195,10 @@ export default (G) => {
               G,
             ),
           ], crea.player, {
-              turnLifetime: 1,
-              ownerCreature: crea,
-              fullTurnLifetime: true,
-            });
+            turnLifetime: 1,
+            ownerCreature: crea,
+            fullTurnLifetime: true,
+          });
         });
 
         ability.creature.moveTo(hex, {
