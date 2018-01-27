@@ -5,16 +5,18 @@ import { Creature } from './creature';
  * Player Class
  * Player object with attributes
  */
-export class Player {
+export default class Player {
+  /**
+   *
+   * @param {Integer} id Id of the player (Can be either: 1, 2, 3 or 4)
+   * @param {Game} gam The game object
+   */
   constructor(id, game) {
     /* Attributes
-		 *
-		 * id :		Integer :	Id of the player 1, 2, 3 or 4
-		 * creature :	Array :		Array containing players creatures
-		 * plasma :	Integer :	Plasma amount for the player
-		 * flipped :	Boolean :	Player side of the battlefield (affects displayed creature)
-		 *
-		 */
+     * creature : Array : Array containing players creatures
+     * plasma : Integer : Plasma amount for the player
+     * flipped : Boolean : Player side of the battlefield (affects displayed creature)
+     */
     this.id = id;
     this.game = game;
     this.creatures = [];
@@ -51,56 +53,34 @@ export class Player {
 
   // TODO: Is this even right? it should be off by 1 based on this code...
   getNbrOfCreatures() {
-    let nbr = -1,
-      creatures = this.creatures,
-      count = creatures.length,
-      creature;
-
-    for (let i = 0; i < count; i++) {
-      creature = creatures[i];
-
-      if (!creature.dead && !creature.undead) {
-        nbr++;
-      }
-    }
-
-    return nbr;
+    return this.creatures.filter(creature => !creature.dead && !creature.undead).length - 1;
   }
 
-
-  /* summon(type,pos)
-	 *
-	 * type :	String :	Creature type (ex: "0" for Dark Priest and "L2" for Magma Spawn)
-	 * pos :	Object :	Position {x,y}
-	 *
-	 */
+  /**
+   *
+   * @param {String} type Creature type (ex: "0" for Dark Priest and "L2" for Magma Spawn)
+   * @param {Object} pos Position {x,y}
+   */
   summon(type, pos) {
-    let game = this.game,
-      data = game.retreiveCreatureStats(type),
-      creature;
+    const { game } = this;
+    const data = Object.assign({}, game.retreiveCreatureStats(type), pos, { team: this.id });
 
-    data = $j.extend(data, pos, {
-      team: this.id,
-    }); // Create the full data for creature creation
+    // Avoid dark priest shout at the beginning of the match
+    game.creatureJSON
+      .filter(({ creatureJSON }, index) => creatureJSON.type === type && index !== 0)
+      .forEach((_, index) =>
+        game.soundsys.playSound(game.soundLoaded[1000 + index], game.soundsys.announcerGainNode));
 
-    for (let i = game.creatureJSON.length - 1; i >= 0; i--) {
-      // Avoid Dark Priest shout at the begining of a match
-      if (game.creatureJSON[i].type == type && i !== 0) {
-        game.soundsys.playSound(game.soundLoaded[1000 + i], game.soundsys.announcerGainNode);
-      }
-    }
-
-    creature = new Creature(data, game);
+    const creature = new Creature(data, game);
     this.creatures.push(creature);
     creature.summon();
     game.onCreatureSummon(creature);
   }
 
-  /* flee()
-	 *
+  /**
 	 * Ask if the player wants to flee the match
-	 *
-	 */
+   * @param {any} o
+   */
   flee(o) {
     this.hasFled = true;
     this.deactivate();
@@ -108,43 +88,38 @@ export class Player {
   }
 
 
-  /* getScore()
-	 *
-	 * return :	Integer :	The current score of the player
-	 *
-	 * Return the total of the score events.
-	 */
+  /**
+   *  Return the total of the score events.
+   *
+   * @return {number} The current score of the player
+   */
   getScore() {
-    let total = this.score.length,
-      s = {},
-      points,
-      totalScore = {
-        firstKill: 0,
-        kill: 0,
-        deny: 0,
-        humiliation: 0,
-        annihilation: 0,
-        timebonus: 0,
-        nofleeing: 0,
-        creaturebonus: 0,
-        darkpriestbonus: 0,
-        immortal: 0,
-        total: 0,
-      };
+    const totalScore = {
+      firstKill: 0,
+      kill: 0,
+      deny: 0,
+      humiliation: 0,
+      annihilation: 0,
+      timebonus: 0,
+      nofleeing: 0,
+      creaturebonus: 0,
+      darkpriestbonus: 0,
+      immortal: 0,
+      total: 0,
+    };
 
-    for (let i = 0; i < total; i++) {
-      s = this.score[i];
-      points = 0;
+    this.score.forEach((score) => {
+      let points = 0;
 
-      switch (s.type) {
+      switch (score.type) {
         case 'firstKill':
           points += 20;
           break;
         case 'kill':
-          points += s.creature.level * 5;
+          points += score.creature.level * 5;
           break;
         case 'combo':
-          points += s.kills * 5;
+          points += score.kills * 5;
           break;
         case 'humiliation':
           points += 50;
@@ -153,7 +128,7 @@ export class Player {
           points += 100;
           break;
         case 'deny':
-          points += -1 * s.creature.size * 5;
+          points += -1 * score.creature.size * 5;
           break;
         case 'timebonus':
           points += Math.round(this.bonusTimePool * 0.5);
@@ -162,7 +137,7 @@ export class Player {
           points += 25;
           break;
         case 'creaturebonus':
-          points += s.creature.level * 5;
+          points += score.creature.level * 5;
           break;
         case 'darkpriestbonus':
           points += 50;
@@ -173,44 +148,41 @@ export class Player {
         case 'pickupDrop':
           points += 2;
           break;
+        default:
+          throw new Error(`Unkown type ${score.type}`);
       }
 
-      totalScore[s.type] += points;
+      totalScore[score.type] += points;
       totalScore.total += points;
-    }
+    });
 
     return totalScore;
   }
 
-  /* isLeader()
-	 *
-	 * Test if the player has the greater score.
-	 * Return true if in lead. False if not.
-	 *
-	 * TODO: This is also wrong, because it allows for ties to result in a "leader".
-	 */
+  /**
+   * Test if the player has the greater score.
+   *
+   * @return {boolean} true if in lead, false if not.
+   * TODO: This is also wrong, because it allows for ties to result in a "leader".
+   */
   isLeader() {
-    const game = this.game;
-
-    for (let i = 0; i < game.playerMode; i++) { // Each player
-      // If someone has a higher score
-      if (game.players[i].getScore().total > this.getScore().total) {
-        return false; // He's not in lead
-      }
-    }
-
-    return true; // If nobody has a better score he's in lead
+    // Get the score of each player excluding the current player and check if all the scores
+    // are smaller or equal to the current one
+    return this.game.players
+      .filter(player => player !== this)
+      .map(player => player.getScore().total)
+      .all(score => score <= this.getScore().total);
   }
 
 
-  /* isAnnihilated()
-	 *
-	 * A player is considered annihilated if all his creatures are dead DP included
-	 */
+  /**
+   *
+   * A player is considered annihilated if all his creatures are dead DP included
+   */
   isAnnihilated() {
     // annihilated is false if only one creature is not dead
-    let annihilated = (this.creatures.length > 1),
-      count = this.creatures.length;
+    let annihilated = (this.creatures.length > 1);
+    const count = this.creatures.length;
 
     for (let i = 0; i < count; i++) {
       annihilated = annihilated && this.creatures[i].dead;
@@ -220,24 +192,20 @@ export class Player {
   }
 
   /* deactivate()
-	 *
-	 * Remove all player's creature from the queue
-	 */
+   *
+   * Remove all player's creature from the queue
+   */
   deactivate() {
-    let game = this.game,
-      count = game.creatures.length,
-      creature;
+    const { game } = this.game;
 
     this.hasLost = true;
 
     // Remove all player creatures from queues
-    for (let i = 1; i < count; i++) {
-      creature = game.creatures[i];
-
-      if (creature.player.id == this.id) {
+    game.creature.forEach((creature) => {
+      if (creature.player.id === this.id) {
         game.queue.remove(creature);
       }
-    }
+    });
 
     game.updateQueueDisplay();
 
