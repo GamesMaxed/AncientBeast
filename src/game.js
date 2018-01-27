@@ -5,10 +5,10 @@ import { CreatureQueue } from './creature_queue';
 import { GameLog } from './utility/gamelog';
 import { SoundSys } from './sound/soundsys';
 import { MusicPlayer } from './sound/musicplayer';
-import { Hex } from './utility/hex';
+import Hex from './utility/hex';
 import { HexGrid } from './utility/hexgrid';
 import { getUrl } from './assetLoader';
-import { Player } from './player';
+import Player from './player';
 import { UI } from './ui/interface';
 import { Creature } from './creature';
 
@@ -313,11 +313,13 @@ export default class {
     this.dataLoaded(dataJson);
   }
 
-  static startLoading() {
+  /* eslint-disable class-methods-use-this */
+  startLoading() {
     $j('#gameSetupContainer').hide();
     $j('#loader').show();
     $j('body').css('cursor', 'wait');
   }
+  /* eslint-enable class-methods-use-this */
 
   loadFinish() {
     const { progress } = this.Phaser.load;

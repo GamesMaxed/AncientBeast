@@ -1,4 +1,4 @@
-import { Hex } from './hex';
+import Hex from './hex';
 import { Creature } from '../creature';
 import { search } from './pathfinding';
 import * as matrices from './matrices';
