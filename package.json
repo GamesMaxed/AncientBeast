@@ -24,7 +24,7 @@
 		"html-webpack-plugin": "^2.30.1",
 		"jquery": "1.12.4",
 		"jquery-mousewheel": "3.1.13",
-		"jquery-ui-dist": "^1.12.1",
+		"jquery-ui": "^1.12.1",
 		"jquery.kinetic": "2.2.4",
 		"jquery.transit": "0.9.12",
 		"phaser-ce": "2.7.10",
@@ -50,10 +50,16 @@
 		"less-loader": "^4.0.5",
 		"prettier": "^1.8.2",
 		"style-loader": "^0.19.0",
-		"webpack": "^3.8.1"
+		"uglifyjs-webpack-plugin": "^1.1.2",
+		"webpack": "^3.8.1",
+		"webpack-merge": "^4.1.1"
+	},
+	"engines": {
+		"node": ">=8"
 	},
 	"scripts": {
-		"build": "yarn run generateManifest && webpack",
+		"build": "yarn run generateManifest && webpack --env.production",
+		"build:dev": "yarn run generateManifest && webpack",
 		"dev": "webpack --watch",
 		"lint": "eslint src/**/*.js",
 		"generateManifest": "node manifestGenerator.js"

@@ -1,8 +1,14 @@
 /* eslint-env node */
 const path = require('path');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
-module.exports = {
+// Are we in production
+const { production } = process.env;
+
+const baseSettings = {
   entry: path.resolve(__dirname, 'src', 'script.js'),
   output: {
     path: path.resolve(__dirname, 'deploy/'),
@@ -10,11 +16,6 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        use: ['babel-loader'],
-        exclude: /node_modules/,
-      },
       {
         test: /\.less$/,
         use: [
@@ -41,7 +42,7 @@ module.exports = {
   resolve: {
     alias: {
       assets: path.resolve(__dirname, 'assets/'),
-      'jquery-ui': 'jquery-ui-dist/jquery-ui.js',
+      modules: path.join(__dirname, 'node_modules'),
     },
   },
   plugins: [
@@ -50,5 +51,20 @@ module.exports = {
       favicon: path.resolve(__dirname, 'assets', 'favicon.ico'),
     }),
   ],
-  devtool: 'cheap-eval-sourcemap',
 };
+
+const prodSettings = {
+  plugins: [
+    new UglifyJSPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+  ],
+};
+
+const devSettings = {
+  devtool: 'cheap-module-eval-source-map',
+};
+
+// Create either a production or development build depending on the `production` env setting
+module.exports = merge(baseSettings, production ? devSettings : prodSettings);
