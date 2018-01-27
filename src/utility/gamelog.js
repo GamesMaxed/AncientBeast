@@ -1,5 +1,5 @@
 import * as jQuery from 'jquery';
-import { isEmpty, getGameConfig } from '../script';
+import { getGameConfig } from '../script';
 
 export class GameLog {
   constructor(id, game) {
@@ -112,7 +112,7 @@ export class GameLog {
   }
 
   get(state) {
-    let config = isEmpty(this.gameConfig) ? getGameConfig() : this.gameConfig,
+    let config = jQuery.isEmptyObject(this.gameConfig) ? getGameConfig() : this.gameConfig,
       dict = {
         config,
         log: this.data,

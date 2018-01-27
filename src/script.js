@@ -61,22 +61,43 @@ const abilitiesGenerators = [
 ];
 abilitiesGenerators.forEach(generator => generator(G));
 
-$j(document).ready(() => {
-  $j('.typeRadio').buttonset();
-  $j('#startButton').button();
+/**
+ * Get the game config from the user window
+ *
+ * TODO: refactor
+ */
+export function getGameConfig() {
+  const defaultConfig = {
+    playerMode: $j('input[name="playerMode"]:checked').val() - 0,
+    creaLimitNbr: $j('input[name="activeUnits"]:checked').val() - 0, // DP counts as One
+    unitDrops: $j('input[name="unitDrops"]:checked').val() - 0,
+    abilityUpgrades: $j('input[name="abilityUpgrades"]:checked').val() - 0,
+    plasma_amount: $j('input[name="plasmaPoints"]:checked').val() - 0,
+    turnTimePool: $j('input[name="turnTime"]:checked').val() - 0,
+    timePool: $j('input[name="timePool"]:checked').val() * 60,
+    background_image: $j('input[name="combatLocation"]:checked').val(),
+  };
+  const config = G.gamelog.gameConfig || defaultConfig;
+
+  return config;
+}
+
+jquery(document).ready(() => {
+  jquery('.typeRadio').buttonset();
+  jquery('#startButton').button();
 
   // Disable initial game setup until browser tab has focus
   window.addEventListener('blur', G.onBlur.bind(G), false);
   window.addEventListener('focus', G.onFocus.bind(G), false);
-  $j('form#gameSetup').submit((e) => {
+  jquery('form#gameSetup').submit((e) => {
     e.preventDefault(); // Prevent submit
     const gameconfig = getGameConfig();
 
 
-    if (gameconfig.background_image == 'random') {
+    if (gameconfig.background_image === 'random') {
       // nth-child indices start at 1
-      const index = Math.floor(Math.random() * ($j('input[name="combatLocation"]').length - 1)) + 1;
-      gameconfig.background_image = $j('input[name="combatLocation"]').slice(index, index + 1).attr('value');
+      const index = Math.floor(Math.random() * (jquery('input[name="combatLocation"]').length - 1)) + 1;
+      gameconfig.background_image = jquery('input[name="combatLocation"]').slice(index, index + 1).attr('value');
     }
 
     G.loadGame(gameconfig);
@@ -84,25 +105,3 @@ $j(document).ready(() => {
   });
 });
 
-export function getGameConfig() {
-  let defaultConfig = {
-      playerMode: $j('input[name="playerMode"]:checked').val() - 0,
-      creaLimitNbr: $j('input[name="activeUnits"]:checked').val() - 0, // DP counts as One
-      unitDrops: $j('input[name="unitDrops"]:checked').val() - 0,
-      abilityUpgrades: $j('input[name="abilityUpgrades"]:checked').val() - 0,
-      plasma_amount: $j('input[name="plasmaPoints"]:checked').val() - 0,
-      turnTimePool: $j('input[name="turnTime"]:checked').val() - 0,
-      timePool: $j('input[name="timePool"]:checked').val() * 60,
-      background_image: $j('input[name="combatLocation"]:checked').val(),
-    },
-    config = G.gamelog.gameConfig || defaultConfig;
-
-  return config;
-}
-
-export function isEmpty(obj) {
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) { return false; }
-  }
-  return true;
-}
