@@ -1,4 +1,4 @@
-import { Ability } from './ability';
+import Ability from './ability';
 import { search } from './utility/pathfinding';
 import { Hex } from './utility/hex';
 import * as arrayUtils from './utility/arrayUtils';
