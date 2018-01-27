@@ -9,11 +9,11 @@ import * as arrayUtils from '../utility/arrayUtils';
  */
 export default (G) => {
   G.abilities[45] = [
-    // 	First Ability: Cyclic Duality
+    //   First Ability: Cyclic Duality
     {
       trigger: 'onReset',
 
-      //	require() :
+      //  require() :
       require() {
         return this.testRequirements();
       },
@@ -34,14 +34,14 @@ export default (G) => {
     },
 
 
-    //	Second Ability: Tooth Fairy
+    //  Second Ability: Tooth Fairy
     {
-      //	Type : Can be "onQuery","onStartPhase","onDamage"
+      //  Type : Can be "onQuery","onStartPhase","onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      //	require() :
+      //  require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -54,7 +54,7 @@ export default (G) => {
         return true;
       },
 
-      //	query() :
+      //  query() :
       query() {
         const ability = this;
         const chimera = this.creature;
@@ -71,7 +71,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
 
@@ -92,14 +92,14 @@ export default (G) => {
       },
     },
 
-    //	Third Ability: Disturbing Sound
+    //  Third Ability: Disturbing Sound
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.both,
 
-      //	require() :
+      //  require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -112,7 +112,7 @@ export default (G) => {
         return true;
       },
 
-      //	query() :
+      //  query() :
       query() {
         const ability = this;
         const chimera = this.creature;
@@ -132,7 +132,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
 
@@ -183,7 +183,7 @@ export default (G) => {
 
     // Fourth Ability: Battering Ram
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.both,
@@ -218,7 +218,7 @@ export default (G) => {
         return false;
       },
 
-      //	query() :
+      //  query() :
       query() {
         const ability = this;
         const chimera = this.creature;

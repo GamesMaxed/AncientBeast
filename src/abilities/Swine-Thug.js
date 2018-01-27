@@ -10,18 +10,18 @@ import Effect from '../effect';
  */
 export default (G) => {
   /*
-	 *
-	 *	Swine Thug abilities
-	 *
-	 */
+   *
+   *  Swine Thug abilities
+   *
+   */
   G.abilities[37] = [
 
-    // 	First Ability: Spa Goggles
+    //   First Ability: Spa Goggles
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onCreatureMove',
 
-      // 	require() :
+      //   require() :
       require(hex) {
         if (!this.testRequirements()) return false;
 
@@ -46,7 +46,7 @@ export default (G) => {
         return false;
       },
 
-      //	activate() :
+      //  activate() :
       activate(hex) {
         const alterations = $j.extend({}, this.effects[0]);
         // Double effect if upgraded
@@ -79,14 +79,14 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Baseball Baton
+    //   Second Ability: Baseball Baton
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -98,7 +98,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const swine = this.creature;
@@ -178,14 +178,14 @@ export default (G) => {
     },
 
 
-    // 	Third Ability: Ground Ball
+    //   Third Ability: Ground Ball
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -209,7 +209,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const bellowrow = matrices.bellowrow;
         const straitrow = matrices.straitrow;
@@ -246,7 +246,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
         ability.end();
@@ -276,9 +276,9 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Mud Bath
+    //   Fourth Ability: Mud Bath
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _energyNormal: 30,
@@ -304,7 +304,7 @@ export default (G) => {
         return this.testRequirements();
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const swine = this.creature;
@@ -323,7 +323,7 @@ export default (G) => {
         // TODO: Filtering corpse hexes
         // TODO: Add this code back in when its actually used.
         // hexes = hexes.filter(function(hex) {
-        // 	return true;
+        //   return true;
         // });
 
         G.grid.hideCreatureHexes(this.creature);
@@ -342,7 +342,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(hex, args) {
         G.grid.clearHexViewAlterations();
         const ability = this;

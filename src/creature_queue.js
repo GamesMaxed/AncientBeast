@@ -8,9 +8,9 @@ export class CreatureQueue {
   }
 
   /**
-	 * Add a creature to the next turn's queue by initiative
-	 * creature - The creature to add
-	 */
+   * Add a creature to the next turn's queue by initiative
+   * creature - The creature to add
+   */
   addByInitiative(creature) {
     for (let i = 0; i < this.nextQueue.length; i++) {
       const queue = this.nextQueue[i];

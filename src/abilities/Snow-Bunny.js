@@ -10,9 +10,9 @@ import * as arrayUtils from '../utility/arrayUtils';
 export default (G) => {
   G.abilities[12] = [
 
-    // 	First Ability: Bunny Hop
+    //   First Ability: Bunny Hop
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onOtherCreatureMove',
 
       require(fromHex) {
@@ -30,7 +30,7 @@ export default (G) => {
           this._getHopHex(fromHex) !== undefined);
       },
 
-      //	activate() :
+      //  activate() :
       activate(destHex) {
         const ability = this;
         ability.end();
@@ -94,14 +94,14 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Big Pliers
+    //   Second Ability: Big Pliers
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -113,7 +113,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const snowBunny = this.creature;
@@ -130,7 +130,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();
@@ -158,15 +158,15 @@ export default (G) => {
     },
 
 
-    // 	Third Ability: Blowing Wind
+    //   Third Ability: Blowing Wind
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       directions: [1, 1, 1, 1, 1, 1],
       _targetTeam: Team.both,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -179,7 +179,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const snowBunny = this.creature;
@@ -199,7 +199,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
         ability.end();
@@ -257,14 +257,14 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Freezing Spit
+    //   Fourth Ability: Freezing Spit
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -277,7 +277,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const snowBunny = this.creature;
@@ -297,7 +297,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
         ability.end();

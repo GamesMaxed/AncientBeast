@@ -112,7 +112,7 @@ export function extendToRight(arr, size, grid) {
   return ext;
 }
 
-/*	last(arr)
+/*  last(arr)
  *
  * Return the last element of the array
  *

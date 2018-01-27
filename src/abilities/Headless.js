@@ -12,7 +12,7 @@ import { Effect } from '../effect';
 export default (G) => {
   G.abilities[39] = [
 
-    // 	First Ability: Larva Infest
+    //   First Ability: Larva Infest
     {
       trigger: 'onStartPhase onEndPhase',
 
@@ -30,7 +30,7 @@ export default (G) => {
         return this.testRequirements();
       },
 
-      //	activate() :
+      //  activate() :
       activate() {
         const ability = this;
         const creature = this.creature;
@@ -97,14 +97,14 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Cartilage Dagger
+    //   Second Ability: Cartilage Dagger
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         const crea = this.creature;
 
@@ -119,7 +119,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -136,7 +136,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();
@@ -167,9 +167,9 @@ export default (G) => {
     },
 
 
-    // 	Third Ability: Whip Move
+    //   Third Ability: Whip Move
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       directions: [0, 1, 0, 0, 1, 0],
@@ -212,7 +212,7 @@ export default (G) => {
             // Target needs to be moveable
             let fx = 0;
             if ((!this.creature.player.flipped && i > 2) ||
-							(this.creature.player.flipped && i < 3)) {
+              (this.creature.player.flipped && i < 3)) {
               fx = -1 * (this.creature.size - 1);
             }
             let dir = G.grid.getHexLine(this.creature.x + fx, this.creature.y, i, this.creature.player.flipped);
@@ -249,7 +249,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -270,7 +270,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
         const crea = this.creature;
@@ -337,9 +337,9 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Boomerang Tool
+    //   Fourth Ability: Boomerang Tool
     {
-      //	Type : Can be "onQuery","onStartPhase","onDamage"
+      //  Type : Can be "onQuery","onStartPhase","onDamage"
       trigger: 'onQuery',
 
       damages: {
@@ -356,13 +356,13 @@ export default (G) => {
       },
 
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;

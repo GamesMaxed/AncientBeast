@@ -11,12 +11,12 @@ import Effect from '../effect';
 export default (G) => {
   G.abilities[22] = [
 
-    // 	First Ability: Greater Pyre
+    //   First Ability: Greater Pyre
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onDamage',
 
-      // 	require() :
+      //   require() :
       require(damage) {
         if (this.used) return false;
         if (!this.testRequirements()) return false;
@@ -29,7 +29,7 @@ export default (G) => {
         return true;
       },
 
-      //	activate() :
+      //  activate() :
       activate(damage) {
         if (this.triggeredThisChain) return damage;
 
@@ -49,15 +49,15 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Fiery Claw
+    //   Second Ability: Fiery Claw
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       distance: 2,
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
         if (!this.testDirection({
@@ -70,7 +70,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -91,7 +91,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
         ability.end();
@@ -110,19 +110,19 @@ export default (G) => {
     },
 
 
-    // 	Thirt Ability: Burning Eye
+    //   Thirt Ability: Burning Eye
     {
-      //	Type : Can be "onQuery","onStartPhase","onDamage"
+      //  Type : Can be "onQuery","onStartPhase","onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         return this.testRequirements();
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -139,7 +139,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(hex, args) {
         const ability = this;
         ability.end();
@@ -216,17 +216,17 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Fire Ball
+    //   Fourth Ability: Fire Ball
     {
-      //	Type : Can be "onQuery","onStartPhase","onDamage"
+      //  Type : Can be "onQuery","onStartPhase","onDamage"
       trigger: 'onQuery',
 
-      // 	require() :
+      //   require() :
       require() {
         return this.testRequirements();
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -282,7 +282,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(hex, args) {
         const ability = this;
         ability.end();

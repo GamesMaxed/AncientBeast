@@ -10,19 +10,19 @@ import Effect from '../effect';
  */
 export default (G) => {
   G.abilities[33] = [
-    // 	First Ability: Percussion Spear
+    //   First Ability: Percussion Spear
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onStepIn onStartPhase',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         return this.testRequirements();
       },
 
-      //	activate() :
+      //  activate() :
       activate() {
         const creature = this.creature;
         const targets = this.getTargets(this.creature.adjacentHexes(1));
@@ -95,9 +95,9 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Executioner Axe
+    //   Second Ability: Executioner Axe
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       damages: {
@@ -105,7 +105,7 @@ export default (G) => {
       },
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -118,7 +118,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const wyrm = this.creature;
         const ability = this;
@@ -142,7 +142,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();
@@ -186,9 +186,9 @@ export default (G) => {
     },
 
 
-    // 	Third Ability: Dragon Flight
+    //   Third Ability: Dragon Flight
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       require() {
@@ -203,7 +203,7 @@ export default (G) => {
         });
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const wyrm = this.creature;
@@ -226,7 +226,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(hex, args) {
         const ability = this;
         ability.end();
@@ -259,9 +259,9 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Battle Cry
+    //   Fourth Ability: Battle Cry
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       damages: {
@@ -271,7 +271,7 @@ export default (G) => {
       },
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -285,7 +285,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const wyrm = this.creature;
@@ -302,7 +302,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();

@@ -5,11 +5,11 @@
  */
 export class Damage {
   /**
-	 * attacker : Creature : Unit that initiated the damage
-	 * damages : Object : Object containing the damage by type {frost : 5} for example
-	 * area : Integer : Number of hexagons being hit
-	 * effects : Array : Contains Effect object to apply to the target
-	 */
+   * attacker : Creature : Unit that initiated the damage
+   * damages : Object : Object containing the damage by type {frost : 5} for example
+   * area : Integer : Number of hexagons being hit
+   * effects : Array : Contains Effect object to apply to the target
+   */
   constructor(attacker, damages, area, effects, game) {
     this.game = game;
     this.attacker = attacker;
@@ -22,7 +22,7 @@ export class Damage {
   }
 
   /* applyDamage()
-	 */
+   */
   applyDamage() {
     let trg = this.target.stats,
       atk = this.attacker.stats,

@@ -78,7 +78,7 @@ export default class Player {
   }
 
   /**
-	 * Ask if the player wants to flee the match
+   * Ask if the player wants to flee the match
    * @param {any} o
    */
   flee(o) {

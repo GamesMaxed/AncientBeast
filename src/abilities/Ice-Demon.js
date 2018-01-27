@@ -12,18 +12,18 @@ import Effect from '../effect';
 export default (G) => {
   G.abilities[6] = [
 
-    // 	First Ability: Frost Bite
+    //   First Ability: Frost Bite
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onEndPhase',
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
         return true;
       },
 
-      //	activate() :
+      //  activate() :
       activate() {
         const ability = this;
         this.end();
@@ -67,15 +67,15 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Head Bash
+    //   Second Ability: Head Bash
     {
-      //	Type : Can be "onQuery","onStartPhase","onDamage"
+      //  Type : Can be "onQuery","onStartPhase","onDamage"
       trigger: 'onQuery',
 
       distance: 1,
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
         if (!this.testDirection({
@@ -88,7 +88,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -109,7 +109,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
         ability.end();
@@ -174,14 +174,14 @@ export default (G) => {
     },
 
 
-    // 	Thirt Ability: Snow Storm
+    //   Thirt Ability: Snow Storm
     {
-      //	Type : Can be "onQuery","onStartPhase","onDamage"
+      //  Type : Can be "onQuery","onStartPhase","onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -212,7 +212,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -247,7 +247,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(choice, args) {
         const ability = this;
         const crea = this.creature;
@@ -272,15 +272,15 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Frozen Orb
+    //   Fourth Ability: Frozen Orb
     {
-      //	Type : Can be "onQuery"," onStartPhase", "onDamage"
+      //  Type : Can be "onQuery"," onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       directions: [0, 1, 0, 0, 1, 0],
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
         if (!this.testDirection({
@@ -293,7 +293,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -328,7 +328,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
         ability.end();
@@ -345,10 +345,10 @@ export default (G) => {
         // var target = arrayUtils.last(path).creature;
 
         // var damage = new Damage(
-        // 	ability.creature, //Attacker
-        // 	ability.damages, //Damage Type
-        // 	1, //Area
-        // 	[]	//Effects
+        //   ability.creature, //Attacker
+        //   ability.damages, //Damage Type
+        //   1, //Area
+        //   []  //Effects
         // );
         // target.takeDamage(damage);
 

@@ -46,7 +46,7 @@ export function search(start, end, creatureSize, creatureId, grid) {
       }
 
       // g score is the shortest distance from start to current node, we need to check if
-      //	 the path we have arrived at this neighbor is the shortest one we have seen yet
+      //   the path we have arrived at this neighbor is the shortest one we have seen yet
       const gScore = currentNode.g + 1; // 1 is the distance from a node to it's neighbor
       let gScoreIsBest = false;
 
@@ -64,8 +64,8 @@ export function search(start, end, creatureSize, creatureId, grid) {
       }
 
       if (gScoreIsBest) {
-        // Found an optimal (so far) path to this node.	 Store info on how we got here and
-        //	just how good it really is...
+        // Found an optimal (so far) path to this node.   Store info on how we got here and
+        //  just how good it really is...
         neighbor.pathparent = currentNode;
         neighbor.g = gScore;
         neighbor.f = neighbor.g + neighbor.h;

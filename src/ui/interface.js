@@ -13,27 +13,27 @@ import { getUrl } from '../assetLoader';
  */
 export class UI {
   /* Attributes
-	 *
-	 * NOTE : attributes and variables starting with $ are jquery element
-	 * and jquery function can be called dirrectly from them.
-	 *
-	 * $display :		UI container
-	 * $queue :		Queue container
-	 * $textbox :		Chat and log container
-	 * $activebox :	Current active creature panel (left panel) container
-	 * $dash :			Overview container
-	 * $grid :			Creature grid container
-	 *
-	 * selectedCreature :	String :	ID of the visible creature card
-	 * selectedPlayer :	Integer :	ID of the selected player in the dash
-	 *
-	 */
+   *
+   * NOTE : attributes and variables starting with $ are jquery element
+   * and jquery function can be called dirrectly from them.
+   *
+   * $display :    UI container
+   * $queue :    Queue container
+   * $textbox :    Chat and log container
+   * $activebox :  Current active creature panel (left panel) container
+   * $dash :      Overview container
+   * $grid :      Creature grid container
+   *
+   * selectedCreature :  String :  ID of the visible creature card
+   * selectedPlayer :  Integer :  ID of the selected player in the dash
+   *
+   */
 
   /* Constructor
-	 *
-	 * Create attributes and default buttons
-	 *
-	 */
+   *
+   * Create attributes and default buttons
+   *
+   */
   constructor(game) {
     this.game = game;
     this.$display = $j('#ui');
@@ -550,13 +550,13 @@ export class UI {
   }
 
   /* showCreature(creatureType, player)
-	 *
-	 * creatureType :	String :	Creature type
-	 * player :		Integer :	Player ID
-	 *
-	 * Query a creature in the available creatures of the active player
-	 *
-	 */
+   *
+   * creatureType :  String :  Creature type
+   * player :    Integer :  Player ID
+   *
+   * Query a creature in the available creatures of the active player
+   *
+   */
   showCreature(creatureType, player) {
     const game = this.game;
 
@@ -785,11 +785,11 @@ export class UI {
   }
 
   /* changePlayerTab(id)
-	 *
-	 * id :	Integer :	player id
-	 *
-	 * Change to the specified player tab in the dash
-	 */
+   *
+   * id :  Integer :  player id
+   *
+   * Change to the specified player tab in the dash
+   */
   changePlayerTab(id) {
     const game = this.game;
 
@@ -860,10 +860,10 @@ export class UI {
   }
 
   /* toggleDash()
-	 *
-	 * Show the dash and hide some buttons
-	 * Takes optional 'randomize' parameter to select a random creature from the grid.
-	 */
+   *
+   * Show the dash and hide some buttons
+   * Takes optional 'randomize' parameter to select a random creature from the grid.
+   */
 
   toggleDash(randomize) {
     const game = this.game;
@@ -1083,9 +1083,9 @@ export class UI {
   }
 
   /* updateActiveBox()
-	 *
-	 * Update activebox with new current creature's abilities
-	 */
+   *
+   * Update activebox with new current creature's abilities
+   */
   updateActivebox() {
     let game = this.game,
       creature = game.activeCreature,
@@ -1190,21 +1190,21 @@ export class UI {
       const costs_string = ab.getFormattedCosts();
       if (costs_string) {
         $abilityInfo.append(`${'<div class="info costs">' +
-					'Costs : '}${costs_string
+          'Costs : '}${costs_string
         }</div>`);
       }
 
       const dmg_string = ab.getFormattedDamages();
       if (dmg_string) {
         $abilityInfo.append(`${'<div class="info damages">' +
-					'Damages : '}${dmg_string
+          'Damages : '}${dmg_string
         }</div>`);
       }
 
       const special_string = ab.getFormattedEffects();
       if (special_string) {
         $abilityInfo.append(`${'<div class="info special">' +
-					'Effects : '}${special_string
+          'Effects : '}${special_string
         }</div>`);
       }
 
@@ -1217,7 +1217,7 @@ export class UI {
         }
 
         $abilityInfo.append(`${'<div class="info upgrade">' +
-					'Upgrade : '}${ab.upgrade
+          'Upgrade : '}${ab.upgrade
         }</div>`);
       }
     });
@@ -1279,7 +1279,7 @@ export class UI {
   }
 
   /* updateInfos()
-	 */
+   */
   updateInfos() {
     const game = this.game;
 
@@ -1327,7 +1327,7 @@ export class UI {
   }
 
   /* updateTimer()
-	 */
+   */
   updateTimer() {
     let game = this.game,
       date = new Date() - game.pauseTime;
@@ -1373,10 +1373,10 @@ export class UI {
   }
 
   /* updateQueueDisplay()
-	 *
-	 * Delete and add element to the Queue container based on the game's queues
-	 * TODO: Ugly as hell need rewrite
-	 */
+   *
+   * Delete and add element to the Queue container based on the game's queues
+   * TODO: Ugly as hell need rewrite
+   */
   updateQueueDisplay(excludeActiveCreature) {
     const game = this.game;
 

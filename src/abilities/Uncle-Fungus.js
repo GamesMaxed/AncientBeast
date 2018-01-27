@@ -74,7 +74,7 @@ export default (G) => {
     },
 
 
-    //	Second Ability: Supper Chomp
+    //  Second Ability: Supper Chomp
     {
       // Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',

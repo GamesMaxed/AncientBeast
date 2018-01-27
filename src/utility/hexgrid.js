@@ -13,28 +13,28 @@ import * as arrayUtils from './arrayUtils';
  */
 export class HexGrid {
   /* Attributes
-	 *
-	 * NOTE : attributes and variables starting with $ are jquery element
-	 * and jquery function can be called dirrectly from them.
-	 *
-	 * // Jquery attributes
-	 * $display : 		Grid container
-	 * $creatureW : 	Creature Wrapper container
-	 * $inpthexesW : 	Input Hexagons container
-	 * $disphexesW : 	Display Hexagons container
-	 * $overhexesW : 	Overlay Hexagons container
-	 * $allInptHex : 	Shortcut to all input hexagons DOM elements (for input events)
-	 * $allDispHex : 	Shortcut to all display hexagons DOM elements (to change style of hexagons)
-	 *
-	 * // Normal attributes
-	 * hexes : 				Array : 	Contain all hexes in row arrays (hexes[y][x])
-	 * lastClickedHex : 	Hex : 		Last hex clicked!
-	 */
+   *
+   * NOTE : attributes and variables starting with $ are jquery element
+   * and jquery function can be called dirrectly from them.
+   *
+   * // Jquery attributes
+   * $display :     Grid container
+   * $creatureW :   Creature Wrapper container
+   * $inpthexesW :   Input Hexagons container
+   * $disphexesW :   Display Hexagons container
+   * $overhexesW :   Overlay Hexagons container
+   * $allInptHex :   Shortcut to all input hexagons DOM elements (for input events)
+   * $allDispHex :   Shortcut to all display hexagons DOM elements (to change style of hexagons)
+   *
+   * // Normal attributes
+   * hexes :         Array :   Contain all hexes in row arrays (hexes[y][x])
+   * lastClickedHex :   Hex :     Last hex clicked!
+   */
 
   /* Constructor
-	 *
-	 * Create attributes and populate JS grid with Hex objects
-	 */
+   *
+   * Create attributes and populate JS grid with Hex objects
+   */
   constructor(opts, game) {
     const defaultOpt = {
       nbrRow: 9,
@@ -128,18 +128,18 @@ export class HexGrid {
   }
 
   /* queryDirection(o)
-	 *
-	 * Shortcut to queryChoice with specific directions
-	 *
-	 * fnOnSelect : 		Function : 	Function applied when clicking on one of the available hexes.
-	 * fnOnConfirm : 		Function : 	Function applied when clicking again on the same hex.
-	 * fnOnCancel : 		Function : 	Function applied when clicking a non reachable hex
-	 * team : 				Team
-	 * requireCreature : 	Boolean : 	Disable a choice if it does not contain a creature matching the team argument
-	 * distance :			Integer :	if defined, maximum distance of query in hexes
-	 * minDistance :		Integer :	if defined, minimum distance of query, 1 = 1 hex gap required
-	 * args : 				Object : 	Object given to the events function (to easily pass variable for these function)
-	 */
+   *
+   * Shortcut to queryChoice with specific directions
+   *
+   * fnOnSelect :     Function :   Function applied when clicking on one of the available hexes.
+   * fnOnConfirm :     Function :   Function applied when clicking again on the same hex.
+   * fnOnCancel :     Function :   Function applied when clicking a non reachable hex
+   * team :         Team
+   * requireCreature :   Boolean :   Disable a choice if it does not contain a creature matching the team argument
+   * distance :      Integer :  if defined, maximum distance of query in hexes
+   * minDistance :    Integer :  if defined, minimum distance of query, 1 = 1 hex gap required
+   * args :         Object :   Object given to the events function (to easily pass variable for these function)
+   */
   queryDirection(o) {
     let game = this.game,
       defaultOpt = {
@@ -166,11 +166,11 @@ export class HexGrid {
   }
 
   /**
-	 * Get an object that contains the choices and hexesDashed for a direction
-	 * query.
-	 * @param {Object} o
-	 * @returns {Object}
-	 */
+   * Get an object that contains the choices and hexesDashed for a direction
+   * query.
+   * @param {Object} o
+   * @returns {Object}
+   */
   getDirectionChoices(o) {
     let game = this.game,
       defaultOpt = {
@@ -279,14 +279,14 @@ export class HexGrid {
   }
 
   /*
-	 * queryChoice(o)
-	 *
-	 * fnOnSelect : 		Function : 	Function applied when clicking on one of the available hexes.
-	 * fnOnConfirm : 		Function : 	Function applied when clicking again on the same hex.
-	 * fnOnCancel : 		Function : 	Function applied when clicking a non reachable hex
-	 * requireCreature : 	Boolean : 	Disable a choice if it does not contain a creature matching the team argument
-	 * args : 				Object : 	Object given to the events function (to easily pass variable for these function)
-	 */
+   * queryChoice(o)
+   *
+   * fnOnSelect :     Function :   Function applied when clicking on one of the available hexes.
+   * fnOnConfirm :     Function :   Function applied when clicking again on the same hex.
+   * fnOnCancel :     Function :   Function applied when clicking a non reachable hex
+   * requireCreature :   Boolean :   Disable a choice if it does not contain a creature matching the team argument
+   * args :         Object :   Object given to the events function (to easily pass variable for these function)
+   */
   queryChoice(o) {
     let game = this.game,
       defaultOpt = {
@@ -389,14 +389,14 @@ export class HexGrid {
   }
 
   /* queryCreature(o)
-	 *
-	 * fnOnSelect : 	Function : 	Function applied when clicking on one of the available hexes.
-	 * fnOnConfirm : 	Function : 	Function applied when clicking again on the same hex.
-	 * fnOnCancel : 	Function : 	Function applied when clicking a non reachable hex
-	 * team : 			Team
-	 * id : 			Integer : 	Creature ID
-	 * args : 			Object : 	Object given to the events function (to easily pass variable for these function)
-	 */
+   *
+   * fnOnSelect :   Function :   Function applied when clicking on one of the available hexes.
+   * fnOnConfirm :   Function :   Function applied when clicking again on the same hex.
+   * fnOnCancel :   Function :   Function applied when clicking a non reachable hex
+   * team :       Team
+   * id :       Integer :   Creature ID
+   * args :       Object :   Object given to the events function (to easily pass variable for these function)
+   */
   queryCreature(o) {
     let game = this.game,
       defaultOpt = {
@@ -473,14 +473,14 @@ export class HexGrid {
   }
 
   /* queryHexes(x, y, distance, size)
-	 *
-	 * fnOnSelect : 	Function : 	Function applied when clicking on one of the available hexes.
-	 * fnOnConfirm : 	Function : 	Function applied when clicking again on the same hex.
-	 * fnOnCancel : 	Function : 	Function applied when clicking a non reachable hex
-	 * args : 			Object : 	Object given to the events function (to easily pass variable for these function)
-	 * hexes : 		Array : 	Reachable hexes
-	 * callbackAfterQueryHexes : 		Function : 	empty function to be overridden with custom logic to execute after queryHexes
-	 */
+   *
+   * fnOnSelect :   Function :   Function applied when clicking on one of the available hexes.
+   * fnOnConfirm :   Function :   Function applied when clicking again on the same hex.
+   * fnOnCancel :   Function :   Function applied when clicking a non reachable hex
+   * args :       Object :   Object given to the events function (to easily pass variable for these function)
+   * hexes :     Array :   Reachable hexes
+   * callbackAfterQueryHexes :     Function :   empty function to be overridden with custom logic to execute after queryHexes
+   */
   queryHexes(o) {
     let game = this.game,
       defaultOpt = {
@@ -730,12 +730,12 @@ export class HexGrid {
   }
 
   /* xray(hex)
-	 *
-	 * hex : 	Hex : 	Hexagon to emphase
-	 *
-	 * If hex contain creature call ghostOverlap for each creature hexes
-	 *
-	 */
+   *
+   * hex :   Hex :   Hexagon to emphase
+   *
+   * If hex contain creature call ghostOverlap for each creature hexes
+   *
+   */
   xray(hex) {
     // Clear previous ghost
     this.game.creatures.forEach((creature) => {
@@ -754,10 +754,10 @@ export class HexGrid {
   }
 
   /* hideCreatureHexes()
-	 *
-	 * Ghosts hexes with creatures
-	 * TODO: This does nothing...
-	 */
+   *
+   * Ghosts hexes with creatures
+   * TODO: This does nothing...
+   */
   hideCreatureHexes(except) {
     this.game.creatures.forEach((creature) => {
       if (creature instanceof Creature) {
@@ -783,16 +783,16 @@ export class HexGrid {
   }
 
   /* getHexLine(x, y, dir, flipped)
-	 *
-	 * Gets a line of hexes given a start point and a direction
-	 * The result is an array of hexes, starting from the start point's hex, and
-	 * extending out in a straight line.
-	 * If the coordinate is erroneous, returns an empty array.
-	 *
-	 * x, y: coordinate of start hex
-	 * dir: direction number (0 = upright, continues clockwise to 5 = upleft)
-	 * flipped
-	 */
+   *
+   * Gets a line of hexes given a start point and a direction
+   * The result is an array of hexes, starting from the start point's hex, and
+   * extending out in a straight line.
+   * If the coordinate is erroneous, returns an empty array.
+   *
+   * x, y: coordinate of start hex
+   * dir: direction number (0 = upright, continues clockwise to 5 = upleft)
+   * flipped
+   */
   getHexLine(x, y, dir, flipped) {
     switch (dir) {
       case 0: // Upright
@@ -813,10 +813,10 @@ export class HexGrid {
   }
 
   /* showCreaturehexes()
-	 *
-	 * Unghosts hexes with creatures
-	 * TODO: This also does nothing...
-	 */
+   *
+   * Unghosts hexes with creatures
+   * TODO: This also does nothing...
+   */
   showCreaturehexes() {
     this.game.creatures.forEach((creature) => {
       if (creature instanceof Creature) {
@@ -824,8 +824,8 @@ export class HexGrid {
         // this.health.overlayVisualState("ghosted_hidden");
         for (let i = 0; i < creature.size; i++) {
           // if(this.hexagons[i]) {
-          //	this.hexagons[i].display.alpha = 1;
-          //	this.hexagons[i].overlay.alpha = 1;
+          //  this.hexagons[i].display.alpha = 1;
+          //  this.hexagons[i].overlay.alpha = 1;
           // }
         }
       }
@@ -833,13 +833,13 @@ export class HexGrid {
   }
 
   /* clearHexViewAlterations()
-	 *
-	 * Removes all hex view alterations like hideCreatureHexes used
-	 * Squashes bugs by making sure all view alterations are removed
-	 * on a change of ability/change of turn/etc
-	 * If you make a new hex view alteration call the function to remove
-	 * the alteration in here to ensure it gets cleared at the right time
-	 */
+   *
+   * Removes all hex view alterations like hideCreatureHexes used
+   * Squashes bugs by making sure all view alterations are removed
+   * on a change of ability/change of turn/etc
+   * If you make a new hex view alteration call the function to remove
+   * the alteration in here to ensure it gets cleared at the right time
+   */
   clearHexViewAlterations() {
     this.showCreaturehexes();
   }
@@ -850,9 +850,9 @@ export class HexGrid {
   }
 
   /* updateDisplay()
-	 *
-	 * Update overlay hexes with creature positions
-	 */
+   *
+   * Update overlay hexes with creature positions
+   */
   updateDisplay() {
     this.cleanDisplay();
     this.cleanOverlay();
@@ -869,13 +869,13 @@ export class HexGrid {
   }
 
   /* hexExists(y, x)
-	 *
-	 * x : 	Integer : 	Coordinates to test
-	 * y : 	Integer : 	Coordinates to test
-	 *
-	 * Test if hex exists
-	 * TODO: Why is this backwards... standard corodinates systems follow x,y nomenclature...
-	 */
+   *
+   * x :   Integer :   Coordinates to test
+   * y :   Integer :   Coordinates to test
+   *
+   * Test if hex exists
+   * TODO: Why is this backwards... standard corodinates systems follow x,y nomenclature...
+   */
   hexExists(y, x) {
     if ((y >= 0) && (y < this.hexes.length)) {
       if ((x >= 0) && (x < this.hexes[y].length)) {
@@ -887,12 +887,12 @@ export class HexGrid {
   }
 
   /* isHexIn(hex, hexArray)
-	 *
-	 * hex : 		Hex : 		Hex to look for
-	 * hexarray : 	Array : 	Array of hexes to look for hex in
-	 *
-	 * Test if hex exists inside array of hexes
-	 */
+   *
+   * hex :     Hex :     Hex to look for
+   * hexarray :   Array :   Array of hexes to look for hex in
+   *
+   * Test if hex exists inside array of hexes
+   */
   isHexIn(hex, hexArray) {
     for (let i = 0, len = hexArray.length; i < len; i++) {
       if (hexArray[i].x == hex.x && hexArray[i].y == hex.y) {
@@ -904,18 +904,18 @@ export class HexGrid {
   }
 
   /* getMovementRange(x, y, distance, size, id)
-	 *
-	 * x : 		Integer : 	Start position
-	 * y : 		Integer : 	Start position
-	 * distance : 	Integer : 	Distance from the start position
-	 * size : 		Integer : 	Creature size
-	 * id : 		Integer : 	Creature ID
-	 *
-	 * return : 	Array : 	Set of the reachable hexes
-	 */
+   *
+   * x :     Integer :   Start position
+   * y :     Integer :   Start position
+   * distance :   Integer :   Distance from the start position
+   * size :     Integer :   Creature size
+   * id :     Integer :   Creature ID
+   *
+   * return :   Array :   Set of the reachable hexes
+   */
   getMovementRange(x, y, distance, size, id) {
-    //	Populate distance (hex.g) in hexes by asking an impossible
-    //	destination to test all hexagons
+    //  Populate distance (hex.g) in hexes by asking an impossible
+    //  destination to test all hexagons
     this.cleanReachable(); // If not pathfinding will bug
     this.cleanPathAttr(true); // Erase all pathfinding data
     search(this.hexes[y][x], new Hex(-2, -2, null, this.game), size, id, this.game.grid);
@@ -931,15 +931,15 @@ export class HexGrid {
   }
 
   /* getFlyingRange(x,y,distance,size,id)
-	 *
-	 * x : 		Integer : 	Start position
-	 * y : 		Integer : 	Start position
-	 * distance : 	Integer : 	Distance from the start position
-	 * size : 		Integer : 	Creature size
-	 * id : 		Integer : 	Creature ID
-	 *
-	 * return : 	Array : 	Set of the reachable hexes
-	 */
+   *
+   * x :     Integer :   Start position
+   * y :     Integer :   Start position
+   * distance :   Integer :   Distance from the start position
+   * size :     Integer :   Creature size
+   * id :     Integer :   Creature ID
+   *
+   * return :   Array :   Set of the reachable hexes
+   */
   getFlyingRange(x, y, distance, size, id) {
     // Gather all the reachable hexes
     let hexes = this.hexes[y][x].adjacentHex(distance);
@@ -950,15 +950,15 @@ export class HexGrid {
   }
 
   /* getHexMap(originx, originy, array)
-	 *
-	 * array : 	Array : 	2-dimentions Array containing 0 or 1 (boolean)
-	 * originx : 	Integer : 	Position of the array on the grid
-	 * originy : 	Integer : 	Position of the array on the grid
-	 * offsetx : 	Integer : 	offset flipped for flipped players
-	 * flipped : 	Boolean : 	If player is flipped or not
-	 *
-	 * return : 	Array : 	Set of corresponding hexes
-	 */
+   *
+   * array :   Array :   2-dimentions Array containing 0 or 1 (boolean)
+   * originx :   Integer :   Position of the array on the grid
+   * originy :   Integer :   Position of the array on the grid
+   * offsetx :   Integer :   offset flipped for flipped players
+   * flipped :   Boolean :   If player is flipped or not
+   *
+   * return :   Array :   Set of corresponding hexes
+   */
   getHexMap(originx, originy, offsetx, flipped, array) { // Heavy logic in here
     const hexes = [];
 
@@ -1102,11 +1102,11 @@ export class HexGrid {
   //* *****************//
 
   /* forEachHex(f)
-	 *
-	 * f : Function : 	Function to execute
-	 *
-	 * Execute f for each hexes
-	 */
+   *
+   * f : Function :   Function to execute
+   *
+   * Execute f for each hexes
+   */
   forEachHex(func) {
     this.hexes.forEach((hex) => {
       hex.forEach(func);
@@ -1114,11 +1114,11 @@ export class HexGrid {
   }
 
   /* cleanPathAttr(includeG)
-	 *
-	 * includeG : 	Boolean : 	Include hex.g attribute
-	 *
-	 * Execute hex.cleanPathAttr() function for all the grid. Refer to the Hex class for more info
-	 */
+   *
+   * includeG :   Boolean :   Include hex.g attribute
+   *
+   * Execute hex.cleanPathAttr() function for all the grid. Refer to the Hex class for more info
+   */
   cleanPathAttr(includeG) {
     this.hexes.forEach((hex) => {
       hex.forEach((item) => {
@@ -1128,9 +1128,9 @@ export class HexGrid {
   }
 
   /* cleanReachable()
-	 *
-	 * Execute hex.setReachable() function for all the grid. Refer to the Hex class for more info
-	 */
+   *
+   * Execute hex.setReachable() function for all the grid. Refer to the Hex class for more info
+   */
   cleanReachable() {
     this.hexes.forEach((hex) => {
       hex.forEach((item) => {
@@ -1140,11 +1140,11 @@ export class HexGrid {
   }
 
   /* cleanDisplay(cssClass)
-	 *
-	 * cssClass : 	String : 	Class(es) name(s) to remove with jQuery removeClass function
-	 *
-	 * Shorcut for $allDispHex.removeClass()
-	 */
+   *
+   * cssClass :   String :   Class(es) name(s) to remove with jQuery removeClass function
+   *
+   * Shorcut for $allDispHex.removeClass()
+   */
   cleanDisplay(cssClass) {
     this.forEachHex((hex) => {
       hex.cleanDisplayVisualState(cssClass);
@@ -1158,12 +1158,12 @@ export class HexGrid {
   }
 
   /* previewCreature(creatureData)
-	 *
-	 * pos : 			Object : 	Coordinates {x,y}
-	 * creatureData : 	Object : 	Object containing info from the database (game.retreiveCreatureStats)
-	 *
-	 * Draw a preview of the creature at the given coordinates
-	 */
+   *
+   * pos :       Object :   Coordinates {x,y}
+   * creatureData :   Object :   Object containing info from the database (game.retreiveCreatureStats)
+   *
+   * Draw a preview of the creature at the given coordinates
+   */
   previewCreature(pos, creatureData, player) {
     let game = this.game,
       hex = this.hexes[pos.y][pos.x - (creatureData.size - 1)];

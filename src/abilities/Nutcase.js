@@ -12,7 +12,7 @@ import Effect from '../effect';
 export default (G) => {
   G.abilities[40] = [
 
-    //	First Ability: Tentacle Bush
+    //  First Ability: Tentacle Bush
     {
       trigger: 'onUnderAttack',
 
@@ -83,14 +83,14 @@ export default (G) => {
       },
     },
 
-    //	Second Ability: Hammer Time
+    //  Second Ability: Hammer Time
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      //	require() :
+      //  require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -103,7 +103,7 @@ export default (G) => {
         return true;
       },
 
-      //	query() :
+      //  query() :
       query() {
         const ability = this;
 
@@ -206,14 +206,14 @@ export default (G) => {
       },
     },
 
-    // 	Third Ability: War Horn
+    //   Third Ability: War Horn
     {
       trigger: 'onQuery',
 
       _directions: [0, 1, 0, 0, 1, 0], // forward/backward
       _targetTeam: Team.enemy,
 
-      //	require() :
+      //  require() :
       require() {
         if (!this.testRequirements()) return false;
         if (!this.testDirection({
@@ -419,9 +419,9 @@ export default (G) => {
       },
     },
 
-    //	Third Ability: Fishing Hook
+    //  Third Ability: Fishing Hook
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
@@ -442,7 +442,7 @@ export default (G) => {
         return true;
       },
 
-      //	query() :
+      //  query() :
       query() {
         const ability = this;
 
@@ -462,7 +462,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         const crea = ability.creature;

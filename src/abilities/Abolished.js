@@ -58,7 +58,7 @@ export default (G) => {
     },
     // Fiery touch
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
       distance: 3,
       _targetTeam: Team.enemy,
@@ -119,7 +119,7 @@ export default (G) => {
     },
     // Wild Fire
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
       range: 6,
       require() {
@@ -213,7 +213,7 @@ export default (G) => {
     },
     // Greater Pyre
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
       require() {
         return this.testRequirements();

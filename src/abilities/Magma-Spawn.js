@@ -11,17 +11,17 @@ import Effect from '../effect';
 export default (G) => {
   G.abilities[4] = [
 
-    // 	First Ability: Boiling Point
+    //   First Ability: Boiling Point
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onStartPhase',
 
-      // 	require() :
+      //   require() :
       require() {
         return this.testRequirements();
       },
 
-      //	activate() :
+      //  activate() :
       activate() {
         // Leave two traps behind
         this._addTrap(this.creature.hexagons[1]);
@@ -68,7 +68,7 @@ export default (G) => {
       },
     },
 
-    // 	Second Ability: Pulverizing Hit
+    //   Second Ability: Pulverizing Hit
     {
       trigger: 'onQuery',
 
@@ -77,7 +77,7 @@ export default (G) => {
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -89,7 +89,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const magmaSpawn = this.creature;
@@ -157,9 +157,9 @@ export default (G) => {
     },
 
 
-    // 	Thirt Ability: Cracked Earth
+    //   Thirt Ability: Cracked Earth
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       map: [
@@ -174,7 +174,7 @@ export default (G) => {
         return this.testRequirements();
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const magmaSpawn = this.creature;
@@ -197,7 +197,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(hexes, args) {
         const ability = this;
         ability.end();
@@ -230,9 +230,9 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Molten Hurl
+    //   Fourth Ability: Molten Hurl
     {
-      //	Type : Can be "onQuery","onStartPhase","onDamage"
+      //  Type : Can be "onQuery","onStartPhase","onDamage"
       trigger: 'onQuery',
 
       directions: [0, 1, 0, 0, 1, 0],
@@ -260,7 +260,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const magmaSpawn = this.creature;
@@ -281,7 +281,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
         const magmaSpawn = this.creature;

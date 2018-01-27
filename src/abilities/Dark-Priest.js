@@ -9,19 +9,19 @@ import { Creature } from '../creature';
  */
 export default (G) => {
   G.abilities[0] = [
-    // 	First Ability: Plasma Field
+    //   First Ability: Plasma Field
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onUnderAttack',
 
-      // 	require() :
+      //   require() :
       require(damage) {
         this.setUsed(false); // Can be triggered multiple times
         this.creature.protectedFromFatigue = this.testRequirements();
         return this.creature.protectedFromFatigue;
       },
 
-      //	activate() :
+      //  activate() :
       activate(damage) {
         if (G.activeCreature.id == this.creature.id) {
           /* only used when unit isn't active */
@@ -64,14 +64,14 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Electro Shocker
+    //   Second Ability: Electro Shocker
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
         if (!this.atLeastOneTarget(this.creature.adjacentHexes(this.isUpgraded() ? 4 : 1), {
@@ -82,7 +82,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const dpriest = this.creature;
@@ -98,7 +98,7 @@ export default (G) => {
         });
       },
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();
@@ -120,14 +120,14 @@ export default (G) => {
     },
 
 
-    // 	Third Ability: Disruptor Beam
+    //   Third Ability: Disruptor Beam
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -160,7 +160,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const dpriest = this.creature;
@@ -179,7 +179,7 @@ export default (G) => {
         });
       },
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();
@@ -208,12 +208,12 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Godlet Printer
+    //   Fourth Ability: Godlet Printer
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -230,7 +230,7 @@ export default (G) => {
 
       summonRange: 4,
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
 
@@ -286,7 +286,7 @@ export default (G) => {
         });
       },
 
-      //	activate() :
+      //  activate() :
       activate(hex, args) {
         const creature = args.creature;
         const ability = this;

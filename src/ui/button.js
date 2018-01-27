@@ -2,11 +2,11 @@ import * as $j from 'jquery';
 
 export class Button {
   /**
-	 * Constructor
-	 *
-	 *	Create attributes and default buttons
-	 *
-	 */
+   * Constructor
+   *
+   *  Create attributes and default buttons
+   *
+   */
   constructor(opts, game) {
     this.game = game;
 

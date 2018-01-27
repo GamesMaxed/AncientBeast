@@ -4,10 +4,10 @@ import * as str from '../utility/string';
 
 export class Chat {
   /* Constructor
-	 *
-	 * Chat/Log Functions
-	 *
-	 */
+   *
+   * Chat/Log Functions
+   *
+   */
   constructor(game) {
     this.game = game;
     this.$chat = $j('#chat');

@@ -11,9 +11,9 @@ import Effect from '../effect';
 export default (G) => {
   G.abilities[9] = [
 
-    // 	First Ability: Frigid Tower
+    //   First Ability: Frigid Tower
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onEndPhase',
 
       _effectName: 'Frostified',
@@ -22,7 +22,7 @@ export default (G) => {
         return this.isUpgraded() ? 5 : 0;
       },
 
-      // 	require() :
+      //   require() :
       require() {
         // Check whether this ability is upgraded; if so then make sure all existing
         // buffs include an offense buff
@@ -40,7 +40,7 @@ export default (G) => {
         return this.testRequirements();
       },
 
-      //	activate() :
+      //  activate() :
       activate() {
         this.creature.addEffect(new Effect(
           this._effectName,
@@ -60,14 +60,14 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Icy Talons
+    //   Second Ability: Icy Talons
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -79,7 +79,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
 
@@ -95,7 +95,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();
@@ -133,14 +133,14 @@ export default (G) => {
     },
 
 
-    // 	Third Ability: Sudden Uppercut
+    //   Third Ability: Sudden Uppercut
     {
-      //	Type : Can be "onQuery","onStartPhase","onDamage"
+      //  Type : Can be "onQuery","onStartPhase","onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -152,7 +152,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
 
@@ -168,7 +168,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();
@@ -208,9 +208,9 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Icicle Spear
+    //   Fourth Ability: Icicle Spear
     {
-      //	Type : Can be "onQuery","onStartPhase","onDamage"
+      //  Type : Can be "onQuery","onStartPhase","onDamage"
       trigger: 'onQuery',
 
       directions: [1, 1, 1, 1, 1, 1],
@@ -239,7 +239,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -262,7 +262,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
 

@@ -10,44 +10,44 @@ import Effect from '../effect';
  */
 export default (G) => {
   /*
-	 *
-	 *	Scavenger abilities
-	 *
-	 */
+   *
+   *  Scavenger abilities
+   *
+   */
   G.abilities[44] = [
 
-    // 	First Ability: Wing Feathers
+    //   First Ability: Wing Feathers
     {
       /**
-			 * Provides custom movement type given whether the ability is upgraded or not.
-			 * Movement type is "hover" unless this ability is upgraded, then it's "flying"
-			 * @return {string} movement type, "hover" or "flying"
-			 */
+       * Provides custom movement type given whether the ability is upgraded or not.
+       * Movement type is "hover" unless this ability is upgraded, then it's "flying"
+       * @return {string} movement type, "hover" or "flying"
+       */
       movementType() {
         return this.isUpgraded() ? 'flying' : this.creature._movementType;
       },
 
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: '',
 
-      // 	require() :
+      //   require() :
       require() {
         return true;
       },
 
-      //	activate() :
+      //  activate() :
       activate() { },
     },
 
 
-    // 	Second Ability: Slicing Pounce
+    //   Second Ability: Slicing Pounce
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -59,7 +59,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
 
@@ -75,7 +75,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();
@@ -104,14 +104,14 @@ export default (G) => {
     },
 
 
-    // 	Third Ability: Escort Service
+    //   Third Ability: Escort Service
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.both,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -227,7 +227,7 @@ export default (G) => {
         });
       },
 
-      //	activate() :
+      //  activate() :
       activate(hex, args) {
         const ability = this;
         ability.end();
@@ -277,14 +277,14 @@ export default (G) => {
       },
     },
 
-    // 	Fourth Ability: Deadly Toxin
+    //   Fourth Ability: Deadly Toxin
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -296,7 +296,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
 
@@ -312,7 +312,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();

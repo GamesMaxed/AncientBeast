@@ -11,7 +11,7 @@ import { Creature } from '../creature';
 export default (G) => {
   G.abilities[31] = [
 
-    // 	First Ability: Bad Doggie
+    //   First Ability: Bad Doggie
     {
       triggerFunc() {
         // When upgraded, trigger both at start and end of turn
@@ -54,14 +54,14 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Metal Hand
+    //   Second Ability: Metal Hand
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -73,7 +73,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -90,7 +90,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();
@@ -116,9 +116,9 @@ export default (G) => {
     },
 
 
-    // 	Third Ability: Rocket Launcher
+    //   Third Ability: Rocket Launcher
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       require() {
@@ -141,7 +141,7 @@ export default (G) => {
         return this.testRequirements();
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -181,7 +181,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(choice, args) {
         const ability = this;
         ability.end();
@@ -238,12 +238,12 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Target Locking
+    //   Fourth Ability: Target Locking
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -255,7 +255,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -274,7 +274,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(crea, args) {
         const ability = this;
         ability.end();

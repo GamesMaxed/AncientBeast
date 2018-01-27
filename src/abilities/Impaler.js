@@ -12,7 +12,7 @@ import Effect from '../effect';
 export default (G) => {
   G.abilities[5] = [
 
-    // 	First Ability: Electrified Hair
+    //   First Ability: Electrified Hair
     {
       trigger: 'onUnderAttack',
 
@@ -43,14 +43,14 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Hasted Javelin
+    //   Second Ability: Hasted Javelin
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -62,7 +62,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const creature = this.creature;
@@ -79,7 +79,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target, args) {
         const ability = this;
         ability.end();
@@ -117,14 +117,14 @@ export default (G) => {
     },
 
 
-    // 	Thirt Ability: Poisonous Vine
+    //   Thirt Ability: Poisonous Vine
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.atLeastOneTarget(this._getHexes(), {
           team: this._targetTeam,
@@ -134,7 +134,7 @@ export default (G) => {
         return this.testRequirements();
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const creature = this.creature;
@@ -196,9 +196,9 @@ export default (G) => {
     },
 
 
-    //	Fourth Ability: Chain Lightning
+    //  Fourth Ability: Chain Lightning
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       _targetTeam: Team.both,
@@ -213,7 +213,7 @@ export default (G) => {
         return true;
       },
 
-      //	query() :
+      //  query() :
       query() {
         const ability = this;
 
@@ -229,7 +229,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(target) {
         const ability = this;
         ability.end();

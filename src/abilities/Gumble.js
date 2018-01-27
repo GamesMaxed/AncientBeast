@@ -11,7 +11,7 @@ import Effect from '../effect';
 export default (G) => {
   G.abilities[14] = [
 
-    // 	First Ability: Gooey Body
+    //   First Ability: Gooey Body
     {
       // Update stat buffs whenever health changes
       trigger: 'onCreatureSummon onDamage onHeal',
@@ -60,9 +60,9 @@ export default (G) => {
     },
 
 
-    // 	Second Ability: Gummy Mallet
+    //   Second Ability: Gummy Mallet
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       require() {
@@ -70,7 +70,7 @@ export default (G) => {
         return this.testRequirements();
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         // Gummy Mallet can hit a 7-hexagon circular area in 6 directions, where the
@@ -143,17 +143,17 @@ export default (G) => {
     },
 
 
-    // 	Thirt Ability: Royal Seal
+    //   Thirt Ability: Royal Seal
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
-      // 	require() :
+      //   require() :
       require() {
         return this.testRequirements();
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const creature = this.creature;
@@ -176,7 +176,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(hex) {
         this.end();
         const ability = this;
@@ -234,15 +234,15 @@ export default (G) => {
     },
 
 
-    // 	Fourth Ability: Boom Box
+    //   Fourth Ability: Boom Box
     {
-      //	Type : Can be "onQuery", "onStartPhase", "onDamage"
+      //  Type : Can be "onQuery", "onStartPhase", "onDamage"
       trigger: 'onQuery',
 
       directions: [1, 1, 1, 1, 1, 1],
       _targetTeam: Team.enemy,
 
-      // 	require() :
+      //   require() :
       require() {
         if (!this.testRequirements()) return false;
 
@@ -255,7 +255,7 @@ export default (G) => {
         return true;
       },
 
-      // 	query() :
+      //   query() :
       query() {
         const ability = this;
         const crea = this.creature;
@@ -275,7 +275,7 @@ export default (G) => {
       },
 
 
-      //	activate() :
+      //  activate() :
       activate(path, args) {
         const ability = this;
         ability.end();

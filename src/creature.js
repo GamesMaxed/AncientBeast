@@ -12,41 +12,41 @@ import Effect from './effect';
  */
 export class Creature {
   /* Attributes
-	 *
-	 * NOTE : attributes and variables starting with $ are jquery element
-	 * and jquery function can be called dirrectly from them.
-	 *
-	 * // Jquery attributes
-	 * $display :		Creature representation
-	 * $effects :		Effects container (inside $display)
-	 *
-	 * // Normal attributes
-	 * x :				Integer :	Hex coordinates
-	 * y :				Integer :	Hex coordinates
-	 * pos :			Object :	Pos object for hex comparison {x,y}
-	 *
-	 * name :			String :	Creature name
-	 * id :			Integer :	Creature Id incrementing for each creature starting to 1
-	 * size :			Integer :	Creature size in hexes (1,2 or 3)
-	 * type :			Integer :	Type of the creature stocked in the database
-	 * team :			Integer :	Owner's ID (0,1,2 or 3)
-	 * player :		Player :	Player object shortcut
-	 * hexagons :		Array :		Array containing the hexes where the creature is
-	 *
-	 * dead :			Boolean :	True if dead
-	 * stats :			Object :	Object containing stats of the creature
-	 * statsAlt :		Object :	Object containing the alteration value for each stat //todo
-	 * abilities :		Array :		Array containing the 4 abilities
-	 * remainingMove : Integer :	Remaining moves allowed untill the end of turn
-	 *
-	 */
+   *
+   * NOTE : attributes and variables starting with $ are jquery element
+   * and jquery function can be called dirrectly from them.
+   *
+   * // Jquery attributes
+   * $display :    Creature representation
+   * $effects :    Effects container (inside $display)
+   *
+   * // Normal attributes
+   * x :        Integer :  Hex coordinates
+   * y :        Integer :  Hex coordinates
+   * pos :      Object :  Pos object for hex comparison {x,y}
+   *
+   * name :      String :  Creature name
+   * id :      Integer :  Creature Id incrementing for each creature starting to 1
+   * size :      Integer :  Creature size in hexes (1,2 or 3)
+   * type :      Integer :  Type of the creature stocked in the database
+   * team :      Integer :  Owner's ID (0,1,2 or 3)
+   * player :    Player :  Player object shortcut
+   * hexagons :    Array :    Array containing the hexes where the creature is
+   *
+   * dead :      Boolean :  True if dead
+   * stats :      Object :  Object containing stats of the creature
+   * statsAlt :    Object :  Object containing the alteration value for each stat //todo
+   * abilities :    Array :    Array containing the 4 abilities
+   * remainingMove : Integer :  Remaining moves allowed untill the end of turn
+   *
+   */
 
 
   /* Constructor(obj)
-	 *
-	 * obj :			Object :	Object containing all creature stats
-	 *
-	 */
+   *
+   * obj :      Object :  Object containing all creature stats
+   *
+   */
   constructor(obj, game) {
     // Engine
     this.game = game;
@@ -193,10 +193,10 @@ export class Creature {
 
 
   /* summon()
-	 *
-	 * Summon animation
-	 *
-	 */
+   *
+   * Summon animation
+   *
+   */
   summon() {
     const game = this.game;
 
@@ -243,10 +243,10 @@ export class Creature {
   }
 
   /* activate()
-	 *
-	 * Activate the creature by showing movement range and binding controls to this creature
-	 *
-	 */
+   *
+   * Activate the creature by showing movement range and binding controls to this creature
+   *
+   */
   activate() {
     this.travelDist = 0;
     this.oldEnergy = this.energy;
@@ -327,12 +327,12 @@ export class Creature {
   }
 
   /* deactivate(wait)
-	 *
-	 * wait :	Boolean :	Deactivate while waiting or not
-	 *
-	 * Preview the creature position at the given coordinates
-	 *
-	 */
+   *
+   * wait :  Boolean :  Deactivate while waiting or not
+   *
+   * Preview the creature position at the given coordinates
+   *
+   */
   deactivate(wait) {
     const game = this.game;
 
@@ -349,10 +349,10 @@ export class Creature {
   }
 
   /* wait()
-	 *
-	 * Move the creature to the end of the queue
-	 *
-	 */
+   *
+   * Move the creature to the end of the queue
+   *
+   */
   wait() {
     let abilityAvailable = false;
 
@@ -382,10 +382,10 @@ export class Creature {
   }
 
   /* queryMove()
-	 *
-	 * launch move action query
-	 *
-	 */
+   *
+   * launch move action query
+   *
+   */
   queryMove(o) {
     const game = this.game;
 
@@ -501,12 +501,12 @@ export class Creature {
   }
 
   /* previewPosition(hex)
-	 *
-	 * hex :		Hex :		Position
-	 *
-	 * Preview the creature position at the given Hex
-	 *
-	 */
+   *
+   * hex :    Hex :    Position
+   *
+   * Preview the creature position at the given Hex
+   *
+   */
   previewPosition(hex) {
     const game = this.game;
 
@@ -523,10 +523,10 @@ export class Creature {
   }
 
   /* cleanHex()
-	 *
-	 * Clean current creature hexagons
-	 *
-	 */
+   *
+   * Clean current creature hexagons
+   *
+   */
   cleanHex() {
     this.hexagons.forEach((hex) => {
       hex.creature = undefined;
@@ -535,10 +535,10 @@ export class Creature {
   }
 
   /* updateHex()
-	 *
-	 * Update the current hexes containing the creature and their display
-	 *
-	 */
+   *
+   * Update the current hexes containing the creature and their display
+   *
+   */
   updateHex() {
     let count = this.size,
       i;
@@ -553,13 +553,13 @@ export class Creature {
   }
 
   /* faceHex(facefrom,faceto)
-	 *
-	 * facefrom :	Hex or Creature :	Hex to face from
-	 * faceto :	Hex or Creature :	Hex to face
-	 *
-	 * Face creature at given hex
-	 *
-	 */
+   *
+   * facefrom :  Hex or Creature :  Hex to face from
+   * faceto :  Hex or Creature :  Hex to face
+   *
+   * Face creature at given hex
+   *
+   */
   faceHex(faceto, facefrom, ignoreCreaHex, attackFix) {
     if (!facefrom) {
       facefrom = (this.player.flipped) ? this.hexagons[this.size - 1] : this.hexagons[0];
@@ -608,10 +608,10 @@ export class Creature {
   }
 
   /* facePlayerDefault()
-	 *
-	 * Face default direction
-	 *
-	 */
+   *
+   * Face default direction
+   *
+   */
   facePlayerDefault() {
     if (this.player.flipped) {
       this.sprite.scale.setTo(-1, 1);
@@ -622,13 +622,13 @@ export class Creature {
   }
 
   /* moveTo(hex,opts)
-	 *
-	 * hex :		Hex :		Destination Hex
-	 * opts :		Object :	Optional args object
-	 *
-	 * Move the creature along a calculated path to the given coordinates
-	 *
-	 */
+   *
+   * hex :    Hex :    Destination Hex
+   * opts :    Object :  Optional args object
+   *
+   * Move the creature along a calculated path to the given coordinates
+   *
+   */
   moveTo(hex, opts) {
     let game = this.game,
       defaultOpt = {
@@ -682,12 +682,12 @@ export class Creature {
   }
 
   /* tracePath(hex)
-	 *
-	 * hex :	Hex :	Destination Hex
-	 *
-	 * Trace the path from the current possition to the given coordinates
-	 *
-	 */
+   *
+   * hex :  Hex :  Destination Hex
+   *
+   * Trace the path from the current possition to the given coordinates
+   *
+   */
   tracePath(hex) {
     let game = this.game,
       x = hex.x,
@@ -752,13 +752,13 @@ export class Creature {
   }
 
   /* calculatePath(x,y)
-	 *
-	 * x :		Integer :	Destination coordinates
-	 * y :		Integer :	Destination coordinates
-	 *
-	 * return :	Array :	Array containing the path hexes
-	 *
-	 */
+   *
+   * x :    Integer :  Destination coordinates
+   * y :    Integer :  Destination coordinates
+   *
+   * return :  Array :  Array containing the path hexes
+   *
+   */
   calculatePath(x, y) {
     const game = this.game;
 
@@ -772,15 +772,15 @@ export class Creature {
   }
 
   /* calcOffset(x,y)
-	 *
-	 * x :		Integer :	Destination coordinates
-	 * y :		Integer :	Destination coordinates
-	 *
-	 * return :	Object :	New position taking into acount the size, orientation and obstacle {x,y}
-	 *
-	 * Return the first possible position for the creature at the given coordinates
-	 *
-	 */
+   *
+   * x :    Integer :  Destination coordinates
+   * y :    Integer :  Destination coordinates
+   *
+   * return :  Object :  New position taking into acount the size, orientation and obstacle {x,y}
+   *
+   * Return the first possible position for the creature at the given coordinates
+   *
+   */
   calcOffset(x, y) {
     let offset = (game.players[this.team].flipped) ? this.size - 1 : 0,
       mult = (game.players[this.team].flipped) ? 1 : -1, // For FLIPPED player
@@ -804,10 +804,10 @@ export class Creature {
   }
 
   /* getInitiative()
-	 *
-	 * return :	Integer :	Initiative value to order the queue
-	 *
-	 */
+   *
+   * return :  Integer :  Initiative value to order the queue
+   *
+   */
   getInitiative() {
     // To avoid 2 identical initiative
     return this.stats.initiative * 500 - this.id;
@@ -815,12 +815,12 @@ export class Creature {
 
 
   /* adjacentHexes(dist)
-	 *
-	 * dist :		Integer :	Distance in hexagons
-	 *
-	 * return :	Array :		Array of adjacent hexagons
-	 *
-	 */
+   *
+   * dist :    Integer :  Distance in hexagons
+   *
+   * return :  Array :    Array of adjacent hexagons
+   *
+   */
   adjacentHexes(dist, clockwise) {
     const game = this.game;
 
@@ -972,17 +972,17 @@ export class Creature {
   }
 
   /**
-	 * Restore energy up to the max limit
-	 * amount: amount of energy to restore
-	 */
+   * Restore energy up to the max limit
+   * amount: amount of energy to restore
+   */
   recharge(amount) {
     this.energy = Math.min(this.stats.energy, this.energy + amount);
   }
 
   /* heal(amount)
-	 *
-	 * amount :	Damage :	Amount of health point to restore
-	 */
+   *
+   * amount :  Damage :  Amount of health point to restore
+   */
   heal(amount, isRegrowth) {
     const game = this.game;
     // Cap health point
@@ -1025,11 +1025,11 @@ export class Creature {
   }
 
   /* takeDamage(damage)
-	 *
-	 * damage :	Damage : 	Damage object
-	 *
-	 * return :	Object :	Contains damages dealed and if creature is killed or not
-	 */
+   *
+   * damage :  Damage :   Damage object
+   *
+   * return :  Object :  Contains damages dealed and if creature is killed or not
+   */
   takeDamage(damage, o) {
     const game = this.game;
 
@@ -1203,10 +1203,10 @@ export class Creature {
   }
 
   /* addEffect(effect)
-	 *
-	 * effect :		Effect :	Effect object
-	 *
-	 */
+   *
+   * effect :    Effect :  Effect object
+   *
+   */
   addEffect(effect, specialString, specialHint) {
     const game = this.game;
 
@@ -1237,12 +1237,12 @@ export class Creature {
   }
 
   /**
-	 * Add effect, but if the effect is already attached, replace it with the new
-	 * effect.
-	 * Note that for stackable effects, this is the same as addEffect()
-	 *
-	 * effect - the effect to add
-	 */
+   * Add effect, but if the effect is already attached, replace it with the new
+   * effect.
+   * Note that for stackable effects, this is the same as addEffect()
+   *
+   * effect - the effect to add
+   */
   replaceEffect(effect) {
     if (!effect.stackable && this.findEffect(effect.name).length !== 0) {
       this.removeEffect(effect.name);
@@ -1252,10 +1252,10 @@ export class Creature {
   }
 
   /**
-	 * Remove an effect by name
-	 *
-	 * name - name of effect
-	 */
+   * Remove an effect by name
+   *
+   * name - name of effect
+   */
   removeEffect(name) {
     const totalEffects = this.effects.length;
 
@@ -1358,10 +1358,10 @@ export class Creature {
   }
 
   /* updateAlteration()
-	 *
-	 * Update the stats taking into account the effects' alteration
-	 *
-	 */
+   *
+   * Update the stats taking into account the effects' alteration
+   *
+   */
   updateAlteration() {
     this.stats = $j.extend({}, this.baseStats); // Copy
 
@@ -1401,12 +1401,12 @@ export class Creature {
   }
 
   /* die()
-	 *
-	 * kill animation. remove creature from queue and from hexes
-	 *
-	 * killer :	Creature :	Killer of this creature
-	 *
-	 */
+   *
+   * kill animation. remove creature from queue and from hexes
+   *
+   * killer :  Creature :  Killer of this creature
+   *
+   */
   die(killer) {
     const game = this.game;
 
@@ -1533,9 +1533,9 @@ export class Creature {
   }
 
   /* getHexMap()
-	 *
-	 * shortcut convenience function to grid.getHexMap
-	 */
+   *
+   * shortcut convenience function to grid.getHexMap
+   */
   getHexMap(map, invertFlipped) {
     const x = (this.player.flipped ? !invertFlipped : invertFlipped) ? this.x + 1 - this.size : this.x;
     return this.game.grid.getHexMap(x, this.y - map.origin[1], 0 - map.origin[0], (this.player.flipped ? !invertFlipped : invertFlipped), map);
@@ -1650,9 +1650,9 @@ export class Creature {
   }
 
   /**
-	 * Get movement type for this creature
-	 * @return {string} "normal", "hover", or "flying"
-	 */
+   * Get movement type for this creature
+   * @return {string} "normal", "hover", or "flying"
+   */
   movementType() {
     const totalAbilities = this.abilities.length;
 

@@ -8,11 +8,11 @@ import * as $j from 'jquery';
  */
 export class Trap {
   /* Constructor(x,y)
-	 *
-	 * x : 			Integer : 	Hex coordinates
-	 * y : 			Integer : 	Hex coordinates
-	 *
-	 */
+   *
+   * x :       Integer :   Hex coordinates
+   * y :       Integer :   Hex coordinates
+   *
+   */
   constructor(x, y, type, effects, owner, opt, game) {
     this.game = game;
     this.hex = game.grid.hexes[y][x];
