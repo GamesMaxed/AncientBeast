@@ -49,6 +49,8 @@
     "style-loader": "^0.19.0",
     "uglifyjs-webpack-plugin": "^1.1.2",
     "webpack": "^3.8.1",
+    "webpack-dashboard": "^1.1.1",
+    "webpack-dev-server": "^2.11.1",
     "webpack-merge": "^4.1.1"
   },
   "engines": {
@@ -56,8 +58,7 @@
   },
   "scripts": {
     "build": "yarn run generateManifest && webpack --config webpack.prod.js",
-    "build:dev": "yarn run generateManifest && webpack --config webpack.dev.js",
-    "dev": "webpack --config webpack.dev.js --watch",
+    "dev": "webpack-dev-server --config webpack.dev.js",
     "lint": "eslint src/**/*.js",
     "generateManifest": "node manifestGenerator.js",
     "start": "http-server deploy/"
