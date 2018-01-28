@@ -1,4 +1,4 @@
-import { extend } from 'jquery';
+import { cloneDeep } from 'lodash';
 import { Damage } from './damage';
 import Hex from './utility/hex';
 import Creature from './creature';
@@ -27,8 +27,7 @@ export default class Ability {
     this.token = 0;
 
     const data = game.retreiveCreatureStats(creature.type);
-    // Deepclone
-    extend(true, this, game.abilities[data.id][abilityID], data.ability_info[abilityID]);
+    cloneDeep(this, game.abilities[data.id][abilityID], data.ability_info[abilityID]);
 
     if (this.requirements === undefined && this.costs !== undefined) {
       this.requirements = this.costs;

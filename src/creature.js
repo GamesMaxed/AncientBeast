@@ -470,6 +470,7 @@ export default class Creature {
         this.hint('Canceled', 'gamehintblack');
       }
 
+      // TODO: do this in the UI layer
       jquery('#abilities .ability').removeClass('active');
       game.UI.selectAbility(-1);
       game.UI.checkAbilities();

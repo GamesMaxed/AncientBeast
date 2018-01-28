@@ -857,7 +857,7 @@ export default class Game {
    * @param type {String} Creature's type (ex: "0" for Dark Priest and "L2" for Magma Spawn)
    */
   retreiveCreatureStats(type) {
-    return this.creatureData.filter(creature => creature.type === type);
+    return this.creatureData.find(creature => creature.type === type);
   }
 
   triggerAbility(trigger, arg, retValue) {
