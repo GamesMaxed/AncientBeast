@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 import * as jQuery from 'jquery';
 import { getGameConfig } from '../script';
 
-export class GameLog {
+export default class GameLog {
   constructor(id, game) {
     this.game = game;
     this.data = [];
@@ -16,9 +17,9 @@ export class GameLog {
   }
 
   config(config) {
-    const game = this.game;
+    const { game } = this.game;
 
-    if (game.gameState != 'initialized') {
+    if (game.gameState !== 'initialized') {
       alert('To set the game config, you need to be in the setup screen');
     } else {
       game.loadGame(config);
@@ -33,14 +34,18 @@ export class GameLog {
     }
   }
 
+  /**
+   *
+   * @param {object | string} log
+   */
   play(log) {
-    let game = this.game,
-      config,
-      data;
+    const { game } = this;
+    let config;
+    let data;
 
     if (typeof log === 'object' && !log.length) {
       data = log.log;
-      config = log.config;
+      config = log.config; // eslint-disable-line prefer-destructuring
       this.data = data;
       return this.config(config);
     } else if (typeof log === 'string') {
@@ -56,7 +61,7 @@ export class GameLog {
     }
 
     const fun = () => {
-      this.timeCursor++;
+      this.timeCursor += 1;
 
       if (game.debugMode) {
         console.log(`${this.timeCursor}/${this.data.length}`);
@@ -82,20 +87,20 @@ export class GameLog {
   }
 
   next() {
-    const game = this.game;
+    const { game } = this;
 
     if (game.freezedInput || game.turnThrottle) {
       return false;
     }
 
-    this.timeCursor++;
+    this.timeCursor += 1;
     if (game.debugMode) {
       console.log(`${this.timeCursor}/${this.data.length}`);
     }
 
     if (this.timeCursor > this.data.length - 1) {
       game.activeCreature.queryMove(); // Avoid bug
-      return;
+      return false;
     }
 
     const interval = setInterval(() => {
@@ -109,28 +114,35 @@ export class GameLog {
         });
       }
     }, 100);
+
+    return true;
   }
 
+  /**
+   *
+   * @param {Object} state
+   */
   get(state) {
-    let config = jQuery.isEmptyObject(this.gameConfig) ? getGameConfig() : this.gameConfig,
-      dict = {
-        config,
-        log: this.data,
-      },
-      json = JSON.stringify(dict),
-      hash = `AB-${this.game.version}:${btoa(JSON.stringify(dict))}`,
-      output,
-      strOutput;
+    const config = (Object.keys(this.gameConfig).legnth === 0) ? getGameConfig() : this.gameConfig;
+    const dict = {
+      config,
+      log: this.data,
+    };
+    const json = JSON.stringify(dict);
+    const hash = `AB-${this.game.version}:${btoa(JSON.stringify(dict))}`;
+    let output;
+    let strOutput;
 
     switch (state) {
       case 'json':
         output = dict;
         strOutput = json;
         break;
-      case 'save':
-        var fileName = new Date().toISOString().slice(0, 10);
-        this.saveFile(JSON.stringify(dict.log), `${fileName}.AB`);
+      case 'save': {
+        const fileName = new Date().toISOString().slice(0, 10);
+        GameLog.saveFile(JSON.stringify(dict.log), `${fileName}.AB`);
         break;
+      }
       case 'hash':
       default:
         output = hash;
@@ -141,7 +153,14 @@ export class GameLog {
     return output;
   }
 
-  saveFile(data, fileName) {
+
+  /**
+   * Save it to a file
+   * @param {object} data Data to save
+   * @param {string} fileName The file to download
+   * @private
+   */
+  static saveFile(data, fileName) {
     const a = document.createElement('a');
     const file = new Blob([data]);
     const url = URL.createObjectURL(file);

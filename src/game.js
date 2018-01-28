@@ -2,7 +2,7 @@ import * as $j from 'jquery';
 import dataJson from 'assets/units/data.json';
 import { Animations } from './animations';
 import { CreatureQueue } from './creature_queue';
-import { GameLog } from './utility/gamelog';
+import GameLog from './utility/gamelog';
 import { SoundSys } from './sound/soundsys';
 import { MusicPlayer } from './sound/musicplayer';
 import Hex from './utility/hex';
@@ -21,7 +21,7 @@ import Creature from './creature';
  * before creating other class instances. The game setup is triggered
  * to really start the game.
  */
-export default class {
+export default class Game {
   /**
    * Attributes
    *
