@@ -1,5 +1,5 @@
 import { getUrl } from './assetLoader';
-import { Creature } from './creature';
+import Creature from './creature';
 
 /**
  * Player Class

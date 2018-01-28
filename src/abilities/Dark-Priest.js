@@ -1,7 +1,7 @@
 import { Damage } from '../damage';
 import { Team } from '../utility/team';
 import * as arrayUtils from '../utility/arrayUtils';
-import { Creature } from '../creature';
+import Creature from '../creature';
 
 /**
  * Creates the abilities

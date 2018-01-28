@@ -1,6 +1,6 @@
 import { Damage } from '../damage';
 import { Team } from '../utility/team';
-import { Creature } from '../creature';
+import Creature from '../creature';
 import Effect from '../effect';
 import * as arrayUtils from '../utility/arrayUtils';
 
@@ -195,10 +195,10 @@ export default (G) => {
               G,
             ),
           ], crea.player, {
-            turnLifetime: 1,
-            ownerCreature: crea,
-            fullTurnLifetime: true,
-          });
+              turnLifetime: 1,
+              ownerCreature: crea,
+              fullTurnLifetime: true,
+            });
         });
 
         ability.creature.moveTo(hex, {

@@ -14,8 +14,16 @@ module.exports = {
   settings: {
     "import/resolver": {
       webpack: {
-        config: "webpack.config.js"
+        config: "webpack.common.js"
       }
     }
+  },
+  rules: {
+    "no-mixed-operators": [
+      "error",
+      {
+        "allowSamePrecedence": true
+      }
+    ]
   }
 }

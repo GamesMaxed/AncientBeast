@@ -3,7 +3,7 @@ import { Button } from './button';
 import { Chat } from './chat';
 import { ProgressBar } from './progressbar';
 import * as time from '../utility/time';
-import { Creature } from '../creature';
+import Creature from '../creature';
 import { getUrl } from '../assetLoader';
 
 /**
@@ -1191,34 +1191,34 @@ export class UI {
       if (costs_string) {
         $abilityInfo.append(`${'<div class="info costs">' +
           'Costs : '}${costs_string
-        }</div>`);
+          }</div>`);
       }
 
       const dmg_string = ab.getFormattedDamages();
       if (dmg_string) {
         $abilityInfo.append(`${'<div class="info damages">' +
           'Damages : '}${dmg_string
-        }</div>`);
+          }</div>`);
       }
 
       const special_string = ab.getFormattedEffects();
       if (special_string) {
         $abilityInfo.append(`${'<div class="info special">' +
           'Effects : '}${special_string
-        }</div>`);
+          }</div>`);
       }
 
       if (ab.hasUpgrade()) {
         if (!ab.isUpgraded()) {
           $abilityInfo.append(`<div class="info upgrade">${
             ab.isUpgradedPerUse() ? 'Uses' : 'Rounds'
-          } left before upgrading : ${ab.usesLeftBeforeUpgrade()
-          }</div>`);
+            } left before upgrading : ${ab.usesLeftBeforeUpgrade()
+            }</div>`);
         }
 
         $abilityInfo.append(`${'<div class="info upgrade">' +
           'Upgrade : '}${ab.upgrade
-        }</div>`);
+          }</div>`);
       }
     });
   }

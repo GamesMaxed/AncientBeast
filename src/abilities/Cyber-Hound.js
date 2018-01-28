@@ -2,7 +2,7 @@ import { Damage } from '../damage';
 import { Team, isTeam } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
-import { Creature } from '../creature';
+import Creature from '../creature';
 
 /**
  * Creates the abilities
@@ -110,7 +110,7 @@ export default (G) => {
           target.energy -= energySteal;
           this.creature.recharge(energySteal);
           G.log(`%CreatureName${this.creature.id}% steals ${energySteal
-          } energy from %CreatureName${target.id}%`);
+            } energy from %CreatureName${target.id}%`);
         }
       },
     },

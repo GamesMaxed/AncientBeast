@@ -2,7 +2,7 @@ import { Damage } from '../damage';
 import { Team, isTeam } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import * as arrayUtils from '../utility/arrayUtils';
-import { Creature } from '../creature';
+import Creature from '../creature';
 import Effect from '../effect';
 
 /**

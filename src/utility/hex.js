@@ -1,5 +1,5 @@
 import { Trap } from './trap';
-import { Creature } from '../creature';
+import Creature from '../creature';
 
 /**
  * Hex Class

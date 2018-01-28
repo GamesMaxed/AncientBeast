@@ -10,7 +10,7 @@ import { HexGrid } from './utility/hexgrid';
 import { getUrl } from './assetLoader';
 import Player from './player';
 import { UI } from './ui/interface';
-import { Creature } from './creature';
+import Creature from './creature';
 
 /* Game Class
  *
@@ -21,7 +21,6 @@ import { Creature } from './creature';
  * before creating other class instances. The game setup is triggered
  * to really start the game.
  */
-
 export default class {
   /**
    * Attributes
