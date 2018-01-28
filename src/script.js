@@ -61,6 +61,7 @@ const abilitiesGenerators = [
 ];
 abilitiesGenerators.forEach(generator => generator(G));
 
+/* eslint-disable import/prefer-default-export */
 /**
  * Get the game config from the user window
  *
@@ -68,19 +69,21 @@ abilitiesGenerators.forEach(generator => generator(G));
  */
 export function getGameConfig() {
   const defaultConfig = {
-    playerMode: $j('input[name="playerMode"]:checked').val() - 0,
-    creaLimitNbr: $j('input[name="activeUnits"]:checked').val() - 0, // DP counts as One
-    unitDrops: $j('input[name="unitDrops"]:checked').val() - 0,
-    abilityUpgrades: $j('input[name="abilityUpgrades"]:checked').val() - 0,
-    plasma_amount: $j('input[name="plasmaPoints"]:checked').val() - 0,
-    turnTimePool: $j('input[name="turnTime"]:checked').val() - 0,
-    timePool: $j('input[name="timePool"]:checked').val() * 60,
-    background_image: $j('input[name="combatLocation"]:checked').val(),
+    playerMode: jquery('input[name="playerMode"]:checked').val() - 0,
+    creaLimitNbr: jquery('input[name="activeUnits"]:checked').val() - 0, // DP counts as One
+    unitDrops: jquery('input[name="unitDrops"]:checked').val() - 0,
+    abilityUpgrades: jquery('input[name="abilityUpgrades"]:checked').val() - 0,
+    plasma_amount: jquery('input[name="plasmaPoints"]:checked').val() - 0,
+    turnTimePool: jquery('input[name="turnTime"]:checked').val() - 0,
+    timePool: jquery('input[name="timePool"]:checked').val() * 60,
+    background_image: jquery('input[name="combatLocation"]:checked').val(),
   };
   const config = G.gamelog.gameConfig || defaultConfig;
 
   return config;
 }
+/* eslint-enable import/prefer-default-export */
+
 
 jquery(document).ready(() => {
   jquery('.typeRadio').buttonset();

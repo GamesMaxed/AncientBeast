@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const { DefinePlugin } = require('webpack');
 const merge = require('webpack-merge');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
