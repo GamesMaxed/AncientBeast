@@ -4,8 +4,12 @@
       "@babel/preset-env",
       {
         "targets": {
-          "esmodules": true
-        }
+          "browsers": [
+            "last 2 chrome versions",
+            "last 2 firefox versions"
+          ]
+        },
+        "modules": false
       }
     ]
   ]
