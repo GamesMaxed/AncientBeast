@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import * as jQuery from 'jquery';
+import jQuery from 'jquery';
 import { getGameConfig } from '../script';
 
 export default class GameLog {

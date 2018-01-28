@@ -1,5 +1,4 @@
-import * as $j from 'jquery';
-import * as time from '../utility/time';
+import $j from 'jquery';
 import * as str from '../utility/string';
 
 export class Chat {

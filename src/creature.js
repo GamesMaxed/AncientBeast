@@ -1,4 +1,4 @@
-import * as $j from 'jquery';
+import jquery from 'jquery';
 import { times } from 'lodash';
 import Ability from './ability';
 import { search } from './utility/pathfinding';
@@ -470,7 +470,7 @@ export default class Creature {
         this.hint('Canceled', 'gamehintblack');
       }
 
-      $j('#abilities .ability').removeClass('active');
+      jquery('#abilities .ability').removeClass('active');
       game.UI.selectAbility(-1);
       game.UI.checkAbilities();
       game.UI.updateQueueDisplay();

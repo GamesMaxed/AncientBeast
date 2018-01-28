@@ -1,4 +1,4 @@
-import * as $j from 'jquery';
+import $j from 'jquery';
 import { Button } from './button';
 import { Chat } from './chat';
 import { ProgressBar } from './progressbar';

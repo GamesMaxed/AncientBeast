@@ -1,5 +1,5 @@
 // Import jquery related stuff
-import * as jquery from 'jquery';
+import jQuery from 'jquery';
 import 'jquery-ui/ui/widgets/button';
 import 'jquery-ui/ui/widgets/slider';
 import 'jquery.transit';
@@ -34,7 +34,7 @@ import uncleFungusAbilitiesGenerator from './abilities/Uncle-Fungus';
 
 
 // Export stuff that needs to be on the window object (Hack)
-window.$j = jquery;
+window.$j = jQuery;
 window.Phaser = Phaser;
 
 // Create the game
@@ -69,14 +69,14 @@ abilitiesGenerators.forEach(generator => generator(G));
  */
 export function getGameConfig() {
   const defaultConfig = {
-    playerMode: jquery('input[name="playerMode"]:checked').val() - 0,
-    creaLimitNbr: jquery('input[name="activeUnits"]:checked').val() - 0, // DP counts as One
-    unitDrops: jquery('input[name="unitDrops"]:checked').val() - 0,
-    abilityUpgrades: jquery('input[name="abilityUpgrades"]:checked').val() - 0,
-    plasma_amount: jquery('input[name="plasmaPoints"]:checked').val() - 0,
-    turnTimePool: jquery('input[name="turnTime"]:checked').val() - 0,
-    timePool: jquery('input[name="timePool"]:checked').val() * 60,
-    background_image: jquery('input[name="combatLocation"]:checked').val(),
+    playerMode: jQuery('input[name="playerMode"]:checked').val() - 0,
+    creaLimitNbr: jQuery('input[name="activeUnits"]:checked').val() - 0, // DP counts as One
+    unitDrops: jQuery('input[name="unitDrops"]:checked').val() - 0,
+    abilityUpgrades: jQuery('input[name="abilityUpgrades"]:checked').val() - 0,
+    plasma_amount: jQuery('input[name="plasmaPoints"]:checked').val() - 0,
+    turnTimePool: jQuery('input[name="turnTime"]:checked').val() - 0,
+    timePool: jQuery('input[name="timePool"]:checked').val() * 60,
+    background_image: jQuery('input[name="combatLocation"]:checked').val(),
   };
   const config = G.gamelog.gameConfig || defaultConfig;
 
@@ -84,23 +84,22 @@ export function getGameConfig() {
 }
 /* eslint-enable import/prefer-default-export */
 
-
-jquery(document).ready(() => {
-  jquery('.typeRadio').buttonset();
-  jquery('#startButton').button();
+jQuery(document).ready(() => {
+  jQuery('.typeRadio').buttonset();
+  jQuery('#startButton').button();
 
   // Disable initial game setup until browser tab has focus
   window.addEventListener('blur', G.onBlur.bind(G), false);
   window.addEventListener('focus', G.onFocus.bind(G), false);
-  jquery('form#gameSetup').submit((e) => {
+  jQuery('form#gameSetup').submit((e) => {
     e.preventDefault(); // Prevent submit
     const gameconfig = getGameConfig();
 
 
     if (gameconfig.background_image === 'random') {
       // nth-child indices start at 1
-      const index = Math.floor(Math.random() * (jquery('input[name="combatLocation"]').length - 1)) + 1;
-      gameconfig.background_image = jquery('input[name="combatLocation"]').slice(index, index + 1).attr('value');
+      const index = Math.floor(Math.random() * (jQuery('input[name="combatLocation"]').length - 1)) + 1;
+      gameconfig.background_image = jQuery('input[name="combatLocation"]').slice(index, index + 1).attr('value');
     }
 
     G.loadGame(gameconfig);

@@ -1,4 +1,4 @@
-import * as $j from 'jquery';
+import $j from 'jquery';
 import dataJson from 'assets/units/data.json';
 import { Animations } from './animations';
 import { CreatureQueue } from './creature_queue';

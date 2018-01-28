@@ -1,4 +1,4 @@
-import * as jQuery from 'jquery';
+import jQuery from 'jquery';
 
 export class MusicPlayer {
   constructor() {

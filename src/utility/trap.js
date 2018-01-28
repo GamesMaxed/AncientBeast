@@ -1,4 +1,4 @@
-import * as $j from 'jquery';
+import jQuery from 'jquery';
 
 /**
  * Trap Class
@@ -30,7 +30,7 @@ export class Trap {
       destroyAnimation: undefined,
     };
 
-    $j.extend(this, o, opt);
+    jQuery.extend(this, o, opt);
 
     // Register
     game.grid.traps.push(this);
