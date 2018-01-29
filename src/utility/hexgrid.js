@@ -71,13 +71,29 @@ export default class HexGrid {
     this.inpthexesGroup = game.Phaser.add.group(this.gridGroup, 'inpthexesGrp');
 
     // Populate grid
+    /* TODO: fix this
     this.hexes = range(opts.nbrRow).map((row) => {
       if ((row % 2 === 0 && !opts.firstRowFull) || (row % 2 === 1 && opts.firstRowFull)) return [];
       return range(opts.nbrhexesPerRow)
         .filter(hex => hex === opts.nbrhexesPerRow - 1)
         .map(hex => new Hex(hex, row, this));
-    });
+    }).filter(row => row.length !== 0);
     this.allhexes.concat(this.hexes);
+    */
+
+    for (let row = 0; row < opts.nbrRow; row++) {
+      this.hexes.push([]);
+      for (let hex = 0, len = opts.nbrhexesPerRow; hex < len; hex++) {
+        if (hex === opts.nbrhexesPerRow - 1) {
+          if (row % 2 === 0 && !opts.firstRowFull || row % 2 === 1 && opts.firstRowFull) {
+            continue;
+          }
+        }
+
+        this.hexes[row][hex] = new Hex(hex, row, this);
+        this.allhexes.push(this.hexes[row][hex]);
+      }
+    }
 
     // eslint-disable-next-line prefer-destructuring
     this.selectedHex = this.hexes[0][0];
@@ -447,7 +463,7 @@ export default class HexGrid {
    *                                      execute after queryHexes
    */
   queryHexes(o) {
-    const { game } = this.game;
+    const { game } = this;
     const defaultOpt = {
       fnOnConfirm: () => {
         game.activeCreature.queryMove();

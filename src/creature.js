@@ -439,7 +439,7 @@ export default class Creature {
       noPath: false,
       isAbility: false,
       ownCreatureHexShade: true,
-      range: game.grid.getMovementRange(this.x, this.y, remainingMove, this.size, this.id),
+      range: game.grid.getMovementRange(this),
       callback(hex, args) {
         if (hex.x === args.creature.x && hex.y === args.creature.y) {
           // Prevent null movement
@@ -482,7 +482,7 @@ export default class Creature {
     this.updateHealth();
 
     if (this.movementType() === 'flying') {
-      o.range = game.grid.getFlyingRange(this.x, this.y, remainingMove, this.size, this.id);
+      o.range = game.grid.getFlyingRange(this);
     }
 
     const selectNormal = (hex, args) => {
@@ -559,9 +559,8 @@ export default class Creature {
     const count = this.size;
     times(count, i => this.hexagons.push(this.game.grid.hexes[this.y][this.x - i]));
 
-    this.hexagons = this.hexagons.map(hex => Object.assign({}, {
-      creature: this,
-    }, hex));
+    // eslint-disable-next-line
+    this.hexagons.forEach(hex => hex.creature = this);
   }
 
   /**
@@ -1271,7 +1270,9 @@ export default class Creature {
     }, hintColor[cssClass]);
 
     // Remove constant element
-    this.hintGrp = this.hintGrp.map((grpHintElem) => {
+    // NOTE: this is not a normal collection but a Phaser.Group, so mapping is not a possibility
+    // See: https://photonstorm.github.io/phaser-ce/Phaser.Group.html#forEach
+    this.hintGrp.forEach((grpHintElem) => {
       if (grpHintElem.cssClass === 'confirm') {
         grpHintElem.cssClass = 'confirm_deleted';
         grpHintElem.tweenAlpha = game.Phaser.add.tween(grpHintElem).to({
@@ -1281,8 +1282,7 @@ export default class Creature {
           this.destroy();
         }, grpHintElem);
       }
-      return grpHintElem;
-    });
+    }, this, true);
 
     const hint = game.Phaser.add.text(0, 50, text, style);
     hint.anchor.setTo(0.5, 0.5);
@@ -1316,7 +1316,9 @@ export default class Creature {
     this.hintGrp.add(hint);
 
     // Stacking
-    this.hintGrp = this.hintGrp.map((grpHintElem) => {
+    // NOTE: this is not a normal collection but a Phaser.Group, so mapping is not a possibility
+    // See: https://photonstorm.github.io/phaser-ce/Phaser.Group.html#forEach
+    this.hintGrp.forEach((grpHintElem) => {
       const index = this.hintGrp.total - this.hintGrp.getIndex(grpHintElem) - 1;
       const offset = -50 * index;
 

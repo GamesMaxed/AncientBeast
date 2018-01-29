@@ -524,7 +524,7 @@ export default class Game {
   /**
    * Resize the combat frame
    */
-  static resizeCombatFrame() {
+  resizeCombatFrame() {
     if ($j('#cardwrapper').width() < $j('#card').width()) {
       $j('#cardwrapper_inner').width();
     }
@@ -628,23 +628,22 @@ export default class Game {
     }
   }
 
-  /* log(obj)
-   *
-   * obj : Any : Any variable to display in console and game log
-   *
+  /**
    * Display obj in the console log and in the game log
+   * @param {any} Any variable to display in console and game log
+   * @param {string} htmlclass
    */
   log(obj, htmlclass) {
     // Formating
-    let { stringConsole, stringLog } = obj;
+    let stringConsole = obj;
+    let stringLog = obj;
 
     this.creatures.forEach((creature, i) => {
       stringConsole = stringConsole.replace(`%CreatureName${i}%`, `${creature.player.name}'s ${creature.name}`);
       stringLog = stringLog.replace(`%CreatureName${i}%`, `<span class='${creature.player.color}'>${creature.name}</span>`);
     });
 
-    // Disable the console.log error warning from eslint here since we actually want to do it
-    // eslint-disable-next-line
+    // eslint-disable-next-line no-console
     console.log(stringConsole);
 
     this.UI.chat.addMsg(stringLog, htmlclass);
