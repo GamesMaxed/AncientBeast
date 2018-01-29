@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import $j from 'jquery';
 import { Button } from './button';
 import { Chat } from './chat';
@@ -500,7 +501,7 @@ export class UI {
     for (let i = (b - 1); i > 0; i--) {
       const creature = game.activeCreature;
 
-      if (creature.abilities[i].require() && !creature.abilities[i].used) {
+      if (creature.abilities[i].testRequirements() && !creature.abilities[i].used) {
         this.abilitiesButtons[i].triggerClick();
         return;
       }
@@ -516,7 +517,7 @@ export class UI {
     for (let i = (b + 1); i < 4; i++) {
       const creature = game.activeCreature;
 
-      if (creature.abilities[i].require() && !creature.abilities[i].used) {
+      if (creature.abilities[i].testRequirements() && !creature.abilities[i].used) {
         this.abilitiesButtons[i].triggerClick();
         return;
       }
@@ -1122,14 +1123,14 @@ export class UI {
             if (btn.abilityId == 0) {
               const b = (this.selectedAbility == -1) ? 4 : this.selectedAbility;
               for (let i = (b - 1); i > 0; i--) {
-                if (game.activeCreature.abilities[i].require() && !game.activeCreature.abilities[i].used) {
+                if (game.activeCreature.abilities[i].testRequirements() && !game.activeCreature.abilities[i].used) {
                   this.abilitiesButtons[i].triggerClick();
                 }
               }
             }
 
             // Colored frame around selected ability
-            if (ab.require() == true && btn.abilityId != 0) {
+            if (ab.testRequirements() && btn.abilityId != 0) {
               this.selectAbility(btn.abilityId);
             }
             // Activate Ability
@@ -1189,34 +1190,34 @@ export class UI {
       if (costs_string) {
         $abilityInfo.append(`${'<div class="info costs">' +
           'Costs : '}${costs_string
-          }</div>`);
+        }</div>`);
       }
 
       const dmg_string = ab.getFormattedDamages();
       if (dmg_string) {
         $abilityInfo.append(`${'<div class="info damages">' +
           'Damages : '}${dmg_string
-          }</div>`);
+        }</div>`);
       }
 
       const special_string = ab.getFormattedEffects();
       if (special_string) {
         $abilityInfo.append(`${'<div class="info special">' +
           'Effects : '}${special_string
-          }</div>`);
+        }</div>`);
       }
 
       if (ab.hasUpgrade()) {
         if (!ab.isUpgraded()) {
           $abilityInfo.append(`<div class="info upgrade">${
             ab.isUpgradedPerUse() ? 'Uses' : 'Rounds'
-            } left before upgrading : ${ab.usesLeftBeforeUpgrade()
-            }</div>`);
+          } left before upgrading : ${ab.usesLeftBeforeUpgrade()
+          }</div>`);
         }
 
         $abilityInfo.append(`${'<div class="info upgrade">' +
           'Upgrade : '}${ab.upgrade
-          }</div>`);
+        }</div>`);
       }
     });
   }
@@ -1228,14 +1229,14 @@ export class UI {
     for (let i = 0; i < 4; i++) {
       const ab = game.activeCreature.abilities[i];
       ab.message = '';
-      const req = ab.require();
+      const req = ab.testRequirements();
       ab.message = (ab.used) ? game.msg.abilities.alreadyused : ab.message;
 
       // Tooltip for passive ability to display if there is any usable abilities or not
       if (i === 0) {
         const b = (this.selectedAbility == -1) ? 4 : this.selectedAbility; // Checking usable abilities
         for (let j = (b - 1); j > 0; j--) {
-          if (game.activeCreature.abilities[j].require() && !game.activeCreature.abilities[j].used) {
+          if (game.activeCreature.abilities[j].testRequirements() && !game.activeCreature.abilities[j].used) {
             ab.message = game.msg.abilities.passivecycle; // Message if there is any usable abilities
             break;
           } else {
@@ -1243,12 +1244,12 @@ export class UI {
           }
         }
       }
-      if (ab.message == game.msg.abilities.passivecycle) {
+      if (ab.message === game.msg.abilities.passivecycle) {
         this.abilitiesButtons[i].changeState('glowing');
-      } else if ((req && !ab.used && ab.trigger == 'onQuery')) {
+      } else if ((req && !ab.used && ab.trigger === 'onQuery')) {
         this.abilitiesButtons[i].changeState('glowing');
         oneUsableAbility = true;
-      } else if (ab.message == game.msg.abilities.notarget || (ab.trigger != 'onQuery' && req && !ab.used)) {
+      } else if (ab.message === game.msg.abilities.notarget || (ab.trigger !== 'onQuery' && req && !ab.used)) {
         this.abilitiesButtons[i].changeState('noclick');
       } else {
         this.abilitiesButtons[i].changeState('disabled');
@@ -1694,7 +1695,7 @@ export class UI {
         }
 
         if (creature.type == '--') { // If Dark Priest
-          creature.abilities[0].require(); // Update protectedFromFatigue
+          creature.abilities[0].testRequirements(); // Update protectedFromFatigue
         }
 
         textElement.text(text);

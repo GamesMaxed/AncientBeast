@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import jquery from 'jquery';
 import { times } from 'lodash';
 import Ability from './ability';
@@ -11,6 +12,7 @@ import Effect from './effect';
  * Creature Class
  *
  * Creature contains all creatures properties and attacks
+ *  TODO: use a getter for movementType
  */
 export default class Creature {
   /* Attributes
@@ -67,10 +69,10 @@ export default class Creature {
     this.animation = obj.animation;
     this.display = obj.display;
     this.drop = obj.drop;
-    this.movementType = 'normal';
+    this._movementType = 'normal';
 
     if (obj.movementType) {
-      this.movementType = obj.movementType;
+      this._movementType = obj.movementType;
     }
 
     this.hexagons = [];
@@ -724,6 +726,9 @@ export default class Creature {
   }
 
 
+  /**
+   * @param {object} args
+   */
   tracePosition(args) {
     const defaultArgs = {
       x: this.x,
@@ -738,7 +743,7 @@ export default class Creature {
     times(this.size, (i) => {
       let canDraw = true;
       if (!args.drawOverCreatureTiles) { // then check to ensure this is not a creature tile
-        canDraw = this.hexagons.all(({ x, y }) => x !== args.x - i && y !== args.y);
+        canDraw = this.hexagons.every(({ x, y }) => x !== args.x - i && y !== args.y);
       }
       if (canDraw) {
         const hex = this.game.grid.hexes[args.y][args.x - i];
@@ -1278,7 +1283,9 @@ export default class Creature {
         grpHintElem.tweenAlpha = game.Phaser.add.tween(grpHintElem).to({
           alpha: 0,
         }, tooltipSpeed, tooltipTransition).start();
-        grpHintElem.tweenAlpha.onComplete.add(() => {
+        // You cannot use a arrow function on the next line because it rebinds `this` to
+        // the wrong scope
+        grpHintElem.tweenAlpha.onComplete.add(function onComplete() {
           this.destroy();
         }, grpHintElem);
       }
@@ -1308,7 +1315,9 @@ export default class Creature {
           alpha: 0,
         }, tooltipSpeed, tooltipTransition)
         .start();
-      hint.tweenAlpha.onComplete.add(() => {
+      // You cannot use an arrow function on the next line because it rebinds `this` to the wrong
+      // scope
+      hint.tweenAlpha.onComplete.add(function onComplete() {
         this.destroy();
       }, hint);
     }
