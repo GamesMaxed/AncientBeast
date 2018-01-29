@@ -98,7 +98,6 @@ export default (G) => {
         G.grid.queryChoice({
           fnOnCancel() {
             G.activeCreature.queryMove();
-            G.grid.clearHexViewAlterations();
           },
           fnOnConfirm() {
             ability.animation(...arguments);
@@ -287,8 +286,8 @@ export default (G) => {
           sonic: 20,
           crush: 10,
         } : {
-          sonic: 20,
-        };
+            sonic: 20,
+          };
 
         let dir = [];
         switch (args.direction) {

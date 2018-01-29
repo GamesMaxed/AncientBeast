@@ -1117,7 +1117,6 @@ export class UI {
               return false;
             }
 
-            game.grid.clearHexViewAlterations();
             const ab = game.activeCreature.abilities[btn.abilityId];
             // Passive ability icon can cycle between usable abilities
             if (btn.abilityId == 0) {
@@ -1136,7 +1135,6 @@ export class UI {
             // Activate Ability
             game.activeCreature.abilities[btn.abilityId].use();
           } else {
-            game.grid.clearHexViewAlterations();
             // Cancel Ability
             this.closeDash();
             game.activeCreature.queryMove();

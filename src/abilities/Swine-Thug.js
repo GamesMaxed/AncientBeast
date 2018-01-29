@@ -326,12 +326,9 @@ export default (G) => {
         //   return true;
         // });
 
-        G.grid.hideCreatureHexes(this.creature);
-
         G.grid.queryHexes({
           fnOnCancel() {
             G.activeCreature.queryMove();
-            G.grid.clearHexViewAlterations();
           },
           fnOnConfirm() {
             ability.animation(...arguments);
@@ -344,7 +341,6 @@ export default (G) => {
 
       //  activate() :
       activate(hex, args) {
-        G.grid.clearHexViewAlterations();
         const ability = this;
         const swine = this.creature;
 

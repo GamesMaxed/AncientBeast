@@ -93,7 +93,6 @@ export default class Ability {
       return false;
     }
 
-    this.game.grid.clearHexViewAlterations();
     this.game.clearOncePerDamageChain();
     this.game.activeCreature.hint(this.title, 'msg_effects');
 

@@ -449,12 +449,10 @@ export default class Hex {
       return;
     }
 
-    let activated = false;
     this.trap.effects.forEach((effect) => {
       if (trigger.test(effect.trigger) && effect.requireFn()) {
         this.game.log('Trap triggered');
         effect.activate(target);
-        activated = true;
       }
     });
 

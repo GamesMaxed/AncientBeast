@@ -6,7 +6,7 @@ import GameLog from './utility/gamelog';
 import { SoundSys } from './sound/soundsys';
 import { MusicPlayer } from './sound/musicplayer';
 import Hex from './utility/hex';
-import { HexGrid } from './utility/hexgrid';
+import HexGrid from './utility/hexgrid';
 import { getUrl } from './assetLoader';
 import Player from './player';
 import { UI } from './ui/interface';
@@ -535,7 +535,6 @@ export default class Game {
    * Replace the current queue with the next queue
    */
   nextRound() {
-    this.grid.clearHexViewAlterations();
     this.turn += 1;
     this.log(`Round ${this.turn}`, 'roundmarker');
     this.queue.nextRound();
@@ -704,7 +703,6 @@ export default class Game {
       o.callback.apply();
     }, 1000);
 
-    this.grid.clearHexViewAlterations();
     this.activeCreature.facePlayerDefault();
 
     const skipTurn = new Date();

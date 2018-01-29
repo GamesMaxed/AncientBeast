@@ -168,7 +168,6 @@ export default (G) => {
         G.grid.queryChoice({
           fnOnCancel() {
             G.activeCreature.queryMove();
-            G.grid.clearHexViewAlterations();
           },
           fnOnConfirm() {
             ability.animation(...arguments);
