@@ -340,6 +340,10 @@ export default class Ability {
   }
 
   getFormattedDamages(obj = this.damages) {
+    if (obj === undefined && this.damages === undefined) {
+      return '';
+    }
+
     let string = '';
     const { creature } = this;
 
@@ -442,7 +446,7 @@ export default class Ability {
    *
    * Test the requirement for this ability. Negative values mean maximum value of the stat.
    * For instance : energy = -5 means energy must be lower than 5.
-   * If one requirement fails it returns false.
+   * @returns If one requirement fails it returns false, otherwise true
    */
   testRequirements() {
     const { game } = this;
