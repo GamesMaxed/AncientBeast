@@ -24,6 +24,7 @@ module.exports = {
       {
         "allowSamePrecedence": true
       }
-    ]
+    ],
+    "class-methods-use-this": "warn"
   }
 }
