@@ -17,7 +17,7 @@ export default class GameLog {
   }
 
   config(config) {
-    const { game } = this.game;
+    const { game } = this;
 
     if (game.gameState !== 'initialized') {
       alert('To set the game config, you need to be in the setup screen');

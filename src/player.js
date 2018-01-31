@@ -196,7 +196,7 @@ export default class Player {
    * Remove all player's creature from the queue
    */
   deactivate() {
-    const { game } = this.game;
+    const { game } = this;
 
     this.hasLost = true;
 

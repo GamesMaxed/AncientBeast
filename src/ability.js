@@ -106,7 +106,7 @@ export default class Ability {
    * @param {boolean} deferedEnding
    */
   end(disableLogMsg, deferedEnding) {
-    const { game } = this.game;
+    const { game } = this;
 
     if (!disableLogMsg) {
       game.log(`%CreatureName${this.creature.id}% uses ${this.title}`);

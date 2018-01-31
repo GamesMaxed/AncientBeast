@@ -673,8 +673,7 @@ export default class Game {
       return;
     }
 
-    // todo: rename variable
-    const o2 = $j.extend({
+    o = Object.assign({}, {
       callback() { },
       noTooltip: false,
       tooltip: 'Skipped',
@@ -684,8 +683,8 @@ export default class Game {
     this.UI.btnSkipTurn.changeState('disabled');
     this.UI.btnDelay.changeState('disabled');
 
-    if (!o2.noTooltip) {
-      this.activeCreature.hint(o2.tooltip, 'msg_effects');
+    if (!o.noTooltip) {
+      this.activeCreature.hint(o.tooltip, 'msg_effects');
     }
 
     setTimeout(() => {
@@ -724,7 +723,7 @@ export default class Game {
     }
 
     // todo: rename variable
-    const o2 = $j.extends({
+    const o2 = Object.assign({}, {
       callback() { },
     }, o);
 

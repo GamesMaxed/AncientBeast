@@ -18,13 +18,14 @@ export default (G) => {
 
     //   First Ability: Wing Feathers
     {
-      /**
+      /** 1
        * Provides custom movement type given whether the ability is upgraded or not.
        * Movement type is "hover" unless this ability is upgraded, then it's "flying"
+       *
        * @return {string} movement type, "hover" or "flying"
        */
-      movementType() {
-        return this.isUpgraded() ? 'flying' : this.creature._movementType;
+      get movementType() {
+        return this.isUpgraded() ? 'flying' : this.creature.movementType;
       },
 
       //  Type : Can be "onQuery", "onStartPhase", "onDamage"

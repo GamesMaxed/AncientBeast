@@ -381,7 +381,7 @@ export default class HexGrid {
    *                 function)
    */
   queryCreature(options) {
-    const { game } = this.game;
+    const { game } = this;
     const defaultOpt = {
       fnOnConfirm: () => {
         game.activeCreature.queryMove();
@@ -910,7 +910,7 @@ export default class HexGrid {
     const creature = this.game.creatures[id];
     let hexes;
 
-    if (creature.movementType() === 'flying') {
+    if (creature.movementType === 'flying') {
       hexes = this.getFlyingRange(creature);
     } else {
       hexes = this.getMovementRange(creature);
