@@ -523,6 +523,7 @@ export default class Game {
 
   /**
    * Resize the combat frame
+   * TODO: this should be done in the ui layer
    */
   resizeCombatFrame() {
     if ($j('#cardwrapper').width() < $j('#card').width()) {
@@ -856,9 +857,16 @@ export default class Game {
     return this.creatureData.find(creature => creature.type === type);
   }
 
-  triggerAbility(trigger, arg, retValue) {
-    const [triggeredCreature, required] = arg;
-
+  /**
+   * Trigger an ability
+   *
+   * @private
+   * @param {string} trigger What is triggered
+   * @param {*} triggeredCreature
+   * @param {*} required
+   * @param {*} retValue
+   */
+  triggerAbility(trigger, triggeredCreature, required, retValue) {
     // For triggered creature
     triggeredCreature.abilities.forEach((ability) => {
       if (triggeredCreature.dead === true) {
@@ -888,9 +896,16 @@ export default class Game {
     });
   }
 
-  triggerEffect(trigger, arg, retValue) {
-    const [triggeredCreature, required] = arg;
-
+  /**
+   * Trigger an effect
+   *
+   * @private
+   * @param {number} trigger What triggers it
+   * @param {Creature} triggeredCreature Who triggered it
+   * @param {*} required
+   * @param {*} retValue The returned value
+   */
+  triggerEffect(trigger, triggeredCreature, required, retValue) {
     // For triggered creature
     triggeredCreature.effects.forEach((effect) => {
       if (triggeredCreature.dead === true) {
@@ -918,133 +933,140 @@ export default class Game {
     });
   }
 
-  triggerTrap(trigger, arg) {
-    const [triggeredCreature, required] = arg;
-
-    triggeredCreature.hexagons.forEach((hex) => {
-      hex.activateTrap(this.triggers[trigger], triggeredCreature);
+  /**
+   * Trigger a trap
+   * @private
+   * @param {number} trigger What triggers it
+   * @param {Creature} triggedCreature Who triggered the trap
+   */
+  triggerTrap(trigger, triggedCreature) {
+    triggedCreature.hexagons.forEach((hex) => {
+      hex.activateTrap(this.triggers[trigger], triggedCreature);
     });
   }
 
+  /**
+   * Trigger a delete effect
+   * @private
+   * @param {number} trigger What triggers it
+   * @param {Creature?} creature If null: all effects
+   */
   triggerDeleteEffect(trigger, creature) {
-    let effects = (creature == 'all') ? this.effects : creature.effects,
-      totalEffects = effects.length,
-      i;
+    const effects = (typeof creature === 'undefined') ? this.effects : creature.effects;
 
-    for (i = 0; i < totalEffects; i++) {
-      const effect = effects[i];
-
-      if (effect.turnLifetime > 0 && trigger === effect.deleteTrigger &&
-        this.turn - effect.creationTurn >= effect.turnLifetime) {
+    effects
+      .filter(effect => effect.turnLifetime > 0 && trigger === effect.deleteTrigger
+        && this.turn - effect.creationTurn >= effect.turnLifetime)
+      .map((effect) => {
         effect.deleteEffect();
-        // Updates UI in case effect changes it
-        if (effect.target) {
-          effect.target.updateHealth();
-        }
-
-        i--;
-        totalEffects--;
-      }
-    }
+        return effect;
+      })
+      .filter(effect => effect.target)
+      .forEach(effect => effect.target.updateHealth());
   }
 
+
   onStepIn(creature, hex, opts) {
-    this.triggerAbility('onStepIn', arguments);
-    this.triggerEffect('onStepIn', arguments);
+    this.triggerAbility('onStepIn', creature, hex, opts);
+    this.triggerEffect('onStepIn', creature, hex, opts);
     // Check traps last; this is because traps adds effects triggered by
     // this event, which gets triggered again via G.triggerEffect. Otherwise
     // the trap's effects will be triggered twice.
     if (!opts || !opts.ignoreTraps) {
-      this.triggerTrap('onStepIn', arguments);
+      this.triggerTrap('onStepIn', creature);
     }
   }
 
   onStepOut(creature, hex, callback) {
-    this.triggerAbility('onStepOut', arguments);
-    this.triggerEffect('onStepOut', arguments);
+    this.triggerAbility('onStepOut', creature, hex, callback);
+    this.triggerEffect('onStepOut', creature, hex, callback);
     // Check traps last; this is because traps add effects triggered by
     // this event, which gets triggered again via G.triggerEffect. Otherwise
     // the trap's effects will be triggered twice.
-    this.triggerTrap('onStepOut', arguments);
+    this.triggerTrap('onStepOut', creature);
   }
 
   onReset(creature) {
     this.triggerDeleteEffect('onReset', creature);
-    this.triggerAbility('onReset', arguments);
-    this.triggerEffect('onReset', [creature, creature]);
+    this.triggerAbility('onReset', creature);
+    this.triggerEffect('onReset', creature, creature);
   }
 
+  /**
+   * What happens on a start of phase
+   * @param {Creature} creature
+   * @param {Function} callback
+   */
   onStartPhase(creature, callback) {
-    let totalTraps = this.grid.traps.length,
-      trap,
-      i;
-
-    for (i = 0; i < totalTraps; i++) {
-      trap = this.grid.traps[i];
-
-      if (trap === undefined) {
-        continue;
-      }
-
-      if (trap.turnLifetime > 0) {
-        if (this.turn - trap.creationTurn >= trap.turnLifetime) {
-          if (trap.fullTurnLifetime) {
-            if (trap.ownerCreature == this.activeCreature) {
-              trap.destroy();
-              i--;
-            }
-          } else {
+    this.grid.traps
+      .filter(trap => trap !== undefined && trap.turnLifetime > 0 &&
+        this.turn - trap.creationTurn >= trap.turnLifetime)
+      .forEach((trap) => {
+        if (trap.fullTurnLifetime) {
+          if (trap.ownerCreature === this.activeCreature) {
             trap.destroy();
-            i--;
           }
+        } else {
+          trap.destroy();
         }
-      }
-    }
+      });
 
     this.triggerDeleteEffect('onStartPhase', creature);
-    this.triggerAbility('onStartPhase', arguments);
-    this.triggerEffect('onStartPhase', [creature, creature]);
+    this.triggerAbility('onStartPhase', creature, callback);
+    this.triggerEffect('onStartPhase', creature, creature);
   }
 
+  /**
+   * What happens on the end of a phase
+   * @private
+   * @param {*} creature
+   * @param {*} callback
+   */
   onEndPhase(creature, callback) {
     this.triggerDeleteEffect('onEndPhase', creature);
-    this.triggerAbility('onEndPhase', arguments);
-    this.triggerEffect('onEndPhase', [creature, creature]);
+    this.triggerAbility('onEndPhase', creature, callback);
+    this.triggerEffect('onEndPhase', creature, creature);
   }
 
-  onStartOfRound(creature, callback) {
-    this.triggerDeleteEffect('onStartOfRound', 'all');
+  /**
+   * What happens at the start of the round
+   * @private
+   */
+  onStartOfRound() {
+    this.triggerDeleteEffect('onStartOfRound');
   }
 
   onCreatureMove(creature, hex, callback) {
-    this.triggerAbility('onCreatureMove', arguments);
+    this.triggerAbility('onCreatureMove', hex, callback);
   }
 
+  /**
+   * What happens when a creature dies
+   *
+   * @param {Creature} creature Which Creature dies
+   * @param {Function} callback
+   */
   onCreatureDeath(creature, callback) {
-    let totalTraps = this.grid.traps.length,
-      totalEffects = this.effects.length,
-      trap,
-      effect,
-      i;
+    const totalTraps = this.grid.traps.length;
+    const totalEffects = this.effects.length;
+    let trap;
+    let effect;
 
-    this.triggerAbility('onCreatureDeath', arguments);
-    this.triggerEffect('onCreatureDeath', [creature, creature]);
+    this.triggerAbility('onCreatureDeath', creature, callback);
+    // TODO: look at next line
+    this.triggerEffect('onCreatureDeath', creature, creature);
     // Looks for traps owned by this creature and destroy them
-    for (i = 0; i < totalTraps; i++) {
+    for (let i = 0; i < totalTraps; i += 1) {
       trap = this.grid.traps[i];
 
-      if (trap === undefined) {
-        continue;
-      }
-
-      if (trap.turnLifetime > 0 && trap.fullTurnLifetime &&
-        trap.ownerCreature == creature) {
+      if (trap !== undefined && trap.turnLifetime > 0 && trap.fullTurnLifetime &&
+        trap.ownerCreature === creature) {
         trap.destroy();
-        i--;
+        i -= 1;
       }
     }
     // Look for effects owned by this creature and destroy them if necessary
-    for (i = 0; i < totalEffects; i++) {
+    for (let i = 0; i < totalEffects; i += 1) {
       effect = this.effects[i];
       if (effect.owner === creature && effect.deleteOnOwnerDeath) {
         effect.deleteEffect();
@@ -1052,135 +1074,107 @@ export default class Game {
         if (effect.target) {
           effect.target.updateHealth();
         }
-        i--;
+        i -= 1;
       }
     }
   }
 
+  /**
+   * What happens when a creature is summoned
+   *
+   * @private
+   * @param {Creature} creature
+   * @param {Function} callback
+   */
   onCreatureSummon(creature, callback) {
-    this.triggerAbility('onCreatureSummon', [creature, creature, callback]);
-    this.triggerEffect('onCreatureSummon', [creature, creature]);
+    this.triggerAbility('onCreatureSummon', creature, creature, callback);
+    this.triggerEffect('onCreatureSummon', creature, creature);
   }
 
-  onEffectAttach(creature, effect, callback) {
-    this.triggerEffect('onEffectAttach', [creature, effect]);
+  /**
+   * What happens when an effect is attached
+   * @param {*} creature
+   * @param {*} effect
+   */
+  onEffectAttach(creature, effect) {
+    this.triggerEffect('onEffectAttach', creature, effect);
   }
 
 
   onUnderAttack(creature, damage) {
-    this.triggerAbility('onUnderAttack', arguments, damage);
-    this.triggerEffect('onUnderAttack', arguments, damage);
+    this.triggerAbility('onUnderAttack', creature, null, damage);
+    this.triggerEffect('onUnderAttack', creature, null, damage);
     return damage;
   }
 
   onDamage(creature, damage) {
-    this.triggerAbility('onDamage', arguments);
-    this.triggerEffect('onDamage', arguments);
+    this.triggerAbility('onDamage', creature, damage);
+    this.triggerEffect('onDamage', creature, damage);
   }
 
   onHeal(creature, amount) {
-    this.triggerAbility('onHeal', arguments);
-    this.triggerEffect('onHeal', arguments);
+    this.triggerAbility('onHeal', creature, amount);
+    this.triggerEffect('onHeal', creature, amount);
   }
 
   onAttack(creature, damage) {
-    damage = this.triggerAbility('onAttack', arguments, damage);
-    damage = this.triggerEffect('onAttack', arguments, damage);
+    this.triggerAbility('onAttack', creature, null, damage);
+    this.triggerEffect('onAttack', creature, null, damage);
   }
 
-  findCreature(o) {
-    let ret = [],
-      o2 = $j.extend({
-        team: -1, // No team
-        type: '--', // Dark Priest
-      }, o),
-      creatures = this.creatures,
-      totalCreatures = creatures.length,
-      creature,
-      match,
-      wrongTeam,
-      i;
+  /**
+   * Find a creature
+   * @param {object} opts
+   */
+  findCreature(opts) {
+    opts = Object.assign({}, {
+      team: -1, // No team
+      type: '--', // Dark Priest
+    }, opts);
 
-    for (i = 0; i < totalCreatures; i++) {
-      creature = creatures[i];
+    const creatures = this.creatures
+      .filter(creature => creature instanceof Creature);
 
-      if (creature instanceof Creature) {
-        match = true;
-
-        $j.each(o2, (key, val) => {
-          if (key == 'team') {
-            if (val == -1) {
-              return;
-            }
-
-            if (val instanceof Array) {
-              wrongTeam = true;
-              if (val.indexOf(creature[key]) != -1) {
-                wrongTeam = false;
-              }
-
-              if (wrongTeam) {
-                match = false;
-              }
-
-              return;
-            }
+    const match = creatures.every(creature => Object.entries(opts).every((key, val) => {
+      if (key === 'team') {
+        if (val !== -1 && val instanceof Array) {
+          if (val.includes(creature.team)) {
+            return false;
           }
-
-          if (creature[key] != val) {
-            match = false;
-          }
-        });
-
-        if (match) {
-          ret.push(creature);
         }
       }
-    }
+      if (creature[key] !== val) {
+        return false;
+      }
+      return true;
+    }));
 
-    return ret;
+    return match ? creatures : [];
   }
 
   clearOncePerDamageChain() {
-    let creatures = this.creatures,
-      totalCreatures = creatures.length,
-      totalEffects = this.effects.length,
-      creature,
-      totalAbilities,
+    // eslint-disable-next-line
+    const triggerThisChain = (effect) => effect.triggeredThisChain = false;
 
-      i,
-      j;
-
-    for (i = totalCreatures - 1; i >= 0; i--) {
-      creature = this.creatures[i];
-
-      if (creature instanceof Creature) {
-        totalAbilities = creature.abilities.length;
-
-        for (j = totalAbilities - 1; j >= 0; j--) {
-          creature.abilities[j].triggeredThisChain = false;
-        }
-      }
-    }
-
-    for (i = 0; i < totalEffects; i++) {
-      this.effects[i].triggeredThisChain = false;
-    }
+    this.creatures
+      .filter(creature => creature instanceof Creature)
+      .map(creature => creature.abilities)
+      .forEach(triggerThisChain);
+    this.effects.forEach(triggerThisChain);
   }
 
-  /* endGame()
-   *
+  /**
    * End the game and print stats
+   * TODO: move the ui part of this to the ui layer
    */
   endGame() {
     this.stopTimer();
     this.gameState = 'ended';
 
     // Calculate the time cost of the last turn
-    let skipTurn = new Date(),
-      p = this.activeCreature.player;
-
-    p.totalTimePool -= (skipTurn - p.startTime);
+    const currentTime = new Date();
+    const { p } = this.activeCreature;
+    p.totalTimePool -= (currentTime - p.startTime);
 
     // Show Score Table
     $j('#endscreen').show();
@@ -1188,71 +1182,73 @@ export default class Game {
     let $table = $j('#endscreen table tbody');
 
     // Delete uncessary columns if only 2 players
-    if (this.playerMode == 2) {
+    if (this.playerMode === 2) {
       $table.children('tr').children('td:nth-child(even)').remove();
       $table = $j('#endscreen table tbody');
     }
 
     // Fill the board
-    for (let i = 0; i < this.playerMode; i++) { // Each player
+    this.players.forEach((player, i) => {
       // TimeBonus
       if (this.timePool > 0) {
-        this.players[i].bonusTimePool = Math.round(this.players[i].totalTimePool / 1000);
+        player.bonusTimePool = Math.round(player.totalTimePool / 1000);
       }
       // -------End bonuses--------//
 
       // No fleeing
-      if (!this.players[i].hasFled && !this.players[i].hasLost) {
-        this.players[i].score.push({
+      if (!player.hasFled && !player.hasLost) {
+        player.score.push({
           type: 'nofleeing',
         });
       }
 
       // Surviving Creature Bonus
-      let immortal = true;
-      for (let j = 0; j < this.players[i].creatures.length; j++) {
-        if (!this.players[i].creatures[j].dead) {
-          if (this.players[i].creatures[j].type != '--') {
-            this.players[i].score.push({
-              type: 'creaturebonus',
-              creature: this.players[i].creatures[j],
-            });
-          } else { // Dark Priest Bonus
-            this.players[i].score.push({
-              type: 'darkpriestbonus',
-            });
-          }
-        } else {
-          immortal = false;
+      const aliveCreatures = player.creatures.filter(creature => !creature.dead);
+      const extraScores = aliveCreatures.map((creature) => {
+        if (creature.type !== '--') {
+          return {
+            type: 'creaturebonus',
+            creature,
+          };
         }
-      }
+        // Dark Priest Bonus
+        return {
+          type: 'darkpriestbonus',
+        };
+      });
+      player.scores = player.scores.concat(extraScores);
 
-      // Immortal
-      if (immortal && this.players[i].creatures.length > 1) { // At least 1 creature summoned
-        this.players[i].score.push({
+      // Immortal bonus if there is atleast 1 creature summoned and all creatures are still alive
+      if (aliveCreatures.length === this.creatures.length && player.creatures.length > 1) {
+        player.score.push({
           type: 'immortal',
         });
       }
 
       // ----------Display-----------//
-      const colId = (this.playerMode > 2) ? (i + 2 + ((i % 2) * 2 - 1) * Math.min(1, i % 3)) : i + 2;
+      let columnId = i + 2;
+      if (this.playerMode > 2) {
+        columnId += (i - 1) * Math.min(1, i % 3);
+      }
 
       // Change Name
-      $table.children('tr.player_name').children(`td:nth-child(${colId})`) // Weird expression swaps 2nd and 3rd player
-        .text(this.players[i].name);
+      // Weird expression swaps 2nd and 3rd player
+      $table.children('tr.player_name').children(`td:nth-child(${columnId})`)
+        .text(player.name);
 
       // Change score
-      $j.each(this.players[i].getScore(), (index, val) => {
-        const text = (val === 0 && index !== 'total') ? '--' : val;
-        $table.children(`tr.${index}`).children(`td:nth-child(${colId})`) // Weird expression swaps 2nd and 3rd player
+      Object.entries(player.getScore()).forEach((typeOfScore, val) => {
+        const text = (val === 0 && typeOfScore !== 'total') ? '--' : val;
+        // Weird expression swaps 2nd and 3rd player
+        $table.children(`tr.${typeOfScore}`).children(`td:nth-child(${columnId})`)
           .text(text);
       });
-    }
+    });
 
     // Declare winner
     if (this.playerMode > 2) { // 2 vs 2
-      let score1 = this.players[0].getScore().total + this.players[2].getScore().total,
-        score2 = this.players[1].getScore().total + this.players[3].getScore().total;
+      const score1 = this.players[0].getScore().total + this.players[2].getScore().total;
+      const score2 = this.players[1].getScore().total + this.players[3].getScore().total;
 
       if (score1 > score2) {
         // Left side wins
@@ -1260,13 +1256,13 @@ export default class Game {
       } else if (score1 < score2) {
         // Right side wins
         $j('#endscreen p').text(`${this.players[1].name} and ${this.players[3].name} won the match!`);
-      } else if (score1 == score2) {
+      } else if (score1 === score2) {
         // Draw
         $j('#endscreen p').text('Draw!');
       }
     } else { // 1 vs 1
-      let score1 = this.players[0].getScore().total,
-        score2 = this.players[1].getScore().total;
+      const score1 = this.players[0].getScore().total;
+      const score2 = this.players[1].getScore().total;
 
       if (score1 > score2) {
         // Left side wins
@@ -1274,7 +1270,7 @@ export default class Game {
       } else if (score1 < score2) {
         // Right side wins
         $j('#endscreen p').text(`${this.players[1].name} won the match!`);
-      } else if (score1 == score2) {
+      } else if (score1 === score2) {
         // Draw
         $j('#endscreen p').text('Draw!');
       }
@@ -1286,7 +1282,7 @@ export default class Game {
       callback() { },
     };
 
-    opt = $j.extend(defaultOpt, opt);
+    opt = Object.assign({}, defaultOpt, opt);
 
     this.clearOncePerDamageChain();
     switch (o.action) {
@@ -1310,10 +1306,10 @@ export default class Game {
           callback: opt.callback,
         });
         break;
-      case 'ability':
+      case 'ability': {
         const args = $j.makeArray(o.args[1]);
 
-        if (o.target.type == 'hex') {
+        if (o.target.type === 'hex') {
           args.unshift(this.grid.hexes[o.target.y][o.target.x]);
           this.activeCreature.abilities[o.id].animation2({
             callback: opt.callback,
@@ -1321,7 +1317,7 @@ export default class Game {
           });
         }
 
-        if (o.target.type == 'creature') {
+        if (o.target.type === 'creature') {
           args.unshift(this.creatures[o.target.crea]);
           this.activeCreature.abilities[o.id].animation2({
             callback: opt.callback,
@@ -1329,7 +1325,7 @@ export default class Game {
           });
         }
 
-        if (o.target.type == 'array') {
+        if (o.target.type === 'array') {
           const array = o.target.array.map(item => this.grid.hexes[item.y][item.x]);
 
           args.unshift(array);
@@ -1339,6 +1335,9 @@ export default class Game {
           });
         }
         break;
+      }
+      default:
+        throw new Error(`Unkown type of action ${this.action}`);
     }
   }
 
