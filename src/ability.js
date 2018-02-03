@@ -1,4 +1,3 @@
-import { cloneDeep } from 'lodash';
 import { Damage } from './damage';
 import Hex from './utility/hex';
 import Creature from './creature';
@@ -27,7 +26,8 @@ export default class Ability {
     this.token = 0;
 
     const data = game.retreiveCreatureStats(creature.type);
-    cloneDeep(this, game.abilities[data.id][abilityID], data.ability_info[abilityID]);
+
+    Object.assign(this, game.abilities[data.id][abilityID], data.ability_info[abilityID]);
 
     if (this.requirements === undefined && this.costs !== undefined) {
       this.requirements = this.costs;
@@ -158,18 +158,15 @@ export default class Ability {
   }
 
   /**
-   * Animate the creature
-   *
-   * TODO: refactor this mess.
+   * Animate a target
+   * @param {Hex|Creature|(Hex|Creature)[]} target What to animate
    */
   animation(target) {
     const { game } = this;
 
     // Gamelog Event Registration
     if (game.triggers.onQuery.test(this.getTrigger())) {
-      if (arguments[0] instanceof Hex) {
-        const args = Object.assign({}, arguments);
-        delete args[0];
+      if (target instanceof Hex) {
         game.gamelog.add({
           action: 'ability',
           target: {
@@ -178,29 +175,24 @@ export default class Ability {
             y: target.y,
           },
           id: this.id,
-          args: arguments,
+          args: target,
         });
       }
 
-      if (arguments[0] instanceof Creature) {
-        const args = Object.assign({}, arguments);
-        delete args[0];
+      if (target instanceof Creature) {
         game.gamelog.add({
           action: 'ability',
           target: {
             type: 'creature',
-            crea: arguments[0].id,
+            crea: target.id,
           },
           id: this.id,
-          args,
+          args: target,
         });
       }
 
-      if (arguments[0] instanceof Array) {
-        const args = Object.assign({}, arguments);
-        delete args[0];
-
-        const array = arguments[0].map(item => ({
+      if (target instanceof Array) {
+        const array = target.map(item => ({
           x: item.x,
           y: item.y,
         }));
@@ -212,7 +204,7 @@ export default class Ability {
             array,
           },
           id: this.id,
-          args,
+          args: target,
         });
       }
     } else if (this.creature.materializationSickness && this.affectedByMatSickness) {
@@ -220,7 +212,7 @@ export default class Ability {
     }
 
     return this.animation2({
-      arg: arguments,
+      arg: target,
     });
   }
 
@@ -335,8 +327,11 @@ export default class Ability {
     return targetsList;
   }
 
+  /**
+   * @returns {string}
+   */
   getFormattedCosts() {
-    return !this.costs ? false : this.getFormattedDamages(this.costs);
+    return this.costs ? this.getFormattedDamages(this.costs) : '';
   }
 
   getFormattedDamages(obj = this.damages) {
@@ -449,6 +444,7 @@ export default class Ability {
    * @returns If one requirement fails it returns false, otherwise true
    */
   testRequirements() {
+    debugger;
     const { game } = this;
     const def = {
       plasma: 0,

@@ -9,7 +9,7 @@ import Hex from './utility/hex';
 import HexGrid from './utility/hexgrid';
 import { getUrl } from './assetLoader';
 import Player from './player';
-import { UI } from './ui/interface';
+import UI from './ui/interface';
 import Creature from './creature';
 
 /* Game Class

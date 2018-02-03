@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import $j from 'jquery';
 import { Button } from './button';
 import { Chat } from './chat';
@@ -12,7 +11,7 @@ import { getUrl } from '../assetLoader';
  *
  * Object containing UI DOM element, update functions and event managment on UI.
  */
-export class UI {
+export default class UI {
   /* Attributes
    *
    * NOTE : attributes and variables starting with $ are jquery element
@@ -30,10 +29,8 @@ export class UI {
    *
    */
 
-  /* Constructor
-   *
+  /**
    * Create attributes and default buttons
-   *
    */
   constructor(game) {
     this.game = game;
@@ -237,6 +234,7 @@ export class UI {
               case 'dash_right':
                 this.gridSelectRight();
                 break;
+              default:
             }
           } else {
             switch (k) {
@@ -296,6 +294,7 @@ export class UI {
               case 'grid_confirm':
                 game.grid.confirmHex();
                 break;
+              default:
             }
           }
 
@@ -1166,17 +1165,19 @@ export class UI {
     this.updateInfos();
   }
 
+  /**
+   * This shows the ability info
+   */
   updateAbilityButtonsContent() {
-    let game = this.game,
-      creature = game.activeCreature;
+    const { activeCreature } = this.game;
 
     // Change ability buttons
     this.abilitiesButtons.forEach((btn) => {
-      const ab = creature.abilities[btn.abilityId];
+      const ability = activeCreature.abilities[btn.abilityId];
       const $desc = btn.$button.next('.desc');
 
       // Change the ability's frame when it gets upgraded
-      if (ab.isUpgraded()) {
+      if (ability.isUpgraded()) {
         btn.$button.addClass('upgraded');
       } else {
         btn.$button.removeClass('upgraded');
@@ -1186,38 +1187,42 @@ export class UI {
       const $abilityInfo = $desc.find('.abilityinfo_content');
       $abilityInfo.find('.info').remove();
 
-      const costs_string = ab.getFormattedCosts();
-      if (costs_string) {
-        $abilityInfo.append(`${'<div class="info costs">' +
-          'Costs : '}${costs_string
-        }</div>`);
+      // eslint-disable-next-line
+      debugger;
+
+      const costString = ability.getFormattedCosts();
+      if (costString !== '') {
+        const costDiv = document.createElement('div');
+        costDiv.classList.add('info', 'cost');
+        costDiv.innerHTML = `Costs: ${costString}`;
+        $abilityInfo.append(costDiv);
       }
 
-      const dmg_string = ab.getFormattedDamages();
-      if (dmg_string) {
-        $abilityInfo.append(`${'<div class="info damages">' +
-          'Damages : '}${dmg_string
-        }</div>`);
+      const damageString = ability.getFormattedDamages();
+      if (damageString) {
+        const damageDiv = document.createElement('div');
+        damageDiv.classList.add('info', 'damages');
+        damageDiv.innerHTML = `Damages: ${damageString}`;
+        $abilityInfo.append(damageDiv);
       }
 
-      const special_string = ab.getFormattedEffects();
-      if (special_string) {
-        $abilityInfo.append(`${'<div class="info special">' +
-          'Effects : '}${special_string
-        }</div>`);
+      const specialString = ability.getFormattedEffects();
+      if (specialString) {
+        const specialDiv = document.createElement('div');
+        specialDiv.classList.add('info', 'damages');
+        specialDiv.innerHTML = `Effects: ${specialString}`;
+        $abilityInfo.append(specialDiv);
       }
 
-      if (ab.hasUpgrade()) {
-        if (!ab.isUpgraded()) {
-          $abilityInfo.append(`<div class="info upgrade">${
-            ab.isUpgradedPerUse() ? 'Uses' : 'Rounds'
-          } left before upgrading : ${ab.usesLeftBeforeUpgrade()
-          }</div>`);
+      if (ability.hasUpgrade()) {
+        const updateDiv = document.createElement('div');
+        updateDiv.classList.add('info', 'upgrade');
+        if (!ability.isUpgraded()) {
+          updateDiv.innerHTML = `${ability.isUpgradedPerUse() ? 'Uses' : 'Rounds'} left before upgrading: ${ability.usesLeftBeforeUpgrade()}`;
+        } else {
+          updateDiv.innerHTML = `Upgrade ${ability.upgrade}`;
         }
-
-        $abilityInfo.append(`${'<div class="info upgrade">' +
-          'Upgrade : '}${ab.upgrade
-        }</div>`);
+        $abilityInfo.append(updateDiv);
       }
     });
   }
@@ -1259,13 +1264,13 @@ export class UI {
       // Charge
       this.abilitiesButtons[i].$button.next('.desc').find('.charge').remove();
       if (ab.getCharge !== undefined) {
-        this.abilitiesButtons[i].$button.next('.desc').append(`<div class="charge">Charge : ${ab.getCharge().value}/${ab.getCharge().max}</div>`);
+        this.abilitiesButtons[i].$button.next('.desc').append(`<div class="charge"> Charge : ${ab.getCharge().value} / ${ab.getCharge().max}</div>`);
       }
 
       // Message
       this.abilitiesButtons[i].$button.next('.desc').find('.message').remove();
       if (ab.message !== '') {
-        this.abilitiesButtons[i].$button.next('.desc').append(`<div class="message">${ab.message}</div>`);
+        this.abilitiesButtons[i].$button.next('.desc').append(`<div class="message"> ${ab.message}</div>`);
       }
     }
 
@@ -1280,11 +1285,11 @@ export class UI {
   /* updateInfos()
    */
   updateInfos() {
-    const game = this.game;
+    const { game } = this;
 
     $j('#playerbutton, #playerinfo')
       .removeClass('p0 p1 p2 p3')
-      .addClass(`p${game.activeCreature.player.id}`);
+      .addClass(`p${game.activeCreature.player.id} `);
     $j('#playerinfo .name').text(game.activeCreature.player.name);
     $j('#playerinfo .points span').text(game.activeCreature.player.getScore().total);
     $j('#playerinfo .plasma span').text(game.activeCreature.player.plasma);
