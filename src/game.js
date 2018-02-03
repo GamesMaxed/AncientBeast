@@ -1138,7 +1138,7 @@ export default class Game {
     const creatures = this.creatures
       .filter(creature => creature instanceof Creature);
 
-    const match = creatures.every(creature => Object.entries(opts).every((key, val) => {
+    const match = creatures.every(creature => Object.entries(opts).every(([key, val]) => {
       if (key === 'team') {
         if (val !== -1 && val instanceof Array) {
           if (val.includes(creature.team)) {
@@ -1240,7 +1240,7 @@ export default class Game {
         .text(player.name);
 
       // Change score
-      Object.entries(player.getScore()).forEach((typeOfScore, val) => {
+      Object.entries(player.getScore()).forEach(([typeOfScore, val]) => {
         const text = (val === 0 && typeOfScore !== 'total') ? '--' : val;
         // Weird expression swaps 2nd and 3rd player
         $table.children(`tr.${typeOfScore}`).children(`td:nth-child(${columnId})`)

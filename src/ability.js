@@ -328,37 +328,40 @@ export default class Ability {
   }
 
   /**
-   * @returns {string}
+   * @return {string}
    */
   getFormattedCosts() {
-    return this.costs ? this.getFormattedDamages(this.costs) : '';
+    return this.getFormattedDamages(this.costs);
   }
 
+  /**
+   * @param {object} obj
+   * @return {string}
+   */
   getFormattedDamages(obj = this.damages) {
     if (obj === undefined && this.damages === undefined) {
       return '';
     }
 
-    let string = '';
     const { creature } = this;
 
-    Object.entries(obj).forEach((key, value) => {
+    console.log(obj);
+    const string = Object.entries(obj).map(([key, value]) => {
+      /*
+      // Change the stat for a nice icon
       if (key === 'special') {
         // TODO: don't manually list all the stats and masteries when needed
-        string += value.replace(/%(health|regrowth|endurance|energy|meditation|initiative|offense|defense|movement|pierce|slash|crush|shock|burn|frost|poison|sonic|mental)%/g, '<span class="$1"></span>');
-        return;
+        value = value.replace(/%(health|regrowth|endurance|energy|meditation|initiative|offense|defense|movement|pierce|slash|crush|shock|burn|frost|poison|sonic|mental)%/g, '<span class="$1"></span>');
       }
-
+      */
+      let temp = '';
       if (key === 'energy') {
-        value += creature.stats.reqEnergy;
+        temp += creature.stats.reqEnergy;
       }
 
-      if (string !== '') {
-        string += ', ';
-      }
-
-      string += (`${value}<span class="${key}"></span>`);
-    });
+      temp += (`${value}<span class="${key}"></span>`);
+      return temp;
+    }).join(', ');
 
     return string;
   }
@@ -444,7 +447,6 @@ export default class Ability {
    * @returns If one requirement fails it returns false, otherwise true
    */
   testRequirements() {
-    debugger;
     const { game } = this;
     const def = {
       plasma: 0,
@@ -529,7 +531,7 @@ export default class Ability {
     }
 
     // Return wether all stats are valid
-    return Object.entries(req.stats).every((key, value) =>
+    return Object.entries(req.stats).every(([key, value]) =>
       (value > 0 && this.creature.stats[key] > value)
       || (value < 0 && this.creature.stats[key] < value));
   }
@@ -541,7 +543,7 @@ export default class Ability {
       return;
     }
 
-    Object.entries(costs).forEach((key, value) => {
+    Object.entries(costs).forEach(([key, value]) => {
       if (typeof (value) === 'number') {
         if (key === 'health') {
           creature.hint(value, `damage d${value}`);

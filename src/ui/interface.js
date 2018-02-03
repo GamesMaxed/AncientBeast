@@ -1187,9 +1187,6 @@ export default class UI {
       const $abilityInfo = $desc.find('.abilityinfo_content');
       $abilityInfo.find('.info').remove();
 
-      // eslint-disable-next-line
-      debugger;
-
       const costString = ability.getFormattedCosts();
       if (costString !== '') {
         const costDiv = document.createElement('div');
