@@ -133,7 +133,7 @@ export default class Creature {
     this.updateHex();
 
     let dp;
-    if (this.type === '--') {
+    if (this.type !== '--') {
       dp = '';
     } else {
       switch (this.team) {
