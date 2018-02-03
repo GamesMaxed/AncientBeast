@@ -168,7 +168,7 @@ export default class Ability {
     // Gamelog Event Registration
     if (game.triggers.onQuery.test(this.getTrigger())) {
       if (arguments[0] instanceof Hex) {
-        const args = $j.extend({}, arguments);
+        const args = Object.assign({}, arguments);
         delete args[0];
         game.gamelog.add({
           action: 'ability',
@@ -183,7 +183,7 @@ export default class Ability {
       }
 
       if (arguments[0] instanceof Creature) {
-        const args = $j.extend({}, arguments);
+        const args = Object.assign({}, arguments);
         delete args[0];
         game.gamelog.add({
           action: 'ability',
@@ -197,7 +197,7 @@ export default class Ability {
       }
 
       if (arguments[0] instanceof Array) {
-        const args = $j.extend({}, arguments);
+        const args = Object.assign({}, arguments);
         delete args[0];
 
         const array = arguments[0].map(item => ({
@@ -288,7 +288,7 @@ export default class Ability {
       }, animationData.delay);
 
       setTimeout(() => {
-        const queue = game.animationQueue.filter(item => item != animID);
+        const queue = game.animationQueue.filter(item => item !== animID);
 
         if (queue.length === 0) {
           game.freezedInput = false;

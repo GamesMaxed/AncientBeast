@@ -76,22 +76,22 @@ export default class Game {
     this.realms = ['A', 'E', 'G', 'L', 'P', 'S', 'W'];
     this.loadedCreatures = [
       0, // Dark Priest
-      37, // Swine Thug
       3, // Uncle Fungus
       4, // Magma Spawn
-      45, // Chimera
-      12, // Snow Bunny
       5, // Impaler
-      14, // Gumble
-      7, // Abolished
-      40, // Nutcase
-      9, // Nightmare
-      39, // Headless
-      44, // Scavenger
-      31, // Cyber Hound
       // 6, // Ice Demon
+      7, // Abolished
+      9, // Nightmare
+      12, // Snow Bunny
+      14, // Gumble
       // 22, // Lava Mollusk
+      31, // Cyber Hound
       // 33, // Golden Wyrm
+      37, // Swine Thug
+      39, // Headless
+      40, // Nutcase
+      44, // Scavenger
+      45, // Chimera
     ];
     this.availableMusic = [];
     this.soundEffects = [
@@ -172,6 +172,9 @@ export default class Game {
     };
   }
 
+  /**
+   * @param {Creature[]} data
+   */
   dataLoaded(data) {
     const dpcolor = ['blue', 'orange', 'green', 'red'];
 
@@ -220,11 +223,9 @@ export default class Game {
     this.Phaser.load.start();
   }
 
-  /* loadGame(setupOpt) preload
-   *
-   * setupOpt : Object : Setup options from matchmaking menu
-   *
+  /**
    * Load all required game files
+   * @param {object} setupOpt Setup options from matchmaking menu
    */
   loadGame(setupOpt) {
     const defaultOpt = {
@@ -312,14 +313,18 @@ export default class Game {
     this.dataLoaded(dataJson);
   }
 
-  /* eslint-disable class-methods-use-this */
+  /**
+   * TODO: move this to ui layer
+   */
   startLoading() {
     $j('#gameSetupContainer').hide();
     $j('#loader').show();
     $j('body').css('cursor', 'wait');
   }
-  /* eslint-enable class-methods-use-this */
 
+  /**
+   * TODO: move this to ui layer
+   */
   loadFinish() {
     const { progress } = this.Phaser.load;
     const progressWidth = `${progress}%`;
@@ -365,12 +370,9 @@ export default class Game {
     this.setup(this.playerMode);
   }
 
-  /* Setup(playerMode)
-   *
-   * playerMode :  Integer : Ideally 2 or 4, number of players to configure
-   *
+  /**
    * Launch the game with the given number of player.
-   *
+   * @param {number} playerMode Ideally 2 or 4, number of players to configure
    */
   setup(playerMode) {
     // Phaser
@@ -386,12 +388,12 @@ export default class Game {
 
     const bg = this.Phaser.add.sprite(0, 0, 'background');
     bg.inputEnabled = true;
-    bg.events.onInputUp.add((Sprite, Pointer) => {
+    bg.events.onInputUp.add((sprite, pointer) => {
       if (this.freezedInput || this.UI.dashopen) {
         return;
       }
 
-      switch (Pointer.button) {
+      switch (pointer.button) {
         case 0:
           // Left mouse button pressed
           break;
@@ -864,9 +866,9 @@ export default class Game {
    * @param {string} trigger What is triggered
    * @param {*} triggeredCreature
    * @param {*} required
-   * @param {*} retValue
    */
-  triggerAbility(trigger, triggeredCreature, required, retValue) {
+  triggerAbility(trigger, triggeredCreature, required) {
+    let retValue;
     // For triggered creature
     triggeredCreature.abilities.forEach((ability) => {
       if (triggeredCreature.dead === true) {
@@ -894,6 +896,7 @@ export default class Game {
         }
       });
     });
+    return retValue;
   }
 
   /**

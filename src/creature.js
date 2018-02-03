@@ -12,7 +12,6 @@ import Effect from './effect';
  * Creature Class
  *
  * Creature contains all creatures properties and attacks
- *  TODO: use a getter for movementType
  */
 export default class Creature {
   /* Attributes
@@ -69,10 +68,10 @@ export default class Creature {
     this.animation = obj.animation;
     this.display = obj.display;
     this.drop = obj.drop;
-    this.currentMovementType = 'normal';
+    this.movementType = 'normal';
 
     if (obj.movementType) {
-      this.currentMovementType = obj.movementType;
+      this.movementType = obj.movementType;
     }
 
     this.hexagons = [];
@@ -459,7 +458,7 @@ export default class Creature {
         args.creature.delayable = false;
         game.UI.btnDelay.changeState('disabled');
         args.creature.moveTo(hex, {
-          animation: args.creature.movementType === 'flying' ? 'fly' : 'walk',
+          animation: args.creature.getMovementType() === 'flying' ? 'fly' : 'walk',
           callback() {
             game.activeCreature.queryMove();
           },
@@ -483,7 +482,7 @@ export default class Creature {
     this.facePlayerDefault();
     this.updateHealth();
 
-    if (this.movementType === 'flying') {
+    if (this.getMovementType() === 'flying') {
       o.range = game.grid.getFlyingRange(this);
     }
 
@@ -497,7 +496,7 @@ export default class Creature {
         overlayClass: `creature moveto selected player${args.creature.team}`,
       });
     };
-    const select = (o.noPath || this.movementType === 'flying') ? selectFlying : selectNormal;
+    const select = (o.noPath || this.getMovementType() === 'flying') ? selectFlying : selectNormal;
 
     if (this.noActionPossible) {
       game.grid.querySelf({
@@ -650,7 +649,7 @@ export default class Creature {
       callbackStepIn() {
         return true;
       },
-      animation: this.movementType === 'flying' ? 'fly' : 'walk',
+      animation: this.getMovementType() === 'flying' ? 'fly' : 'walk',
       ignoreMovementPoint: false,
       ignorePath: false,
       customMovementPoint: 0,
@@ -1600,17 +1599,17 @@ export default class Creature {
    * Get movement type for this creature
    * @return {string} "normal", "hover", or "flying"
    */
-  get movementType() {
+  getMovementType() {
     const totalAbilities = this.abilities.length;
 
     // If the creature has an ability that modifies movement type, use that,
     // otherwise use the creature's base movement type
     for (let i = 0; i < totalAbilities; i += 1) {
-      if ('movementType' in this.abilities[i]) {
-        return this.abilities[i].movementType;
+      if ('getMovementType' in this.abilities[i]) {
+        return this.abilities[i].getMovementType();
       }
     }
 
-    return this.currentMovementType;
+    return this.movementType;
   }
 }

@@ -24,8 +24,8 @@ export default (G) => {
        *
        * @return {string} movement type, "hover" or "flying"
        */
-      get movementType() {
-        return this.isUpgraded() ? 'flying' : this.creature.movementType;
+      getMovementType() {
+        return this.isUpgraded() ? 'flying' : this.creature.getMovementType();
       },
 
       //  Type : Can be "onQuery", "onStartPhase", "onDamage"

@@ -910,7 +910,7 @@ export default class HexGrid {
     const creature = this.game.creatures[id];
     let hexes;
 
-    if (creature.movementType === 'flying') {
+    if (creature.getMovementType() === 'flying') {
       hexes = this.getFlyingRange(creature);
     } else {
       hexes = this.getMovementRange(creature);

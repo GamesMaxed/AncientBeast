@@ -44,7 +44,7 @@ export class Animations {
 
       // Ignore traps for hover creatures, unless this is the last hex
       const enterHexOpts = $j.extend({
-        ignoreTraps: creature.movementType !== 'normal' && hexId < path.length - 1,
+        ignoreTraps: creature.getMovementType() !== 'normal' && hexId < path.length - 1,
       }, opts);
 
       tween.onComplete.add(() => {
