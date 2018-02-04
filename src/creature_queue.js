@@ -8,15 +8,21 @@ export default class CreatureQueue {
   }
 
   /**
-   * Add a creature to the next turn's queue by initiative
+   * Add a creature to the next turn's queue by initiative.
+   * Higher iniatives appear first
    * @param {Creature} creature The creature to add
-   * @param {boolean} delayed
    */
-  addByInitiative(creature, delayed = true) {
-    const inFront = this.nextQueue.some(currentCreature => currentCreature.delayed === delayed
-      || currentCreature.getInitiative() < creature.getInitiative());
-    if (inFront) {
-      this.nextQueue.unshift(creature);
+  addByInitiative(creature) {
+    if (creature.delayed) {
+      this.nextQueue.push(creature);
+    }
+
+    const index = this.nextQueue.findIndex(currentCreature =>
+      currentCreature.getInitiative() < creature.getInitiative());
+    // If we found it at a given index
+    if (index !== -1) {
+      // Insert at the given index
+      this.nextQueue.splice(index, 0, creature);
     } else {
       this.nextQueue.push(creature);
     }
@@ -50,6 +56,7 @@ export default class CreatureQueue {
     return this.nextQueue.length === 0;
   }
 
+  // TODO: fix this method
   delay(creature) {
     const { game } = this;
     let { queue } = this;
