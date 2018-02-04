@@ -1,6 +1,6 @@
 import * as arrayUtils from './utility/arrayUtils';
 
-export class CreatureQueue {
+export default class CreatureQueue {
   constructor(game) {
     this.game = game;
     this.queue = [];
@@ -9,23 +9,25 @@ export class CreatureQueue {
 
   /**
    * Add a creature to the next turn's queue by initiative
-   * creature - The creature to add
+   * @param {Creature} creature The creature to add
+   * @param {boolean} delayed
    */
-  addByInitiative(creature) {
-    for (let i = 0; i < this.nextQueue.length; i++) {
-      const queue = this.nextQueue[i];
-
-      if (queue.delayed || queue.getInitiative() < creature.getInitiative()) {
-        this.nextQueue.splice(i, 0, creature);
-        return;
-      }
+  addByInitiative(creature, delayed = true) {
+    const inFront = this.nextQueue.some(currentCreature => currentCreature.delayed === delayed
+      || currentCreature.getInitiative() < creature.getInitiative());
+    if (inFront) {
+      this.nextQueue.unshift(creature);
+    } else {
+      this.nextQueue.push(creature);
     }
-
-    this.nextQueue.push(creature);
   }
 
+  /**
+   * Remove the first element in the queue and return that element
+   * @returns {Creature} first element in the queue
+   */
   dequeue() {
-    return this.queue.splice(0, 1)[0];
+    return this.queue.shift();
   }
 
   remove(creature) {
@@ -49,28 +51,24 @@ export class CreatureQueue {
   }
 
   delay(creature) {
+    const { game } = this;
+    let { queue } = this;
     // Find out if the creature is in the current queue or next queue; remove
     // it from the queue and replace it at the end
-    let game = this.game,
-      inQueue = arrayUtils.removePos(this.queue, creature) || creature === game.activeCreature,
-      queue = this.queue;
+    const inQueue = arrayUtils.removePos(this.queue, creature) || creature === game.activeCreature;
 
     if (!inQueue) {
       queue = this.nextQueue;
       arrayUtils.removePos(this.nextQueue, creature);
     }
+
     // Move creature to end of queue but in order w.r.t. other delayed creatures
-    for (let i = 0, len = queue.length; i < len; i++) {
-      if (!queue[i].delayed) {
-        continue;
-      }
-
-      if (queue[i].getInitiative() < creature.getInitiative()) {
-        queue.splice(i, 0, creature);
-        return;
-      }
+    const infront = queue.some(currentCreature => !currentCreature.delayed
+      && currentCreature.getInitiative() < creature.getInitiative());
+    if (infront) {
+      queue.unshift(creature);
+    } else {
+      queue.push(creature);
     }
-
-    queue.push(creature);
   }
 }

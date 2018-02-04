@@ -1196,7 +1196,7 @@ export default class UI {
       }
 
       const damageString = ability.getFormattedDamages();
-      if (damageString) {
+      if (damageString !== '') {
         const damageDiv = document.createElement('div');
         damageDiv.classList.add('info', 'damages');
         damageDiv.innerHTML = `Damages: ${damageString}`;
