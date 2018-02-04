@@ -1,12 +1,14 @@
 module.exports = {
+  plugins: ["jest"],
+  extends: ["plugin:jest/recommended", "airbnb"],
   parser: "babel-eslint",
-  extends: "airbnb",
   parserOptions: {
     ecmaVersion: 6,
     sourceType: "module"
   },
   env: {
-    browser: true
+    browser: true,
+    'jest/globals': true
   },
   globals: {
     Phaser: true
