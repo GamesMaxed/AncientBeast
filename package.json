@@ -61,6 +61,11 @@
   "engines": {
     "node": ">=8"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^assets/(.*)$": "<rootDir>/assets/$1"
+    }
+  },
   "scripts": {
     "build": "yarn run generateManifest && webpack --config webpack.prod.js",
     "dev": "webpack-dev-server --config webpack.dev.js",

@@ -15,10 +15,14 @@ export default class CreatureQueue {
   addByInitiative(creature) {
     if (creature.delayed) {
       this.nextQueue.push(creature);
+      return;
     }
 
+    // Find the index of the first creature with a lower initiative or that is delayed
     const index = this.nextQueue.findIndex(currentCreature =>
-      currentCreature.getInitiative() < creature.getInitiative());
+      currentCreature.getInitiative() < creature.getInitiative()
+      || currentCreature.delayed);
+
     // If we found it at a given index
     if (index !== -1) {
       // Insert at the given index
