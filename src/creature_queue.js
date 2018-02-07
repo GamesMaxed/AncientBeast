@@ -12,23 +12,23 @@ export default class CreatureQueue {
    * Higher iniatives appear first
    * @param {Creature} creature The creature to add
    */
-  addByInitiative(creature) {
+  addByInitiative(creature, queue = this.nextQueue) {
     if (creature.delayed) {
-      this.nextQueue.push(creature);
+      queue.push(creature);
       return;
     }
 
     // Find the index of the first creature with a lower initiative or that is delayed
-    const index = this.nextQueue.findIndex(currentCreature =>
+    const index = queue.findIndex(currentCreature =>
       currentCreature.getInitiative() < creature.getInitiative()
       || currentCreature.delayed);
 
     // If we found it at a given index
     if (index !== -1) {
       // Insert at the given index
-      this.nextQueue.splice(index, 0, creature);
+      queue.splice(index, 0, creature);
     } else {
-      this.nextQueue.push(creature);
+      queue.push(creature);
     }
   }
 
@@ -60,26 +60,34 @@ export default class CreatureQueue {
     return this.nextQueue.length === 0;
   }
 
-  // TODO: fix this method
+  /**
+   * Delay a creature
+   *
+   * @param {Creature} creature
+   */
   delay(creature) {
     const { game } = this;
     let { queue } = this;
+
     // Find out if the creature is in the current queue or next queue; remove
     // it from the queue and replace it at the end
-    const inQueue = arrayUtils.removePos(this.queue, creature) || creature === game.activeCreature;
+    const inQueue = queue.includes(creature) || creature === game.activeCreature;
 
     if (!inQueue) {
       queue = this.nextQueue;
-      arrayUtils.removePos(this.nextQueue, creature);
     }
 
-    // Move creature to end of queue but in order w.r.t. other delayed creatures
-    const infront = queue.some(currentCreature => !currentCreature.delayed
-      && currentCreature.getInitiative() < creature.getInitiative());
-    if (infront) {
-      queue.unshift(creature);
+    const index = queue.indexOf(creature);
+    if (index === -1) {
+      if (creature !== game.activeCreature) {
+        throw new Error('Cannot delay creature that is not in a queue');
+      }
     } else {
-      queue.push(creature);
+      queue.splice(queue.indexOf(creature), 1);
+      // Move creature to end of queue but in order w.r.t. other delayed creatures
+      // eslint-disable-next-line no-param-reassign
+      creature.delayed = true;
+      this.addByInitiative(creature, queue);
     }
   }
 }
