@@ -1,8 +1,19 @@
-export class Drop {
+export default class Drop {
+  /**
+   * Create a drop
+   *
+   * @param {string} name Name of the drop
+   * @param {number} health How much the drop heals
+   * @param {number} energy How much energy the drop gives back
+   * @param {number} x The X coordinate
+   * @param {number} y The Y coordinate
+   * @param {Game} game Game object
+   */
   constructor(name, health, energy, x, y, game) {
     this.name = name;
     this.game = game;
-    this.id = game.dropId++;
+    game.dropId += 1;
+    this.id = game.dropId;
     this.x = x;
     this.y = y;
     this.pos = {
@@ -25,7 +36,7 @@ export class Drop {
   }
 
   pickup(creature) {
-    const game = this.game;
+    const { game } = this;
 
     game.log(`%CreatureName${creature.id}% picks up ${this.name}`);
     creature.hint(this.name, 'msg_effects');
@@ -50,10 +61,11 @@ export class Drop {
 
     creature.updateAlteration(); // Will cap the stats
 
-    let drop = this,
-      tween = game.Phaser.add.tween(this.display).to({
-        alpha: 0,
-      }, 500, Phaser.Easing.Linear.None).start();
+    const drop = this;
+
+    const tween = game.Phaser.add.tween(this.display).to({
+      alpha: 0,
+    }, 500, Phaser.Easing.Linear.None).start();
 
     tween.onComplete.add(() => {
       drop.display.destroy();

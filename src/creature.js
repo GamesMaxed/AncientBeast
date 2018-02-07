@@ -5,7 +5,7 @@ import Ability from './ability';
 import { search } from './utility/pathfinding';
 import Hex from './utility/hex';
 import * as arrayUtils from './utility/arrayUtils';
-import { Drop } from './drops';
+import Drop from './drop';
 import Effect from './effect';
 
 /**

@@ -409,6 +409,7 @@ export default class Game {
     }, this);
 
     // Reset global counters
+    // TODO: use generator functions for this? Atleast not mutate them in other classes
     this.trapId = 0;
     this.effectId = 0;
     this.dropId = 0;
