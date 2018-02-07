@@ -1,4 +1,4 @@
-import CreatureQueue from './creature_queue';
+import CreatureQueue from './creatureQueue';
 import Creature from './creature';
 
 jest.mock('./creature');

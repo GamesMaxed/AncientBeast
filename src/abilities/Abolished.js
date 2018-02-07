@@ -1,4 +1,4 @@
-import { Damage } from '../damage';
+import Damage from '../damage';
 import { Team } from '../utility/team';
 import Creature from '../creature';
 import Effect from '../effect';

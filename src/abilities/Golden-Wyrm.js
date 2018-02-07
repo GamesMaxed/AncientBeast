@@ -1,4 +1,4 @@
-import { Damage } from '../damage';
+import Damage from '../damage';
 import { Team, isTeam } from '../utility/team';
 import * as matrices from '../utility/matrices';
 import Creature from '../creature';

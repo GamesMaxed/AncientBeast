@@ -1,7 +1,7 @@
 import $j from 'jquery';
 import dataJson from 'assets/units/data.json';
 import Animations from './animations';
-import CreatureQueue from './creature_queue';
+import CreatureQueue from './creatureQueue';
 import GameLog from './utility/gamelog';
 import { SoundSys } from './sound/soundsys';
 import { MusicPlayer } from './sound/musicplayer';
