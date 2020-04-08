@@ -20,6 +20,8 @@ jobs:
       run: npm run assetLister 
     - name: lint
       run: npm run lint
+    - name: test
+      run: npm run test
     - name: build
       run: npx webpack --mode=production
       env:
