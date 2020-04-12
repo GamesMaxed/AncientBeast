@@ -16,11 +16,13 @@ jobs:
       with:
         node-version: 12
     - run: npm ci
-    - name: Asset generator
+    - name: Generate asset manifest
       run: npm run assetLister 
-    - name: lint
+    - name: Lint
       run: npm run lint
-    - name: build
+    - name: Typecheck
+      run: npm run typecheck -- --pretty false
+    - name: Build
       run: npx webpack --mode=production
       env:
         PUBLIC_PATH: '/AncientBeast/'
