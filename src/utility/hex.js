@@ -1,4 +1,4 @@
-import * as $j from 'jquery';
+import $j from 'jquery';
 import { Trap } from './trap';
 import { Creature } from '../creature';
 

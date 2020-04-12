@@ -1,4 +1,4 @@
-import * as $j from 'jquery';
+import $j from 'jquery';
 import { Damage } from './damage';
 import { Hex } from './utility/hex';
 import { Creature } from './creature';

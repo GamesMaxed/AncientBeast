@@ -1,4 +1,4 @@
-import * as $j from 'jquery';
+import $j from 'jquery';
 import { Hex } from './hex';
 import { Creature } from '../creature';
 import { search } from './pathfinding';

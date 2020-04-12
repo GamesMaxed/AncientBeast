@@ -37,6 +37,7 @@
 		"@babel/preset-env": "^7.9.5",
 		"@babel/preset-typescript": "^7.9.0",
 		"@types/jquery": "^3.3.34",
+		"@types/jquery.transit": "^0.9.30",
 		"babel-jest": "^25.3.0",
 		"babel-loader": "^8.1.0",
 		"css-loader": "^3.5.2",
