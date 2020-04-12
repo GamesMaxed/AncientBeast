@@ -3,12 +3,17 @@
 		"target": "esnext",
 		"module": "esnext",
 		"moduleResolution": "node",
+		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"noEmit": true,
 		"esModuleInterop": true,
 		"allowJs": true,
 		"checkJs": true,
-		"lib": ["es2020", "dom"]
+		"lib": ["es2020", "dom"],
+		"baseUrl": ".",
+		"paths": {
+			"assets/*": ["assets/*"]
+		}
 	},
-	"include": ["./node_modules/phaser-ce/typescript/phaser.d.ts", "src/**/*"]
+	"include": ["./node_modules/phaser-ce/typescript/phaser.d.ts", "src/assetTypes.d.ts", "src/**/*"]
 }

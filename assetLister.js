@@ -107,7 +107,10 @@ function dirToString(dirEntity) {
  * @return {string} The file entity as a string.
  */
 function fileToString(fileEntity) {
-	return `{id: "${fileEntity.name}", url: require("assets/${fileEntity.url}") }`;
+	const url = fileEntity.url.endsWith('.json')
+		? `require("assets/${fileEntity.url}")`
+		: `require("assets/${fileEntity.url}").default`;
+	return `{id: "${fileEntity.name}", url: ${url} }`;
 }
 
 readDirectory(path.join(__dirname, 'assets'))

@@ -49,7 +49,7 @@ module.exports = (env, argv) => {
 							}
 							return '[path][name].[ext]';
 						},
-						esModule: false,
+						esModule: true,
 					},
 				},
 			],
