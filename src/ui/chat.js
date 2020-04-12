@@ -1,4 +1,4 @@
-import * as $j from 'jquery';
+import $j from 'jquery';
 // Unused for now
 // import * as time from '../utility/time';
 import * as str from '../utility/string';

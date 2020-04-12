@@ -1,4 +1,4 @@
-import * as $j from 'jquery';
+import $j from 'jquery';
 import * as arrayUtils from './utility/arrayUtils';
 
 export class Animations {

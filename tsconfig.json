@@ -2,7 +2,13 @@
 	"compilerOptions": {
 		"target": "esnext",
 		"module": "esnext",
-		"strict": false
+		"moduleResolution": "node",
+		"isolatedModules": true,
+		"noEmit": true,
+		"esModuleInterop": true,
+		"allowJs": true,
+		"checkJs": true,
+		"lib": ["es2020", "dom"]
 	},
-	"include": ["src/"]
+	"include": ["./node_modules/phaser-ce/typescript/phaser.d.ts", "src/**/*"]
 }

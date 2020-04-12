@@ -1,5 +1,5 @@
 // Import jQuery related stuff
-import * as $j from 'jquery';
+import $j from 'jquery';
 import 'jquery.transit';
 import Game from './game';
 

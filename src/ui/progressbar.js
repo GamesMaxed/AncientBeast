@@ -1,4 +1,4 @@
-import * as $j from 'jquery';
+import $j from 'jquery';
 
 export class ProgressBar {
 	constructor(opts, game) {
