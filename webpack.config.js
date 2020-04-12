@@ -26,7 +26,7 @@ module.exports = (env, argv) => {
 				{ test: /pixi\.js/, use: ['expose-loader?PIXI'] },
 				{ test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
 				{ test: /p2\.js/, use: ['expose-loader?p2'] },
-				{ test: /\.js$/, use: ['babel-loader'], exclude: /node_modules/ },
+				{ test: /\.(j|t)s$/, use: ['babel-loader'], exclude: /node_modules/ },
 				{
 					test: /\.html$/,
 					use: ['html-loader'],
@@ -62,6 +62,7 @@ module.exports = (env, argv) => {
 				assets: path.resolve(__dirname, 'assets/'),
 				modules: path.join(__dirname, 'node_modules'),
 			},
+			extensions: ['.ts', '.js'],
 		},
 		devServer: {
 			contentBase: process.env.PUBLIC_PATH ? process.env.PUBLIC_PATH : '/',
