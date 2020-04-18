@@ -980,47 +980,47 @@ export class HexGrid {
 		return arrayUtils.extendToLeft(hexes, size, this.game.grid);
 	}
 
-	/* getHexMap(originx, originy, array)
+	/**
 	 *
-	 * array : 	Array : 	2-dimentions Array containing 0 or 1 (boolean)
-	 * originx : 	Integer : 	Position of the array on the grid
-	 * originy : 	Integer : 	Position of the array on the grid
-	 * offsetx : 	Integer : 	offset flipped for flipped players
-	 * flipped : 	Boolean : 	If player is flipped or not
+	 * @param matrix {object} matrix that contains 2-dimentions Array containing 0 or 1 (boolean)
+	 * @param originx {number} 	Position of the array on the grid
+	 * @param originy {number} 	Position of the array on the grid
+	 * @param offsetx {number} 	offset flipped for flipped players
+	 * @param flipped {boolean} 	If player is flipped or not
 	 *
-	 * return : 	Array : 	Set of corresponding hexes
+	 * @return {Array}	Set of corresponding hexes
 	 */
-	getHexMap(originx, originy, offsetx, flipped, array) {
+	getHexMap(originx, originy, offsetx, flipped, matrix) {
 		// Heavy logic in here
 		let hexes = [];
 
-		array = array.slice(0); // Copy to not modify original
-		originx += flipped ? 1 - array[0].length - offsetx : -1 + offsetx;
+		matrix = matrix.data.slice(0); // Copy to not modify original
+		originx += flipped ? 1 - matrix[0].length - offsetx : -1 + offsetx;
 
-		for (let y = 0, len = array.length; y < len; y++) {
-			array[y] = array[y].slice(0); // Copy row
+		for (let y = 0, len = matrix.length; y < len; y++) {
+			matrix[y] = matrix[y].slice(0); // Copy row
 
 			// Translating to flipped patern
 			if (flipped && y % 2 != 0) {
 				// Odd rows
-				array[y].push(0);
+				matrix[y].push(0);
 			}
 
 			// Translating even to odd row patern
-			array[y].unshift(0);
+			matrix[y].unshift(0);
 			if (originy % 2 != 0 && y % 2 != 0) {
 				// Even rows
 				if (flipped) {
-					array[y].pop(); // Remove last element as the array will be parse backward
+					matrix[y].pop(); // Remove last element as the array will be parse backward
 				} else {
-					array[y].splice(0, 1); // Remove first element
+					matrix[y].splice(0, 1); // Remove first element
 				}
 			}
 
 			// Gathering hexes
-			for (let x = 0; x < array[y].length; x++) {
-				if (array[y][x]) {
-					let xfinal = flipped ? array[y].length - 1 - x : x; // Parse the array backward for flipped player
+			for (let x = 0; x < matrix[y].length; x++) {
+				if (matrix[y][x]) {
+					let xfinal = flipped ? matrix[y].length - 1 - x : x; // Parse the array backward for flipped player
 					if (this.hexExists(originy + y, originx + xfinal)) {
 						hexes.push(this.hexes[originy + y][originx + xfinal]);
 					}

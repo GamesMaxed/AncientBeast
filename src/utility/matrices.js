@@ -1,181 +1,204 @@
-export const diagonalup = [
-	[0, 0, 0, 0, 1], // Origin line
-	[0, 0, 0, 0, 1],
-	[0, 0, 0, 1, 0],
-	[0, 0, 0, 1, 0],
-	[0, 0, 1, 0, 0],
-	[0, 0, 1, 0, 0],
-	[0, 1, 0, 0, 0],
-	[0, 1, 0, 0, 0],
-	[1, 0, 0, 0, 0],
-];
+export const diagonalup = {
+	data: [
+		[0, 0, 0, 0, 1], // Origin line
+		[0, 0, 0, 0, 1],
+		[0, 0, 0, 1, 0],
+		[0, 0, 0, 1, 0],
+		[0, 0, 1, 0, 0],
+		[0, 0, 1, 0, 0],
+		[0, 1, 0, 0, 0],
+		[0, 1, 0, 0, 0],
+		[1, 0, 0, 0, 0],
+	],
+	origin: [4, 0],
+};
 
-diagonalup.origin = [4, 0];
+export const diagonaldown = {
+	data: [
+		[1, 0, 0, 0, 0], // Origin line
+		[0, 1, 0, 0, 0],
+		[0, 1, 0, 0, 0],
+		[0, 0, 1, 0, 0],
+		[0, 0, 1, 0, 0],
+		[0, 0, 0, 1, 0],
+		[0, 0, 0, 1, 0],
+		[0, 0, 0, 0, 1],
+		[0, 0, 0, 0, 1],
+	],
+	origin: [0, 0],
+};
 
-export const diagonaldown = [
-	[1, 0, 0, 0, 0], // Origin line
-	[0, 1, 0, 0, 0],
-	[0, 1, 0, 0, 0],
-	[0, 0, 1, 0, 0],
-	[0, 0, 1, 0, 0],
-	[0, 0, 0, 1, 0],
-	[0, 0, 0, 1, 0],
-	[0, 0, 0, 0, 1],
-	[0, 0, 0, 0, 1],
-];
+export const straitrow = {
+	data: [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]], // Origin line
+	origin: [0, 0],
+};
 
-diagonaldown.origin = [0, 0];
+export const bellowrow = {
+	data: [
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Origin line
+		[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+	],
+	origin: [0, 0],
+};
 
-export const straitrow = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]; // Origin line
-straitrow.origin = [0, 0];
+export const frontnback2hex = {
+	data: [
+		[0, 0, 0, 0],
+		[0, 1, 0, 1],
+		[1, 0, 0, 1], // Origin line
+		[0, 1, 0, 1],
+	],
+	origin: [2, 2],
+};
 
-export const bellowrow = [
-	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Origin line
-	[0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-];
+export const frontnback3hex = {
+	data: [
+		[0, 0, 0, 0, 0],
+		[0, 1, 0, 0, 1],
+		[1, 0, 0, 0, 1], // Origin line
+		[0, 1, 0, 0, 1],
+	],
+	origin: [3, 2],
+};
 
-bellowrow.origin = [0, 0];
+export const front2hex = {
+	data: [
+		[0, 0, 0, 0],
+		[0, 0, 0, 1],
+		[0, 0, 0, 1], // Origin line
+		[0, 0, 0, 1],
+	],
 
-export const frontnback2hex = [
-	[0, 0, 0, 0],
-	[0, 1, 0, 1],
-	[1, 0, 0, 1], // Origin line
-	[0, 1, 0, 1],
-];
+	origin: [2, 2],
+};
 
-frontnback2hex.origin = [2, 2];
+export const back2hex = {
+	data: [
+		[0, 0, 0, 0],
+		[0, 1, 0, 0],
+		[1, 0, 0, 0], // Origin line
+		[0, 1, 0, 0],
+	],
 
-export const frontnback3hex = [
-	[0, 0, 0, 0, 0],
-	[0, 1, 0, 0, 1],
-	[1, 0, 0, 0, 1], // Origin line
-	[0, 1, 0, 0, 1],
-];
+	origin: [2, 2],
+};
 
-frontnback3hex.origin = [3, 2];
+export const inlinefront2hex = {
+	data: [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 1], // Origin line
+		[0, 0, 0, 0],
+	],
+	origin: [2, 2],
+};
 
-export const front2hex = [
-	[0, 0, 0, 0],
-	[0, 0, 0, 1],
-	[0, 0, 0, 1], // Origin line
-	[0, 0, 0, 1],
-];
+export const inlineback2hex = {
+	data: [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 0, 0, 0], // Origin line
+		[0, 0, 0, 0],
+	],
+	origin: [2, 2],
+};
 
-front2hex.origin = [2, 2];
+export const inlinefrontnback2hex = {
+	data: [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[1, 0, 0, 1], // Origin line
+		[0, 0, 0, 0],
+	],
+	origin: [2, 2],
+};
 
-export const back2hex = [
-	[0, 0, 0, 0],
-	[0, 1, 0, 0],
-	[1, 0, 0, 0], // Origin line
-	[0, 1, 0, 0],
-];
+export const front1hex = {
+	data: [
+		[0, 0, 0],
+		[0, 0, 1],
+		[0, 0, 1], // Origin line
+		[0, 0, 1],
+	],
+	origin: [1, 2],
+};
 
-back2hex.origin = [2, 2];
+export const backtop1hex = {
+	data: [
+		[0, 0, 0],
+		[0, 1, 0],
+		[0, 0, 0], // Origin line
+		[0, 0, 0],
+	],
+	origin: [1, 2],
+};
 
-export const inlinefront2hex = [
-	[0, 0, 0, 0],
-	[0, 0, 0, 0],
-	[0, 0, 0, 1], // Origin line
-	[0, 0, 0, 0],
-];
+export const inlineback1hex = {
+	data: [
+		[0, 0, 0],
+		[0, 0, 0],
+		[1, 0, 0], // Origin line
+		[0, 0, 0],
+	],
+	origin: [1, 2],
+};
 
-inlinefront2hex.origin = [2, 2];
+export const backbottom1hex = {
+	data: [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0], // Origin line
+		[0, 1, 0],
+	],
+	origin: [1, 2],
+};
 
-export const inlineback2hex = [
-	[0, 0, 0, 0],
-	[0, 0, 0, 0],
-	[1, 0, 0, 0], // Origin line
-	[0, 0, 0, 0],
-];
+export const fronttop1hex = {
+	data: [
+		[0, 0, 0],
+		[0, 0, 1],
+		[0, 0, 0], // Origin line
+		[0, 0, 0],
+	],
+	origin: [1, 2],
+};
 
-inlineback2hex.origin = [2, 2];
+export const inlinefront1hex = {
+	data: [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 1], // Origin line
+		[0, 0, 0],
+	],
+	origin: [1, 2],
+};
 
-export const inlinefrontnback2hex = [
-	[0, 0, 0, 0],
-	[0, 0, 0, 0],
-	[1, 0, 0, 1], // Origin line
-	[0, 0, 0, 0],
-];
+export const frontbottom1hex = {
+	data: [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0], // Origin line
+		[0, 0, 1],
+	],
+	origin: [1, 2],
+};
 
-inlinefrontnback2hex.origin = [2, 2];
+export const headlessBoomerang = {
+	data: [
+		[0, 0, 0, 0, 0],
+		[0, 1, 1, 1, 1],
+		[0, 1, 1, 1, 1], //origin line
+		[0, 1, 1, 1, 1],
+	],
+	origin: [0, 2],
+};
 
-export const front1hex = [
-	[0, 0, 0],
-	[0, 0, 1],
-	[0, 0, 1], // Origin line
-	[0, 0, 1],
-];
-
-front1hex.origin = [1, 2];
-
-export const backtop1hex = [
-	[0, 0, 0],
-	[0, 1, 0],
-	[0, 0, 0], // Origin line
-	[0, 0, 0],
-];
-
-backtop1hex.origin = [1, 2];
-
-export const inlineback1hex = [
-	[0, 0, 0],
-	[0, 0, 0],
-	[1, 0, 0], // Origin line
-	[0, 0, 0],
-];
-
-inlineback1hex.origin = [1, 2];
-
-export const backbottom1hex = [
-	[0, 0, 0],
-	[0, 0, 0],
-	[0, 0, 0], // Origin line
-	[0, 1, 0],
-];
-
-backbottom1hex.origin = [1, 2];
-
-export const fronttop1hex = [
-	[0, 0, 0],
-	[0, 0, 1],
-	[0, 0, 0], // Origin line
-	[0, 0, 0],
-];
-
-fronttop1hex.origin = [1, 2];
-
-export const inlinefront1hex = [
-	[0, 0, 0],
-	[0, 0, 0],
-	[0, 0, 1], // Origin line
-	[0, 0, 0],
-];
-
-inlinefront1hex.origin = [1, 2];
-
-export const frontbottom1hex = [
-	[0, 0, 0],
-	[0, 0, 0],
-	[0, 0, 0], // Origin line
-	[0, 0, 1],
-];
-
-frontbottom1hex.origin = [1, 2];
-
-export const headlessBoomerang = [
-	[0, 0, 0, 0, 0],
-	[0, 1, 1, 1, 1],
-	[0, 1, 1, 1, 1], //origin line
-	[0, 1, 1, 1, 1],
-];
-
-headlessBoomerang.origin = [0, 2];
-
-export const headlessBoomerangUpgraded = [
-	[0, 0, 0, 0, 0, 0],
-	[0, 1, 1, 1, 1, 1],
-	[0, 1, 1, 1, 1, 1], //origin line
-	[0, 1, 1, 1, 1, 1],
-];
-
-headlessBoomerangUpgraded.origin = [0, 2];
+export const headlessBoomerangUpgraded = {
+	data: [
+		[0, 0, 0, 0, 0, 0],
+		[0, 1, 1, 1, 1, 1],
+		[0, 1, 1, 1, 1, 1], //origin line
+		[0, 1, 1, 1, 1, 1],
+	],
+	origin: [0, 2],
+};
