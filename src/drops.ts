@@ -1,17 +1,32 @@
+import type Game from './game';
+import { Hex } from './utility/hex';
+import { Creature } from './creature';
+
+// TODO: find the real type
+type Display = any;
+
 export class Drop {
-	constructor(name, health, energy, x, y, game) {
-		this.name = name;
-		this.game = game;
+	public id: number;
+	public pos: { x: number; y: number };
+	private display: Display;
+	private hex: Hex;
+
+	constructor(
+		public name: string,
+		public health: number,
+		public energy: number,
+		x: number,
+		y: number,
+		public game: Game,
+	) {
 		this.id = game.dropId++;
-		this.x = x;
-		this.y = y;
 		this.pos = {
 			x: x,
 			y: y,
 		};
 		this.health = health;
 		this.energy = energy;
-		this.hex = game.grid.hexes[this.y][this.x];
+		this.hex = game.grid.hexes[y][x];
 
 		this.hex.drop = this;
 
@@ -35,7 +50,7 @@ export class Drop {
 			.start();
 	}
 
-	pickup(creature) {
+	pickup(creature: Creature) {
 		let game = this.game;
 
 		game.log('%CreatureName' + creature.id + '% picks up ' + this.name);
