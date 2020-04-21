@@ -462,7 +462,7 @@ export class Ability {
 				continue;
 			}
 
-			let dmg = new Damage(attacker, damages, targets[i].hexesHit, effects, this.game);
+			const dmg = new Damage(attacker, damages, targets[i].hexesHit, effects, this.game);
 			let damageResult = targets[i].target.takeDamage(dmg, {
 				ignoreRetaliation: ignoreRetaliation,
 			});

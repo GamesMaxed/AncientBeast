@@ -334,7 +334,7 @@ export default (G) => {
 					G.log('%CreatureName' + target.id + "%'s meditation is lowered by 1");
 				}
 
-				let damage = new Damage(
+				const damage = new Damage(
 					ability.creature, // Attacker
 					ability.damages, // Damage Type
 					1, // Area

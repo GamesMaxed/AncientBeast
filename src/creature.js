@@ -1082,7 +1082,7 @@ export class Creature {
 	 *
 	 * return :	Object :	Contains damages dealed and if creature is killed or not
 	 */
-	takeDamage(damage, o) {
+	takeDamage(damage, options) {
 		let game = this.game;
 
 		if (this.dead) {
@@ -1095,17 +1095,12 @@ export class Creature {
 			isFromTrap: false,
 		};
 
-		o = $j.extend(defaultOpt, o);
-		// Determine if melee attack
-		damage.melee = false;
-		this.adjacentHexes(1).forEach((hex) => {
-			if (damage.attacker == hex.creature) {
-				damage.melee = true;
-			}
-		});
+		const o = Object.assign({}, defaultOpt, options);
 
-		damage.target = this;
-		damage.isFromTrap = o.isFromTrap;
+		// Determine if melee attack
+		const melee = this.adjacentHexes(1).some((hex) => hex.creature === damage.attacker);
+		damage.melee = melee; // TODO: don't set this here
+		damage.isFromTrap = o.isFromTrap; // todo: dont set this here
 
 		// Trigger
 		game.onUnderAttack(this, damage);
@@ -1114,7 +1109,7 @@ export class Creature {
 		// Calculation
 		if (damage.status === '') {
 			// Damages
-			let dmg = damage.applyDamage();
+			let dmg = damage.applyDamage(this);
 			let dmgAmount = dmg.total;
 
 			if (!isFinite(dmgAmount)) {
